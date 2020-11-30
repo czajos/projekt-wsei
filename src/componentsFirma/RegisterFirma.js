@@ -5,12 +5,18 @@ import { TextInput } from 'react-native-gesture-handler';
 
 
 
-export  function RegisterScreen({ navigation }) {
+export  function RegisterFirma({ navigation }) {
     return (
       <View style={ styles.container }>
         <Text style={styles.txtStyle}>Sign up</Text>
         <TextInput 
         placeholder="username"
+         style={styles.txtInput} />
+         <TextInput 
+        placeholder="Imię"
+         style={styles.txtInput} />
+         <TextInput 
+        placeholder="Nazwisko"
          style={styles.txtInput} />
         <TextInput 
          placeholder="e-mail adress"
@@ -25,10 +31,10 @@ export  function RegisterScreen({ navigation }) {
          secureTextEntry={true}
          />
         <Button
-          title="Sign up"
-          onPress={() => navigation.navigate('Register')}
+          title="Dalej"
+          onPress={() => navigation.navigate('Idź dalej')}
         />
-        <Text style={styles.txtStyle2}>Masz konto? <Text style={{fontSize:17, color:'blue',textDecorationLine:'underline'}} onPress={()=>navigation.navigate('Zaloguj się')}>Zaloguj się</Text></Text>
+         <Text style={styles.txtStyle2}>Masz konto? <Text style={{fontSize:17, color:'blue',textDecorationLine:'underline'}} onPress={()=>navigation.navigate('Zaloguj się jako firma')}>Zaloguj się</Text></Text>
       </View>
     );
   }
@@ -62,6 +68,11 @@ export  function RegisterScreen({ navigation }) {
       fontSize:16,
       
       color:'white'
-  }
-    
+  },
+    btnStyle:{
+fontSize:30,
+color:'black',
+padding:20,
+margin:15
+    }
       })

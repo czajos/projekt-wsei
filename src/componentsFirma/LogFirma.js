@@ -1,17 +1,18 @@
 
+import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { View, Text,Button,StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-export  function LogScreen({ navigation }) {
+export  function LogFirma({ navigation }) {
   
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'green' }}>
         <Text style={styles.txtStyle}>Sign in</Text>
         <TextInput 
-         placeholder="username"
+         placeholder="Adres e-mail"
         style={styles.txtInput}
-        secureTextEntry={true}
+        
         />
         <TextInput 
          placeholder="password"
@@ -22,10 +23,10 @@ export  function LogScreen({ navigation }) {
         <Button
            
           title="Login"
-          onPress={() => navigation.navigate('Zaloguj się') }
+          onPress={() => navigation.navigate('Zaloguj się jako firma') }
           
         />
-         <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{fontSize:17, color:'blue',textDecorationLine:'underline'}} onPress={()=>navigation.navigate('Zarejestruj się')}>Zarejestruj się</Text></Text>
+        <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{fontSize:17, color:'blue',textDecorationLine:'underline'}} onPress={()=>navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text>
       </View>
     );
   }
@@ -54,11 +55,16 @@ export  function LogScreen({ navigation }) {
         color:'white'
     },
     txtStyle2:{
-      marginTop:10,
-      fontSize:16,
-      
-      color:'white'
-  }
-    
+        marginTop:10,
+        fontSize:16,
+        
+        color:'white'
+    },
+    btnStyle:{
+fontSize:30,
+color:'black',
+padding:20,
+margin:15
+    }
       })
   

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View,Button, Text,StyleSheet, ImageBackground } from 'react-native';
+import { View,Button, Text,StyleSheet, ImageBackground,TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 // import { TextInput } from 'react-native-gesture-handler';
 // import { createStackNavigator } from 'react-navigation-stack';
@@ -14,37 +14,21 @@ export function HomeScreen({ navigation }) {
     <View style={styles.container}>
     
     <TextInput style={styles.txtInput}/>
-      <Button
-        onPress={() => navigation.navigate('')}
-        title="Szukaj"
-      />
+    <TouchableOpacity  style={styles.search}   onPress={() => navigation.navigate('')}>
+      <Text style={{color:'white',fontWeight:'bold',fontSize:14}}>Szukaj</Text>
+      </TouchableOpacity>
       </View>
       <View style={styles.container}>
       <TextInput style={styles.txtInput} />
-      <Button
-        onPress={() => navigation.navigate('')}
-        title="Szukaj"
-      />
+      <TouchableOpacity  style={styles.search}   onPress={() => navigation.navigate('')}>
+      <Text style={{color:'white',fontWeight:'bold',fontSize:14}}>Szukaj</Text>
+      </TouchableOpacity>
       </View>
     </ImageBackground>
     
   );
 }
 
-// export default class HomeScreen extends React.Component{
-//   render(){
-//     let {container,image}=styles
-//     return(
-
-//       <View style={container}>
-//       <ImageBackground source={require('../../restable.jpg')} style={image}>
-        
-//          <Text>Homeee</Text>
-//         </ImageBackground>
-//       </View>
-//     );
-//   }
-// }
 
 const styles=StyleSheet.create({
   container: {
@@ -63,11 +47,18 @@ const styles=StyleSheet.create({
   txtInput:{
     borderWidth:1,
     width:200,
-    height:40,
-    textAlign:"center",
+    height:50,
+    textAlign:'center',
     backgroundColor:'white',
     marginTop:20
     
+  },
+  search:{
+    width:'30%',
+    height:50,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'#5B9CE6',
   }
     })
 
@@ -77,35 +68,3 @@ const styles=StyleSheet.create({
 
 
 
-// import * as React from 'react';
-// import { View, Text,Button,StyleSheet, ImageBackground } from 'react-native';
-
-// export  function HomeScreen({ navigation }) {
-//   let {container,image}=styles
-//     return (
-//       <View style={container}>
-//       <ImageBackground source={require('../../restable.jpg')} style={image}>
-        
-//         <Button
-//           title="Localization"
-//           onPress={() => navigation.navigate('Register')}   //przycisk prowadzący do componetu details 
-//         />
-//         </ImageBackground>
-//       </View>
-//     );
-//   }
-
-//   const styles=StyleSheet.create({
-// container: {
-//   flex:1,
-//     flexDirection:'column',
-//     justifyContent:'center',
-//     alignItems:'center',
-// },
-// image:{
-//   flex: 1,
-//   resizeMode: "contain",
-//   justifyContent: "center",
-//   width:'100%'
-// }
-//   })
