@@ -2,9 +2,13 @@ import * as React from 'react';
 import { View,Button, Text,StyleSheet} from 'react-native';
 import {DrawerContentScrollView,DrawerItem,createDrawerNavigator} from '@react-navigation/drawer';
  import {Title,Switch,Drawer} from 'react-native-paper';
+import { AuthContext } from '../componentsFirma/AuthContext';
 
 
 export  function DrawerContent(props){
+
+    const {signOut}=React.useContext(AuthContext)
+
     return(
         <View style={{flex:1}}>
             <DrawerContentScrollView {...props}>
@@ -25,8 +29,18 @@ export  function DrawerContent(props){
                    label="Dla firm"
                    onPress={()=>{props.navigation.navigate('Dla firm')}}
                    ></DrawerItem>
+                   
                </Drawer.Section>
+               
             </DrawerContentScrollView>
+            <Drawer.Section >
+                    <DrawerItem 
+                    
+                   label="Wyloguj się"
+                   onPress={()=>{signOut()}}
+                   ></DrawerItem>
+                  </Drawer.Section>
         </View>
     )
 }
+

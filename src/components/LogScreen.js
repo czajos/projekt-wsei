@@ -29,6 +29,7 @@ export  function LogScreen({ navigation }) {
       </View>
     );
   }
+  // export default LogScreen;
 
   const styles=StyleSheet.create({
     container: {

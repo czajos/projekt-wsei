@@ -23,13 +23,15 @@ export  function LogFirma({ navigation }) {
         <Button
            
           title="Login"
-          onPress={() => navigation.navigate('Zaloguj się jako firma') }
+          onPress={() => {signIn()} }
           
         />
         <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{fontSize:17, color:'blue',textDecorationLine:'underline'}} onPress={()=>navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text>
       </View>
     );
   }
+
+  export default LogFirma;
 
   const styles=StyleSheet.create({
     container: {

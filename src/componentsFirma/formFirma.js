@@ -1,16 +1,35 @@
 import * as React from 'react';
-import { View, Text,Button,StyleSheet } from 'react-native';
+import { View, Text,Button,StyleSheet,Image,ScrollView,TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 // import { createStackNavigator } from 'react-navigation-stack';
 
 
 
 export  function formFirma({ navigation }) {
+  const [data, setData]=React.useState({
+    nazwarestauracji:'',
+    typrestauracji:'',
+    nazwisko:'',
+    adreslokalu:'',
+    numertel:'',
+    nip:'',
+    check_textInputChange: false,
+    secureTextEntry: true
+  
+  })
+
     return (
       <View style={ styles.container }>
-        <Text style={styles.txtStyle1}>Wypełnij dane</Text>
-        <Text style={styles.txtStyle2}>aby przejść dalej</Text>
+      <View style={styles.header}>
+      <Image style={styles.image} source={require('../../logodlafirm.png')}></Image>
 
+     </View>
+     <View style={styles.title}>
+     <Text style={styles.txtStyle1}>Wypełnij dane</Text>
+        <Text style={styles.txtStyle2}>aby przejść dalej</Text>
+     </View>
+     <ScrollView style={styles.datastyle}>
+     
         <TextInput 
         placeholder="Nazwa restauracji"
          style={styles.txtInput}
@@ -29,10 +48,12 @@ export  function formFirma({ navigation }) {
         style={styles.txtInput}
          />
         
-        <Button
-          title="Idź dalej"
-          onPress={() => navigation.navigate('')}
-        />
+        </ScrollView>
+        <View style={{justifyContent:'center',alignItems:'center',marginBottom:10}}>
+        <TouchableOpacity style={styles.btnStyle}  onPress={() => navigation.navigate('')}>
+        <Text  style={{color:'white',fontSize:17,fontWeight:'bold'}}  onPress={()=>navigation.navigate('Dodaj stolik')}>Idź dalej</Text>
+        </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -42,39 +63,75 @@ export  function formFirma({ navigation }) {
       flex:1,
         flexDirection:'column',
         justifyContent:'center',
-        alignItems:'flex-start',
+        
         backgroundColor:'white'
     },
     
-    txtInput:{
+    header:{
+    flexDirection:'row',
+      backgroundColor:'green',
+      width:'100%',
+      resizeMode: "contain",
+      justifyContent: "center",
       
+    },
+
+    image:{
+      width:'80%',
+      resizeMode: "contain",
+      justifyContent: "center",
+      alignItems:'center'
+      
+    },
+
+    title:{
+      padding:8,
+      resizeMode: "contain",
+      justifyContent: "center",
+      width:'100%',
+      justifyContent:'flex-end',
+  
+    },
+
+    datastyle:{
+      paddingLeft:10,
+      width:'100%',
+      borderRadius:10
+    },
+
+    txtInput:{
+      alignSelf:'stretch',
       width:"80%",
       height:50,
       fontSize:17,
       borderRadius:3,
       margin:10,
-      borderBottomColor:'black',
-      borderEndWidth:5,
+      borderBottomColor:'lightgrey',
+      borderBottomWidth:1,
       marginBottom:10
-      
-      
     },
+
     txtStyle1:{
         fontSize:40,
-        fontWeight:'bold',
         color:'black',
         marginLeft:10
     },
+
     txtStyle2:{
         fontSize:18,
-        
-        color:'black',
-        marginLeft:10
+        color:'grey',
+        marginLeft:10,
+        marginBottom:10
     },
+
     btnStyle:{
-fontSize:30,
-color:'black',
-padding:20,
-margin:15
+      backgroundColor:'#5B9CE6',
+     
+      padding:20,
+      height:30,
+      width:'40%',
+      justifyContent:'center',
+      alignItems:'center'
+    
     }
       })

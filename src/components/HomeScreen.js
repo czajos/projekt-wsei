@@ -29,12 +29,13 @@ export function HomeScreen({ navigation }) {
   );
 }
 
+export default HomeScreen;
 
 const styles=StyleSheet.create({
   container: {
     flex:1,
       flexDirection:'row',
-      justifyContent:'space-around',
+      justifyContent:'center',
       alignItems:'center',
   },
   image:{
@@ -46,11 +47,11 @@ const styles=StyleSheet.create({
   },
   txtInput:{
     borderWidth:1,
-    width:200,
+    width:"60%",
     height:50,
     textAlign:'center',
     backgroundColor:'white',
-    marginTop:20
+    
     
   },
   search:{

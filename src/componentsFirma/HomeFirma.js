@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View,Button, Text,StyleSheet, ImageBackground,TouchableOpacity } from 'react-native';
+import { View,Button, Text,StyleSheet, ImageBackground,TouchableOpacity,Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 // import { TextInput } from 'react-native-gesture-handler';
 // import { createStackNavigator } from 'react-navigation-stack';
@@ -11,7 +11,9 @@ export function HomeFirma({ navigation }) {
   return (
  
     <ImageBackground style={styles.image} source={require('../../restable.jpg')}>
-    
+    <View style={styles.header}>
+    <Image style={styles.image2} source={require('../../logodlafirm.png')}></Image>
+    </View>
     <View style={styles.container}>
     
     <TouchableOpacity style={styles.zalogujStyle} onPress={() => navigation.navigate('Zaloguj się jako firma')}>
@@ -38,6 +40,7 @@ const styles=StyleSheet.create({
       flexDirection:'row',
       justifyContent:'space-around',
       alignItems:'center',
+      
      
   },
   image:{
@@ -58,6 +61,24 @@ const styles=StyleSheet.create({
       
 
  },
+ header:{
+  flexDirection:'row',
+    backgroundColor:'green',
+    width:'100%',
+    resizeMode: "contain",
+    justifyContent: "center",
+    
+    
+  },
+  image2:{
+    width:'80%',
+    resizeMode: "contain",
+    justifyContent: "center",
+    alignItems:'center',
+    marginTop:-30
+    
+    
+  },
  zarejestrujStyle:{
   backgroundColor:'#5B9CE6',
   color:'white',
