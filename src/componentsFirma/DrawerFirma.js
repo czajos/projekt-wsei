@@ -2,10 +2,10 @@ import * as React from 'react';
 import { View, Button, Text, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItem, createDrawerNavigator } from '@react-navigation/drawer';
 import { Title, Switch, Drawer } from 'react-native-paper';
-import { AuthContext } from '../componentsFirma/AuthContext';
+import { AuthContext } from './AuthContext';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export function DrawerContent(props) {
+export function DrawerFirma(props) {
 
     const { signOut } = React.useContext(AuthContext)
 
@@ -18,8 +18,8 @@ export function DrawerContent(props) {
                             <Icon name="home-outline"
                                 color={color}
                                 size={size}></Icon>)}
-                        label="Home"
-                        onPress={() => { props.navigation.navigate('Home') }}
+                        label="Mój profil"
+                        onPress={() => { props.navigation.navigate('Profil firma') }}
                     ></DrawerItem>
                     <DrawerItem
                         icon={({ color, size }) => (
@@ -27,8 +27,8 @@ export function DrawerContent(props) {
                                 color={color}
                                 size={size}></Icon>)}
                               
-                        label="Zaloguj się"
-                        onPress={() => { props.navigation.navigate('Zaloguj się') }}
+                        label="Edytuj/dodaj stolik"
+                        onPress={() => { props.navigation.navigate('Dodaj stolik') }}
                     ></DrawerItem>
                     <DrawerItem
                     icon={({ color, size }) => (
