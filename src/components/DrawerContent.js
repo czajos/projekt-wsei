@@ -26,12 +26,12 @@ export function DrawerContent(props) {
                             <Icon name="log-in-outline"
                                 color={color}
                                 size={size}></Icon>)}
-                              
+
                         label="Zaloguj się"
                         onPress={() => { props.navigation.navigate('Zaloguj się') }}
                     ></DrawerItem>
                     <DrawerItem
-                    icon={({ color, size }) => (
+                        icon={({ color, size }) => (
                             <Icon name="newspaper-outline"
                                 color={color}
                                 size={size}></Icon>)}
@@ -46,7 +46,7 @@ export function DrawerContent(props) {
                         label="Dla firm"
                         onPress={() => { props.navigation.navigate('Dla firm') }}
                     ></DrawerItem>
-
+                    
                 </Drawer.Section>
 
             </DrawerContentScrollView>

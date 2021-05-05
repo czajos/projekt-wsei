@@ -93,7 +93,6 @@ export default function App() {
           backgroundColor: 'green', elevation: 0,
         }, headerShown: false
       }} />
-
     </Drawer.Navigator>
   )
 

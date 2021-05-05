@@ -1,23 +1,84 @@
-import * as React from 'react';
-import { useState, useCallback } from 'react'
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
+import axios from 'axios'
 
 
 
 
 export function ProfilFirma({ navigation }) {
     const [image, setImage] = useState(null)
-    const [data, setData] = useState({
-        name: "",
-        typrestauracji: '',
-        nazwisko: '',
-        adreslokalu: '',
-        numertel: '',
-        nip: '',
-    })
+    const [nazwarestauracji, setNazwaRestauracji] = useState('')
+    const [typrestauracji, setTypRestauracji] = useState()
+    const [adreslokalu, setAdresResturacji] = useState()
+    const [numertel, setNumerTel] = useState()
+    const [nip, setNip] = useState()
+    const [description, setDesctription] = useState()
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+
+    const getData = () => {
+        axios
+            .get('http://192.168.1.143:5000/restaurant/get/1')
+
+            .then(function (response) {
+                // handle success
+                const data = response.data.data.restaurant
+
+
+                console.log(data)
+                setData(response.data.data.restaurant)
+            })
+            .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            .finally(function () {
+                // always executed
+                alert('Finally called');
+            });
+    };
+
+    // const pullData = () => {
+    //     axios
+    //         .post('http://192.168.1.143:5000/restaurant/update', {
+    //             category: typrestauracji,
+    //             params: {
+    //                 user_id: 1
+    //             }
+    //         }
+    //         )
+    // }
+    const pullData = () => {
+        axios
+            .put('http://192.168.1.143:5000/restaurant/update/1', {
+                name: data.name,
+                category: data.category,
+                city: data.city,
+                phone: data.phone,
+                description: data.description
+
+            })
+            .then(function (response) {
+                // setTypRestauracji({ category: response.data.data })
+                console.log(data.category)
+                alert(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                alert(error.message);
+            });
+    }
+
+
+
 
     const choosePhotoFromLibrary = () => {
         ImagePicker.openPicker({
@@ -28,10 +89,7 @@ export function ProfilFirma({ navigation }) {
 
             console.log(image)
             setImage(image.path)
-
-
         });
-
     };
 
     return (
@@ -51,48 +109,115 @@ export function ProfilFirma({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.nameRestaurant}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Nazwa restauracji</Text>
+                <TextInput
+                    style={{ fontSize: 18, fontWeight: 'bold' }}
+                    onChangeText={text => setData({ ...data, name: text })}
+                    autoCorrect={false}
+                    value={`${data ? data.name : ''}`}>
+                </TextInput>
             </View>
-            <View style={{ marginTop: 15 }}>
-                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Typ restauracji</Text>
-                <View style={styles.boxInput}>
-                    <TextInput
-                        placeholder=""
-                        style={styles.txtInput}
-                    />
-                    <Icon name="create-outline"
-                        color={'black'}
-                        size={25}
-                        style={{ padding: 10 }}></Icon>
+            <ScrollView>
+
+                <View style={{ marginTop: 15 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Typ restauracji</Text>
+                    <View style={styles.boxInput}>
+
+                        <TextInput
+
+                            style={styles.txtInput}
+                            type="text"
+                            onChangeText={text => setData({ ...data, category: text })}
+                            autoCorrect={false}
+                            value={`${data ? data.category : ''}`}
+
+                        />
+                        <TouchableOpacity>
+                            <Icon name="create-outline"
+                                color={'white'}
+                                size={20}
+                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <View style={{ marginTop: 15 }}>
-                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Adres lokalu</Text>
-                <View style={styles.boxInput}>
-                    <TextInput
-                        placeholder=""
-                        style={styles.txtInput}
-                    />
-                    <Icon name="create-outline"
-                        color={'black'}
-                        size={25}
-                        style={{ padding: 10 }}></Icon>
+                <View style={{ marginTop: 15 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Adres lokalu</Text>
+                    <View style={styles.boxInput}>
+                        <TextInput
+                            placeholder=""
+                            style={styles.txtInput}
+                            onChangeText={text => setData({ ...data, city: text })}
+                            autoCorrect={false}
+                            value={`${data ? data.city : ''}`}
+                        />
+                        <TouchableOpacity>
+                            <Icon name="create-outline"
+                                color={'white'}
+                                size={20}
+                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <View style={{ marginTop: 15 }}>
-                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Tel. kontaktowy</Text>
-                <View style={styles.boxInput}>
-                    <TextInput
-                        placeholder=""
-                        style={styles.txtInput}
-                        keyboardType='numeric'
-                    />
-                    <Icon name="create-outline"
-                        color={'black'}
-                        size={25}
-                        style={{ padding: 10 }}></Icon>
+                <View style={{ marginTop: 15 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Tel. kontaktowy</Text>
+                    <View style={styles.boxInput}>
+                        <TextInput
+                            placeholder=""
+                            style={styles.txtInput}
+                            keyboardType='numeric'
+                            onChangeText={text => setData({ ...data, phone: text })}
+                            autoCorrect={false}
+                            value={`${data ? data.phone : ''}`}
+
+                        />
+                        <TouchableOpacity>
+                            <Icon name="create-outline"
+                                color={'white'}
+                                size={20}
+                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+                {/* <View style={{ marginTop: 15 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>NIP</Text>
+                    <View style={styles.boxInput}>
+                        <TextInput
+                            placeholder=""
+                            style={styles.txtInput}
+                            keyboardType='numeric'
+
+
+                        />
+                        <Icon name="create-outline"
+                            color={'black'}
+                            size={25}
+                            style={{ padding: 10 }}></Icon>
+                    </View>
+                </View> */}
+                <View style={{ marginTop: 15 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Opis</Text>
+                    <View style={styles.boxInput}>
+                        <TextInput
+                            placeholder=""
+                            style={styles.txtInput}
+                            onChangeText={text => setData({ ...data, description: text })}
+                            autoCorrect={false}
+                            value={`${data ? data.description : ''}`}
+
+                        />
+                        <TouchableOpacity>
+                            <Icon name="create-outline"
+                                color={'white'}
+                                size={20}
+                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={{ alignItems: 'center', flexDirection: 'column', justifyContent: 'center', padding: 12 }}>
+                    <TouchableOpacity style={styles.btnStyle} onPress={pullData}>
+                        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
 
         </View>
     )
@@ -169,6 +294,16 @@ const styles = StyleSheet.create({
         width: '80%',
         justifyContent: 'center',
         marginLeft: 10
+    },
+    btnStyle: {
+        backgroundColor: '#5B9CE6',
+        padding: 20,
+        height: 30,
+        width: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50
+
     }
 
 })

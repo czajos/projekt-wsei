@@ -1,4 +1,4 @@
-import React, { useState, useEffect,componentDidMount } from 'react';
+import React, { useState, useEffect, componentDidMount } from 'react';
 import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 // import { createStackNavigator } from 'react-navigation-stack';
@@ -10,7 +10,7 @@ export const formFirma = ({ navigation }) => {
   // const [datas, setData] = React.useState({
   //   nazwarestauracji: "",
   //   typrestauracji: '',
-    
+
   //   adreslokalu: '',
   //   numertel: '',
   //   nip: '',
@@ -18,30 +18,34 @@ export const formFirma = ({ navigation }) => {
   //   secureTextEntry: true
 
   // })
-const [nazwarestauracji,setNazwaRestauracji]=useState()
-const [typrestauracji,setTypRestauracji]=useState()
-const [adreslokalu,setAdresResturacji]=useState()
-const [numertel,setNumerTel]=useState()
+  const [nazwarestauracji, setNazwaRestauracji] = useState()
+  const [typrestauracji, setTypRestauracji] = useState()
+  const [adreslokalu, setAdresResturacji] = useState()
+  const [numertel, setNumerTel] = useState()
+  const [nip, setNip] = useState()
+  const [description, setDescription] = useState()
 
- useEffect(()=>{
-submitPost()
-})
 
-  const submitPost =()=>{
+  //  useEffect(()=>{
+  // submitPost()
+  // })
+
+  const submitPost = () => {
     axios
-    .post("http://192.168.1.143:5000/restaurant/create/create",{
-      name:nazwarestauracji,
-      category:typrestauracji,
-      city:adreslokalu,
-      phone:numertel
-      
-    })
-    .then(function (response) {
-      alert(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      alert(error.message);
-    });
+      .post("http://192.168.1.143:5000/restaurant/create", {
+        name: nazwarestauracji,
+        category: typrestauracji,
+        city: adreslokalu,
+        phone: numertel,
+        description: description
+
+      })
+      .then(function (response) {
+        alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        alert(error.message);
+      });
   }
 
   return (
@@ -59,21 +63,30 @@ submitPost()
         <TextInput
           placeholder="Nazwa restauracji"
           style={styles.txtInput}
-          onChangeText={text=>setNazwaRestauracji(text)}
+          type="text"
+          onChangeText={text => setNazwaRestauracji(text)}
           value={nazwarestauracji}
         />
         <TextInput
           placeholder="Typ restauracji"
-          style={styles.txtInput} 
-          onChangeText={text=>setTypRestauracji(text)}
+          style={styles.txtInput}
+          onChangeText={text => setTypRestauracji(text)}
           value={typrestauracji}
-          />
+        />
         <TextInput
           placeholder="Adres lokalu"
           style={styles.txtInput}
-          onChangeText={text=>setAdresResturacji(text)}
+          type="number"
+          onChangeText={text => setAdresResturacji(text)}
           value={adreslokalu}
-           />
+        />
+        <TextInput
+          placeholder="Numer telefonu"
+          style={styles.txtInput}
+          onChangeText={text => setNumerTel(text)}
+          value={numertel}
+          keyboardType='numeric'
+        />
         {/* <TextInput
           placeholder="Numer telefonu"
           style={styles.txtInput} 
@@ -81,14 +94,17 @@ submitPost()
           value={numertel}
           keyboardType='numeric'
           /> */}
+       
         <TextInput
-          placeholder="NIP"
+          placeholder="Opis"
           style={styles.txtInput}
+          onChangeText={text => setDescription(text)}
+          value={description}
         />
 
       </ScrollView>
-      <View style={{ flexDirection:'row',justifyContent: 'space-around', alignItems: 'center', marginBottom: 10,}}>
-        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj stolik')}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 10, }}>
+        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Profil firmy')}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Idź dalej</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle} >
