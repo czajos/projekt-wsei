@@ -8,7 +8,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
-} from '@react-native-google-signin/google-signin';
+} from '@react-native-community/google-signin';
 
 
 GoogleSignin.configure({
@@ -143,7 +143,7 @@ export function LogScreen({ navigation }) {
         <Animatable.View animation="fadeInLeft" duration={500}>
           <Text style={{ color: 'red', fontSize: 15 }}>Nazwa jest za krótka(minimum to 8 znaków).</Text>
         </Animatable.View>}
-      <TouchableOpacity style={styles.zalogujStyle} onPress={() => navigation.navigate('Zaloguj się')}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={() => navigation.navigate("Profil użytkownika")}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
       <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Zarejestruj się')}>Zarejestruj się</Text></Text>
@@ -156,7 +156,7 @@ export function LogScreen({ navigation }) {
     </View>
   );
 }
-// export default LogScreen;
+export default LogScreen;
 
 const styles = StyleSheet.create({
   container: {

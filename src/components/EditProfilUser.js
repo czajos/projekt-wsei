@@ -5,19 +5,16 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
-import FormData from 'form-data'
 
 
 
 
-export function ProfilFirma({ navigation }) {
+export function EditProfilUser({ navigation }) {
     const [image, setImage] = useState(null)
     const [nazwarestauracji, setNazwaRestauracji] = useState('')
-    const [typrestauracji, setTypRestauracji] = useState()
-    const [adreslokalu, setAdresResturacji] = useState()
+    const [name, setName] = useState()
+    const [lastName, setLastName] = useState()
     const [numertel, setNumerTel] = useState()
-    const [nip, setNip] = useState()
-    const [description, setDesctription] = useState()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -48,7 +45,16 @@ export function ProfilFirma({ navigation }) {
             });
     };
 
-    
+    // const pullData = () => {
+    //     axios
+    //         .post('http://192.168.1.143:5000/restaurant/update', {
+    //             category: typrestauracji,
+    //             params: {
+    //                 user_id: 1
+    //             }
+    //         }
+    //         )
+    // }
     const pullData = () => {
         axios
             .put('http://192.168.1.143:5000/restaurant/update/1', {
@@ -70,32 +76,7 @@ export function ProfilFirma({ navigation }) {
     }
 
 
-const datas=new FormData()
-datas.append('image', {
-uri : image,
-type : 'image/jpeg',
-name : 'image.jpg'})
 
-    const saveTable = () => {
-        axios
-            .post("http://192.168.1.143:5000/table/create", datas, {
-
-                headers: {
-                    'accept': 'application/json',
-                    'Accept-Language': 'en-US,en;q=0.8',
-                    'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
-                },
-                
-
-            })
-            .then(function (response) {
-                alert(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                alert(error.message);
-            });
-        
-    }
 
     const choosePhotoFromLibrary = () => {
         ImagePicker.openPicker({
@@ -136,7 +117,7 @@ name : 'image.jpg'})
             <ScrollView>
 
                 <View style={{ marginTop: 15 }}>
-                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Typ restauracji</Text>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Imie</Text>
                     <View style={styles.boxInput}>
 
                         <TextInput
@@ -157,7 +138,7 @@ name : 'image.jpg'})
                     </View>
                 </View>
                 <View style={{ marginTop: 15 }}>
-                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Adres lokalu</Text>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Nazwisko</Text>
                     <View style={styles.boxInput}>
                         <TextInput
                             placeholder=""
@@ -194,43 +175,9 @@ name : 'image.jpg'})
                         </TouchableOpacity>
                     </View>
                 </View>
-                {/* <View style={{ marginTop: 15 }}>
-                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>NIP</Text>
-                    <View style={styles.boxInput}>
-                        <TextInput
-                            placeholder=""
-                            style={styles.txtInput}
-                            keyboardType='numeric'
-
-
-                        />
-                        <Icon name="create-outline"
-                            color={'black'}
-                            size={25}
-                            style={{ padding: 10 }}></Icon>
-                    </View>
-                </View> */}
-                <View style={{ marginTop: 15 }}>
-                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Opis</Text>
-                    <View style={styles.boxInput}>
-                        <TextInput
-                            placeholder=""
-                            style={styles.txtInput}
-                            onChangeText={text => setData({ ...data, description: text })}
-                            autoCorrect={false}
-                            value={`${data ? data.description : ''}`}
-
-                        />
-                        <TouchableOpacity>
-                            <Icon name="create-outline"
-                                color={'white'}
-                                size={20}
-                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+               
                 <View style={{ alignItems: 'center', flexDirection: 'column', justifyContent: 'center', padding: 12 }}>
-                    <TouchableOpacity style={styles.btnStyle} onPress={saveTable}>
+                    <TouchableOpacity style={styles.btnStyle} onPress={pullData}>
                         <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>
                     </TouchableOpacity>
                 </View>
@@ -239,7 +186,7 @@ name : 'image.jpg'})
         </View>
     )
 }
-export default ProfilFirma;
+export default EditProfilUser;
 
 
 const styles = StyleSheet.create({

@@ -124,7 +124,7 @@ return (
       style={styles.txtInput}
       secureTextEntry={true}
     />
-    <TouchableOpacity style={styles.zarejestrujStyle} onPress={() => navigation.navigate('Register')}>
+    <TouchableOpacity style={styles.zarejestrujStyle} onPress={() => navigation.navigate('Formularz rejestracyjny')}>
       <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Dalej</Text>
     </TouchableOpacity>
 

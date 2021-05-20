@@ -9,19 +9,14 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 export default function Table({ text }) {
 
-    const item = {
-        id: index,
-        url: source,
-        text: "",
-        input: ""
-    };
+    
     return (
         <View style={styles.item}>
             <View>
-                <Text style={styles.txtStyle1}>{item.text}</Text>
+                <Text style={styles.txtStyle1}>COss</Text>
             </View>
-            <TouchableOpacity style={{ width: '100%' }} >
-                <Image style={{ width: '100%', height: '80%', resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={item.url}></Image>
+            <TouchableOpacity style={{ width: '100%' ,backgroundColor:'red',width:10,height:50}} >
+                {/* <Image style={{ width: '100%', height: '80%', resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={item.url}></Image> */}
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', marginTop: -30 }}>
                 <Text style={styles.txtStyle1}>Podaj liczbę miejsc</Text>

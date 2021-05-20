@@ -7,7 +7,7 @@ export function ComponentRest({ navigation }) {
       
             <View style={{  flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <TouchableOpacity style={styles.logoRestStyles} >
+                    <TouchableOpacity style={styles.logoRestStyles}>
                     </TouchableOpacity>
                     <Text style={styles.nameRestStyles}>
                     </Text>

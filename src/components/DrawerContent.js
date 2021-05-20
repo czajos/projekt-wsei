@@ -5,6 +5,7 @@ import { Title, Switch, Drawer } from 'react-native-paper';
 import { AuthContext } from '../componentsFirma/AuthContext';
 import Icon from 'react-native-vector-icons/Ionicons'
 
+
 export function DrawerContent(props) {
 
     const { signOut } = React.useContext(AuthContext)

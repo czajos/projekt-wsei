@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 
-export const formFirma = ({ navigation }) => {
+export const RegisterFormUser= ({ navigation }) => {
   // const [datas, setData] = React.useState({
   //   nazwarestauracji: "",
   //   typrestauracji: '',
@@ -18,12 +18,10 @@ export const formFirma = ({ navigation }) => {
   //   secureTextEntry: true
 
   // })
-  const [nazwarestauracji, setNazwaRestauracji] = useState()
-  const [typrestauracji, setTypRestauracji] = useState()
-  const [adreslokalu, setAdresResturacji] = useState()
+  const [name, setName] = useState()
+  const [lastName, setLastName] = useState()
   const [numertel, setNumerTel] = useState()
-  const [nip, setNip] = useState()
-  const [description, setDescription] = useState()
+  
 
 
   //  useEffect(()=>{
@@ -61,25 +59,19 @@ export const formFirma = ({ navigation }) => {
       <ScrollView style={styles.datastyle}>
 
         <TextInput
-          placeholder="Nazwa restauracji"
+          placeholder="Imię"
           style={styles.txtInput}
           type="text"
-          onChangeText={text => setNazwaRestauracji(text)}
-          value={nazwarestauracji}
+          onChangeText={text => setName(text)}
+          value={name}
         />
         <TextInput
-          placeholder="Typ restauracji"
+          placeholder="Nazwisko"
           style={styles.txtInput}
-          onChangeText={text => setTypRestauracji(text)}
-          value={typrestauracji}
+          onChangeText={text => setLastName(text)}
+          value={lastName}
         />
-        <TextInput
-          placeholder="Adres lokalu"
-          style={styles.txtInput}
-          type="number"
-          onChangeText={text => setAdresResturacji(text)}
-          value={adreslokalu}
-        />
+        
         <TextInput
           placeholder="Numer telefonu"
           style={styles.txtInput}
@@ -87,24 +79,10 @@ export const formFirma = ({ navigation }) => {
           value={numertel}
           keyboardType='numeric'
         />
-        {/* <TextInput
-          placeholder="Numer telefonu"
-          style={styles.txtInput} 
-          onChangeText={text=>setData({numertel:text})}
-          value={numertel}
-          keyboardType='numeric'
-          /> */}
-       
-        <TextInput
-          placeholder="Opis"
-          style={styles.txtInput}
-          onChangeText={text => setDescription(text)}
-          value={description}
-        />
 
       </ScrollView>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 10, }}>
-        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj stolik')}>
+        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Profil użytkownika')}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Idź dalej</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle} >

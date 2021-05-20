@@ -1,145 +1,99 @@
 import ImagePicker from 'react-native-image-crop-picker';
 import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
-// import { FlatList } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import BottomSheet from 'reanimated-bottom-sheet'
 // import Swipeout from 'react-native-swipeout'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
 import FormData from 'form-data'
-// import EditTable from './EditTable'
-// import { createStackNavigator } from '@react-navigation/stack';
+import Table from './Table'
 
 
-
-export function AddTable({ navigation }) {
+export function AddTableTest({ navigation }) {
     const [bottomPanel, setBottomPanel] = useState(React.createRef())
     const [fileList, setFileList] = useState([]);
     const [places, setPlaces] = useState()
-    const state = useMemo(() => ({ fileList }), [fileList]);
-    const [index, setIndex] = useState()
-    const [imagee, setImagee] = useState(null)
-    const [isEdit, setIsEdit] = useState(false)
+    // const state = useMemo(() => ({ fileList }), [fileList]);
+    const [index, setIndex] = useState(0)
+    const [addEl,setAddEl]=useState(false)
+    const[disabled,setDisabled]=useState(false)
 
-
-    const clickImage = (id) => {
-        bottomPanel.current.snapTo(0)
-    }
-    const fall = new Animated.Value(1)
-
-
-
-
-    const selectImage = useCallback((image, index) => {
-        setFileList(fileList => {
-            const newDataImg = [...fileList];
-            const source = { uri: image.path };
-            // let index;
-
-            const item = {
-                id: index,
-                url: source,
-                text: "",
-                input: ""
-            };
-
-            newDataImg.push(item);
-            fileList = ""
-            newDataImg.forEach((item, id, url, text) => {
-                item.id = id;
-                // item.url=source.id
-                item.text = "STOLIK" + " " + (id + 1);
-                item.input = places
-            })
-            //console.log({ item })
-            console.log(item.id)
-
-            console.log({ newDataImg })
-            bottomPanel.current.snapTo(1)
-
-            return newDataImg;
-
-        });
-    }, [setFileList]);
-
-    const takePhotoFromCamera = useCallback(() => {
-        ImagePicker.openCamera({
-            width: 300,
-            height: 400,
-        }).then(image => {
-            selectImage(image);
-
-            console.log(image);
-        });
-    }, [selectImage]);
-
-    const choosePhotoFromLibrary = useCallback(() => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-        }).then(image => {
-            selectImage(image);
-            setImagee(image)
-            console.log(image);
-
-        });
-    }, [selectImage]);
-
-
-    let xx = fileList
-    let zdj=fileList.url
-    let datas = new FormData();
     
-    // fileList.forEach(file => {
-    //     datas.append('tablica', file)
-    // })
-    // datas.append('image',{
-    //     uri : imagee,
-    //     type : 'image/jpeg',
-    //     name : 'image.jpg'});
-    // datas.append('numb_seats', places)
 
-    const saveTable = () => {
-        
-        fileList.forEach(item => {
-            datas = new FormData();
+    // const selectImage = useCallback((image, index) => {
+    //     setFileList(fileList => {
+    //         const newDataImg = [...fileList];
+    //         const source = { uri: image.path };
+    //         // let index;
 
-            datas.append('image',{
-                uri : item.url,
-                type : 'image/jpeg',
-                name : 'image.jpg'});
-            datas.append('numb_seats', item.input)
-            datas.append('numb_seats', item.text)
+    //         const item = {
+    //             id: index,
+    //             // url: source,
+    //             // text: "",
+    //             // input: ""
+    //         };
 
-            // xx = item
-            sendTable()
-            // console.log(xx)
-        });
-    }
-    const sendTable=()=>{
-        axios
-            .post("http://192.168.1.143:5000/table/create", datas, {
+    //         newDataImg.push(item);
+    //         fileList = ""
+    //         newDataImg.forEach((item, id, url,text) => {
+    //             item.id = id;
+    //             // // item.url=source.id
+    //             // item.text = "STOLIK" + " " + (id + 1);
+    //             // item.input = places
 
-                headers: {
-                    'accept': 'application/json',
-                    'Accept-Language': 'en-US,en;q=0.8',
-                    'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
-                },
+    //         })
+    //         //console.log({ item })
+    //         console.log(item.id)
+
+    //         console.log({ newDataImg })
+    //         bottomPanel.current.snapTo(1)
+
+    //         return newDataImg;
+
+    //     });
+    // }, [setFileList]);
+
+const afterClick=()=>{
+   index +=1
+//    setDisabled(false)
+}
+
+    const addMore=()=>{
+        setAddEl(true)
+        const addNewVal={id:'id'+ index ,text: index+1}
+        const newArray=[...fileList,addNewVal]
+        // setDisabled(true)
+        setFileList(newArray)
+        console.log({newArray})
+        // setFileList(fileList => {
+        //     const newDataImg = [...fileList];
+           
+        //     // let index;
+
+        //     const item = {
+        //         id: index,
+
+        //         text: "",
                 
+        //     };
 
-            })
-            .then(function (response) {
-                alert(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                alert(error.message);
-            });
-    // console.log(fileList[0].url)
+        //     newDataImg.push(item);
+        //     fileList = ""
+        //     newDataImg.forEach((item, id, url,text) => {
+        //         item.id = id;
+        //         // item.url=source.id
+        //         item.text = "STOLIK" + " " + (id + 1);
+               
+
+        //     })
+        // });
     }
 
+    
 
     const renderItem = useCallback(({ item, index }) => {
         //console.log(item.id)
@@ -151,13 +105,11 @@ export function AddTable({ navigation }) {
                         <Text style={styles.txtStyle1}>{item.text}</Text>
                     </View>
                     <TouchableOpacity style={{ width: '100%' }} >
-                        <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={item.url}></Image>
+                        {/* <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={item.url}></Image> */}
                     </TouchableOpacity>
                 </View>
                 <View style={styles.podajLiczbeMiejscStyle}>
-                    <Text style={styles.txtStyle1}
-                    // onChangeText={}
-                    >Liczba miejsc</Text>
+                    <Text style={styles.txtStyle1}>Liczba miejsc</Text>
                     <TextInput
                         style={styles.styleInput}
                         keyboardType='numeric'
@@ -170,16 +122,7 @@ export function AddTable({ navigation }) {
         );
     }, []);
 
-    const choosePhotoFromLibrary2 = useCallback(() => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-        }).then(image => {
-            selectImage(image);
-            console.log(image);
-
-        });
-    }, [editItem]);
+   
 
     const editItem = (rowMap, rowKey, item, image) => {
 
@@ -189,16 +132,6 @@ export function AddTable({ navigation }) {
         // console.log({newImg})
         setFileList(arr)
         console.log({ arr })
-
-
-        //     const arr=[...fileList]
-        //     const newImg=fileList.findIndex(item=>item.id==rowKey)
-        //     arr[newImg]={...arr[newImg],url:null}
-        //    // console.log({newImg})
-        //     setFileList(arr)
-        //     console.log({arr})
-
-
 
     }
 
@@ -214,7 +147,7 @@ export function AddTable({ navigation }) {
         const { onEdit, onDelete } = props;
         return (
             <View style={styles.rowBack}>
-                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} >
+                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} onPress={onEdit}>
                     <Icon name="create-outline"
                         color='white'
                         size={30}></Icon>
@@ -236,82 +169,60 @@ export function AddTable({ navigation }) {
                 rowMap={rowMap}
                 onEdit={() => editItem(rowMap, data.item.id)}
                 onDelete={() => deleteItem(rowMap, data.item.id)}
-
-
-
             />
         )
     }
 
-    renderSheet = () => (
-        <View style={{ backgroundColor: 'white' }}>
-            <TouchableOpacity style={styles.btnAddPhoto} onPress={() => choosePhotoFromLibrary()}>
-                <Text style={styles.txtStyleBottomSheet} >Dodaj zdjęcie z galeri</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnAddPhoto} onPress={() => takePhotoFromCamera()}>
-                <Text style={styles.txtStyleBottomSheet} >Zrób zdjęcie</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnAddPhotoBack}>
-                <Text style={styles.txtStyleBottomSheetBack} onPress={() => bottomPanel.current.snapTo(1)}>Wróć</Text>
-            </TouchableOpacity>
-        </View>
-    )
+    
     //renderowanie nagłowka w dolnym akruszu
-    renderHeader = () => (
-        <View style={{
-            backgroundColor: 'white', height: 45, justifyContent: 'center', alignItems: 'center', borderTopColor: 'lightgrey',
-            borderTopWidth: 2,
-        }}>
-            <View style={{ height: 10, backgroundColor: 'grey', width: '30%', borderRadius: 10 }}></View>
-        </View>
-    )
-
-    // const edit = () => {
-    //     console.log('edycja')
-    //     setIsEdit(false)
-    // }
+    // renderHeader = () => (
+    //     <View style={{
+    //         backgroundColor: 'white', height: 45, justifyContent: 'center', alignItems: 'center', borderTopColor: 'lightgrey',
+    //         borderTopWidth: 2,
+    //     }}>
+    //         <View style={{ height: 10, backgroundColor: 'grey', width: '30%', borderRadius: 10 }}></View>
+    //     </View>
+    // )
 
 
     return (
         <View style={styles.container}>
-            <BottomSheet
-                ref={bottomPanel}
-                snapPoints={[330, 0]}
-                initialSnap={1}
-                callbackNode={fall}
-                enabledGestureInteraction={true}
-                renderContent={renderSheet}
-                renderHeader={renderHeader}
-            >
-            </BottomSheet>
+            
 
             <View style={styles.header}>
                 <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
             </View>
 
-            <Animated.View
-                style={{ flex: 1, opacity: Animated.add(1, Animated.multiply(fall, 0.8)) }}>
-                <View style={styles.dodajStoliki}>
-                    <Text style={styles.txtStyle1}>Dodaj stoliki</Text>
-                </View>
-                <SwipeListView
-                    data={fileList}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    extraData={state}
-                    // leftOpenValue={40}
-                    rightOpenValue={-145}
-                />
-            </Animated.View>
+            <ScrollView
+            ref={(scrollView)=> this.scrollView=scrollView}
+            onContentSizeChange={()=>{
+                addEl && this.scrollView.scrollToEnd()
+            }}
+            >
+            <View style={{flex:1}}>
+                {fileList.map(ele=>{
+                    return(
+                       <Table
+                       key={ele.id}
+                       item={ele}
+                       afterClick={afterClick}
+                       >
+
+                       </Table> 
+                    )
+                })}
+            </View>
+
+            </ScrollView>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, opacity: 1, backgroundColor: 'white' }}>
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={() => clickImage()}>
-                    <Text style={styles.txtStyleBottomSheet}>+ Nowy stolik</Text>
+                <TouchableOpacity style={styles.btnFooterStyle} >
+                    <Text style={styles.txtStyleBottomSheet} onPress={addMore} disabled={disabled}>+ Nowy stolik</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={saveTable}>
+                <TouchableOpacity style={styles.btnFooterStyle} >
                     <Text style={styles.txtStyleBottomSheet}>Zatwierdź</Text>
                 </TouchableOpacity>
             </View>
+
         </View>
     );
 
@@ -319,7 +230,7 @@ export function AddTable({ navigation }) {
 
 const resizeMode = 'center';
 
-AddTable.navigationOptions = {
+AddTableTest.navigationOptions = {
     headerShown: false,
 };
 

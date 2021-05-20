@@ -11,7 +11,7 @@ export function UserProfil({ navigation }) {
             </View>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <TouchableOpacity style={styles.btnStyles}>
+                    <TouchableOpacity style={styles.btnStyles} onPress={()=>navigation.navigate('Edycja profilu użytkownika')}>
                         <Text style={styles.txtStyle} >Edytuj profil</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.btnStyles}>

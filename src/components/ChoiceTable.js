@@ -38,6 +38,9 @@ export function ChoiceTable({ navigation }) {
                 <TouchableOpacity style={styles.btn}>
                     <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.btn}>
+                    <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

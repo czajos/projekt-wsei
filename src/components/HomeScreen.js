@@ -48,7 +48,7 @@ export function HomeScreen({ navigation }) {
 
             </RNPickerSelect>
           </View>
-          <TouchableOpacity style={styles.search} onPress={() => navigation.navigate('')}>
+          <TouchableOpacity style={styles.search} onPress={() => navigation.navigate('Lista restauracji')}>
             <Text style={styles.txtSearch}>Szukaj</Text>
           </TouchableOpacity>
         </View>
