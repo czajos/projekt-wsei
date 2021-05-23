@@ -19,7 +19,7 @@ export function DrawerFirma(props) {
                                 color={color}
                                 size={size}></Icon>)}
                         label="Mój profil"
-                        onPress={() => { props.navigation.navigate('Profil firma') }}
+                        onPress={() => { props.navigation.navigate('Menu panel') }}
                     ></DrawerItem>
                     <DrawerItem
                         icon={({ color, size }) => (
@@ -35,16 +35,16 @@ export function DrawerFirma(props) {
                             <Icon name="newspaper-outline"
                                 color={color}
                                 size={size}></Icon>)}
-                        label="Zarejestruj się"
-                        onPress={() => { props.navigation.navigate('Zarejestruj się') }}
+                        label="MENU Restauracji"
+                        onPress={() => { props.navigation.navigate('Dodaj menu') }}
                     ></DrawerItem>
                     <DrawerItem
                         icon={({ color, size }) => (
                             <Icon name="business-outline"
                                 color={color}
                                 size={size}></Icon>)}
-                        label="Dla firm"
-                        onPress={() => { props.navigation.navigate('Dla firm') }}
+                        label="Rezerwacje"
+                        onPress={() => { props.navigation.navigate('') }}
                     ></DrawerItem>
 
                 </Drawer.Section>

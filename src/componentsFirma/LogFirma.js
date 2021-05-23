@@ -1,4 +1,3 @@
-
 import { Link } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
@@ -28,13 +27,14 @@ export function LogFirma({ navigation }) {
   const [data, setData] = useState("");
   const [loaded, setLoaded] = useState(false)
   const [imie, setImie] = useState()
+  const [tokenn, setToken] = useState()
 
 
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
-      // hostedDomain:'http://192.168.1.143:5000/google/login',
-      webClientId: '', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      // hostedDomain:'http://192.168.43.185:5000/google/login',
+      webClientId: '937323497149-fqllg32e0gpnv8m4ovr824mc6vm3a0ji.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
@@ -43,7 +43,7 @@ export function LogFirma({ navigation }) {
       // googleServicePlistPath: '', // [iOS] optional, if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
     });
     isSignedIn();
-    
+    sendToken()
   }, [])
 
 
@@ -53,16 +53,18 @@ export function LogFirma({ navigation }) {
 
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-     
-      console.log(userInfo)
+      const userInfo = await GoogleSignin.signIn()
+
+
+      // console.log(userInfo)
       setUserInfo(userInfo)
       setLoaded(true)
       sendToken()
-     
+
+
       // const newData=JSON.parse(userInfo)
       // console.log(newData)
-      
+
 
     } catch (error) {
       console.log('Message', error.message);
@@ -76,29 +78,27 @@ export function LogFirma({ navigation }) {
         console.log('Some Other Error Happened', error);
       }
     }
-    
+
 
   };
 
-      
 
   const isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
       getCurrentUserInfo()
-  
+      sendToken()
     } else {
       console.log('Please Login')
     }
   };
 
-  
-
   const getCurrentUserInfo = async () => {
     try {
-      const userInfo = await GoogleSignin.signInSilently();
-      setUserInfo(userInfo);
+      const userInfo = await GoogleSignin.signInSilently()
 
+      setUserInfo(userInfo);
+      // setToken(userInfo.idToken)
 
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
@@ -111,6 +111,7 @@ export function LogFirma({ navigation }) {
     }
   };
   const signOut = async () => {
+
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
@@ -118,71 +119,95 @@ export function LogFirma({ navigation }) {
     } catch (error) {
       console.error(error);
     }
+    
+
   };
 
- 
 
-  
- 
 
-  
-  const sendToken = () => {
-  // const tt=token.toString('base64')
-  
-  const token = userInfo.idToken
+  const sendToken = async () => {
+
+    const token = userInfo.idToken
+    //  console.log(token)
+    
     axios
-      .post("http://192.168.1.143:5000/google/login",{
-        // token:token ,
-        headers: {
-          'Authorization': `Basic ${token}` ,
-        }
+      .post("http://192.168.1.143:5000/google/api/v1/auth/google", {
+        idToken: token
+        // headers: {
+        //   'Authorization': `Bearer ${token}` ,
+        // }
 
       })
       .then(function (response) {
-        console.log(typeof 'token')
-        alert(JSON.stringify( response.data.idToken));
+        console.log(response.data)
+        // alert(JSON.stringify());
       })
       .catch(function (error) {
         alert(error.message);
-      });
+      })
+    
   }
 
-  // const sendData = (response) => {
-  //   // const tt=token.toString('base64')
+  const test=async()=>{
+    axios
+    .get("http://192.168.1.143:5000/google/me")
+    .then(function (response) {
+      // handle success
+      
+
+
+      console.log(response.data)
+      
+  })
+  .catch(function (error) {
+      // handle error
+      alert(error.message);
+  })
+  .finally(function () {
+      // always executed
+      alert('Finally called');
+  });
+  }
+
+  const test2=async()=>{
+    axios
+    .delete("http://192.168.1.143:5000/google/api/v1/auth/logout")
+    .then(function (response) {
+      // handle success
+      console.log(response.data)
+      
+  })
+  .catch(function (error) {
+      // handle error
+      alert(error.message);
+  })
+  .finally(function () {
+      // always executed
+      alert('Finally called');
+  });
+  }
   
-  //   let tokenBlob = new Blob([
-  //     JSON.stringify({
-  //         idToken: userInfo.idToken
-  //     }, null, 2)
-  //   ]);
-  
-  //   let config = {
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //              }
-  //   };
-  
+  // const sendToken =async () => {
+
+
+  //   const token = userInfo.idToken
+  //   const waittoken =await GoogleSignin.signInSilently();
+  //   if(!waittoken){
   //     axios
-  //       .post("http://192.168.1.143:5000/google/login",tokenBlob,config
-  
-          
-  
-  //       )
+  //       .post("http://192.168.1.143:5000/google/api/v1/auth/google",{
+  //         idToken:token ,
+
+
+  //       })
   //       .then(function (response) {
-  //         const token=response.headers
-  //         if (token){
-  //           setUserInfo({
-  //               ...data, idToken: token, isAuthenticated: true
-  //           });
-  //       }
-  //         console.log( response.data.idToken)
-  //         alert(JSON.stringify( response.data.idToken));
+  //         // console.log(typeof 'token')
+  //         // alert(JSON.stringify());
   //       })
   //       .catch(function (error) {
   //         alert(error.message);
   //       });
+  //     }
   //   }
-
 
   return (
 
@@ -200,8 +225,14 @@ export function LogFirma({ navigation }) {
         style={styles.txtInput}
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.zalogujStyle} onPress={()=> signIn()}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={test2}>
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>kutas</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity>
 
@@ -244,16 +275,17 @@ export function LogFirma({ navigation }) {
           
         </>:
         <Text>NieZalogowany</Text>
-    } 
-        
-         */}
-      {!userInfo.idToken ?
+    }  */}
+
+
+      {/* {!userInfo.idToken ?
         <GoogleSigninButton
           style={{ width: 312, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Light}
           onPress={signInGoogle}
-         
+          onSuccess={sendToken}
+
         /> :
 
         <>
@@ -269,8 +301,15 @@ export function LogFirma({ navigation }) {
         </>
 
 
-      }
+      } */}
+      <GoogleSigninButton
+          style={{ width: 312, height: 48 }}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Light}
+          onPress={signInGoogle}
+          onSuccess={sendToken}
 
+        />
     </View>
   );
 }

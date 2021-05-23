@@ -1,8 +1,13 @@
 import React, { useState, useEffect, componentDidMount } from 'react';
-import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import ImagePicker from 'react-native-image-crop-picker';
+import Icon from 'react-native-vector-icons/Ionicons'
+
+
 // import { createStackNavigator } from 'react-navigation-stack';
 import axios from 'axios'
+
 
 
 
@@ -24,7 +29,7 @@ export const formFirma = ({ navigation }) => {
   const [numertel, setNumerTel] = useState()
   const [nip, setNip] = useState()
   const [description, setDescription] = useState()
-
+  const [image, setImage] = useState(null)
 
   //  useEffect(()=>{
   // submitPost()
@@ -37,7 +42,8 @@ export const formFirma = ({ navigation }) => {
         category: typrestauracji,
         city: adreslokalu,
         phone: numertel,
-        description: description
+        description: description,
+        imageUrl:image
 
       })
       .then(function (response) {
@@ -47,6 +53,18 @@ export const formFirma = ({ navigation }) => {
         alert(error.message);
       });
   }
+
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+
+      console.log(image)
+      setImage(image.path)
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -94,14 +112,22 @@ export const formFirma = ({ navigation }) => {
           value={numertel}
           keyboardType='numeric'
           /> */}
-       
+
         <TextInput
           placeholder="Opis"
           style={styles.txtInput}
           onChangeText={text => setDescription(text)}
           value={description}
         />
-
+        <View style={styles.viewAddImage}>
+        <Text style={styles.txtStyle3}>Dodaj swoje logo</Text>
+        <TouchableOpacity style={styles.imageStyleLogo} onPress={() => choosePhotoFromLibrary()}>
+          <View >
+            <ImageBackground style={styles.imageStyleLogo} imageStyle={{ borderRadius: 100 }} onPress={() => choosePhotoFromLibrary()} source={{ uri: image }} >
+            </ImageBackground>
+          </View>
+        </TouchableOpacity>
+       </View>
       </ScrollView>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 10, }}>
         <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj stolik')}>
@@ -181,7 +207,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10
   },
-
+  txtStyle3: {
+    fontSize: 18,
+    fontWeight:'bold',
+    color: 'grey',
+    marginLeft: 10,
+    marginBottom: 13,
+    marginTop:10
+    
+  },
   btnStyle: {
     backgroundColor: '#5B9CE6',
     padding: 20,
@@ -191,5 +225,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 50
 
+  },
+  imageStyleLogo: {
+
+    width: 150,
+    height: 150,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    shadowOffset: {
+        width: 0,
+        height: 0.5,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 0.5,
+    elevation: 2,
+    resizeMode: 'cover',
+    marginBottom: 15,
+    alignItems: 'center',
+
+
+  },
+  viewAddImage:{
+    justifyContent:'center',
+    alignItems:'center'
   }
 })

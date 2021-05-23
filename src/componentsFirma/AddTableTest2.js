@@ -1,6 +1,6 @@
 import ImagePicker from 'react-native-image-crop-picker';
 import React, { useState, useMemo, useCallback } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity ,ImageBackground} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
 // import { FlatList } from 'react-native-gesture-handler';
@@ -15,7 +15,7 @@ import FormData from 'form-data'
 
 
 
-export function AddTable({ navigation }) {
+export function AddTableTest2({ navigation }) {
     const [bottomPanel, setBottomPanel] = useState(React.createRef())
     const [fileList, setFileList] = useState([]);
     const [places, setPlaces] = useState()
@@ -34,19 +34,18 @@ export function AddTable({ navigation }) {
 
 
 
-    const selectImage = useCallback((image, index) => {
+    const addItem = useCallback((image, index) => {
         setFileList(fileList => {
             const newDataImg = [...fileList];
-            const source = { uri: image.path };
+            // const source = { uri: image.path };
             // let index;
-            let place=places
-            setPlaces(place)
+            
 
             const item = {
                 id: index,
-                url: source,
+                // url: source,
                 text: "",
-                input: place
+                // input: place
             };
 
             newDataImg.push(item);
@@ -55,14 +54,14 @@ export function AddTable({ navigation }) {
                 item.id = id;
                 // item.url=source.id
                 item.text = "STOLIK" + " " + (id + 1);
-                item.input=""
+                // item.input=""
                 
             })
             //console.log({ item })
             console.log(item.id)
 
             console.log({ newDataImg })
-            bottomPanel.current.snapTo(1)
+            // bottomPanel.current.snapTo(1)
 
             return newDataImg;
 
@@ -78,19 +77,19 @@ export function AddTable({ navigation }) {
 
             console.log(image);
         });
-    }, [selectImage]);
+    });
 
     const choosePhotoFromLibrary = useCallback(() => {
         ImagePicker.openPicker({
             width: 300,
             height: 400,
         }).then(image => {
-            selectImage(image);
-            setImagee(image)
+            // selectImage(image);
+            setImagee(image.path)
             console.log(image);
 
         });
-    }, [selectImage]);
+    });
 
 
     let xx = fileList
@@ -155,8 +154,10 @@ export function AddTable({ navigation }) {
                     <View>
                         <Text style={styles.txtStyle1}>{item.text}</Text>
                     </View>
-                    <TouchableOpacity style={{ width: '100%' }} >
-                        <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={item.url}></Image>
+                    <TouchableOpacity style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} onPress={() => clickImage()} >
+                    <View>
+                        <ImageBackground style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} onPress={() => clickImage()} source={{ uri: imagee }}></ImageBackground>
+                        </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.podajLiczbeMiejscStyle}>
@@ -310,7 +311,7 @@ export function AddTable({ navigation }) {
                 />
             </Animated.View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, opacity: 1, backgroundColor: 'white' }}>
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={() => clickImage()}>
+                <TouchableOpacity style={styles.btnFooterStyle} onPress={addItem}>
                     <Text style={styles.txtStyleBottomSheet}>+ Nowy stolik</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btnFooterStyle} onPress={sendTable}>
@@ -324,7 +325,7 @@ export function AddTable({ navigation }) {
 
 const resizeMode = 'center';
 
-AddTable.navigationOptions = {
+AddTableTest2.navigationOptions = {
     headerShown: false,
 };
 

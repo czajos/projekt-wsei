@@ -27,6 +27,9 @@ import ChoiceTable from './src/components/ChoiceTable'
 import { ProfilFirma } from './src/componentsFirma/ProfilFirma'
 import { createStackNavigator } from '@react-navigation/stack';
 // import { EditTable } from './src/componentsFirma/EditTable'
+import { AddTableTest2 } from './src/componentsFirma/AddTableTest2';
+
+
 
 
 
@@ -140,14 +143,16 @@ export default function App() {
   )
 
   const CompanyStackNavigation = ({ navigation }) => (
-    // <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />} options={{ headerShown: false }} >
-    <Drawer.Navigator  options={{ headerShown: false }} >
+     <Drawer.Navigator drawerContent={props => <DrawerFirma {...props} />} options={{ headerShown: false }} >
+     {/* <Drawer.Navigator  options={{ headerShown: false }} > */}
+    
 
       <CompanyStack.Screen name="Idź dalej" component={formFirma} options={{ headerShown: false }} />
-      <CompanyStack.Screen name="Dodaj stolik" component={AddTable} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Dodaj stolik" component={AddTableTest2} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Menu panel" component={MenuPanel} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Profil firmy" component={ProfilFirma} options={{ headerShown: false }} />
+      
       {/* <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} /> */}
 
     </Drawer.Navigator>
