@@ -3,11 +3,18 @@ import { View, Button, Text, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItem, createDrawerNavigator } from '@react-navigation/drawer';
 import { Title, Switch, Drawer } from 'react-native-paper';
 import { AuthContext } from './AuthContext';
+
 import Icon from 'react-native-vector-icons/Ionicons'
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+  } from '@react-native-community/google-signin';
+ import LogFirma from './LogFirma';
 
 export function DrawerFirma(props) {
 
-    const { signOut } = React.useContext(AuthContext)
+    // const  signOut  = React.useContext(AuthContext)
 
     return (
         <View style={{ flex: 1 }}>
@@ -45,6 +52,14 @@ export function DrawerFirma(props) {
                                 size={size}></Icon>)}
                         label="Rezerwacje"
                         onPress={() => { props.navigation.navigate('') }}
+                    ></DrawerItem>
+                    <DrawerItem
+                        icon={({ color, size }) => (
+                            <Icon name="business-outline"
+                                color={color}
+                                size={size}></Icon>)}
+                        label="Home"
+                        onPress={() => { props.navigation.navigate('Home_') }}
                     ></DrawerItem>
 
                 </Drawer.Section>

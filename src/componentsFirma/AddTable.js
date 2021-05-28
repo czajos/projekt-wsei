@@ -40,7 +40,7 @@ export function AddTable({ navigation }) {
             const source = { uri: image.path };
             // let index;
             let place=places
-            setPlaces(place)
+            
 
             const item = {
                 id: index,
@@ -69,6 +69,22 @@ export function AddTable({ navigation }) {
         });
     }, [setFileList]);
 
+    // const addPlaces=(rowKey)=>{
+    //     fileList.forEach(item=>{
+    //         let kutas=item.input
+            
+    //         kutas.push(places)
+
+    //     })
+    //     const input= fileList[0].input.places
+        
+        
+       
+    // //    chuj.push(input)
+    // //    console.log(chuj)
+    
+    // }
+
     const takePhotoFromCamera = useCallback(() => {
         ImagePicker.openCamera({
             width: 300,
@@ -95,7 +111,7 @@ export function AddTable({ navigation }) {
 
     let xx = fileList
     let zdj=fileList.url
-    let datas = new FormData();
+    // let datas = new FormData();
     
     // fileList.forEach(file => {
     //     datas.append('tablica', file)
@@ -105,33 +121,36 @@ export function AddTable({ navigation }) {
     //     type : 'image/jpeg',
     //     name : 'image.jpg'});
     // datas.append('numb_seats', places)
+    const datas = new FormData();
+    fileList.forEach(item => {
+        
 
-    // const saveTable = () => {
-    //     fileList.forEach(item => {
-    //         datas = new FormData();
+        datas.append('image',{
+            uri :   item.url,
+            type : 'image/jpeg',
+            name : 'image.jpg'});
+        datas.append('numb_seats', item.input)
+        datas.append('id', item.text)
 
-    //         datas.append('image',{
-    //             uri : item.url,
-    //             type : 'image/jpeg',
-    //             name : 'image.jpg'});
-    //         datas.append('numb_seats', item.input)
-    //         datas.append('numb_seats', item.text)
+        // xx = item
+        
+        console.log(item.url)
+    });
 
-    //         xx = item
-    //         sendTable()
-    //         console.log(xx)
-    //     });
-    // }
+    const saveTable = () => {
+        sendTable()
+    }
+    
     const sendTable=()=>{
-        console.log(xx)
-
+        // console.log(xx)
+        // addPlaces()
         axios
-            .post("http://192.168.1.143:5000/table/create", xx, {
+            .post("http://192.168.1.143:5000/table/create", datas, {
 
                 // headers: {
                 //     // 'accept': 'application/json',
                 //     // 'Accept-Language': 'en-US,en;q=0.8',
-                //     'Content-Type': `multipart/form-data; boundary=${xx._boundary}`,
+                //     'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
                 // },
                 
 
@@ -313,7 +332,7 @@ export function AddTable({ navigation }) {
                 <TouchableOpacity style={styles.btnFooterStyle} onPress={() => clickImage()}>
                     <Text style={styles.txtStyleBottomSheet}>+ Nowy stolik</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={sendTable}>
+                <TouchableOpacity style={styles.btnFooterStyle} onPress={saveTable}>
                     <Text style={styles.txtStyleBottomSheet}>Zatwierdź</Text>
                 </TouchableOpacity>
             </View>

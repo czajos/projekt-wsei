@@ -1,5 +1,6 @@
 import { Link } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
+import {useHistory} from 'react-router-dom';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,6 +30,7 @@ export function LogFirma({ navigation }) {
   const [imie, setImie] = useState()
   const [tokenn, setToken] = useState()
 
+  const hitsory=useHistory()
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -44,6 +46,7 @@ export function LogFirma({ navigation }) {
     });
     isSignedIn();
     sendToken()
+    
   }, [])
 
 
@@ -54,18 +57,11 @@ export function LogFirma({ navigation }) {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn()
-
-
       // console.log(userInfo)
       setUserInfo(userInfo)
       setLoaded(true)
       sendToken()
-
-
-      // const newData=JSON.parse(userInfo)
-      // console.log(newData)
-
-
+      // send()
     } catch (error) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -78,16 +74,26 @@ export function LogFirma({ navigation }) {
         console.log('Some Other Error Happened', error);
       }
     }
-
-
+    
   };
 
+  // const send = async()=>{
+  //   const dupa=await isSignedIn()
+  //   if(!!dupa){
+  //     sendToken()
+  //   }
+  // }
+  
+  const cycki=()=>{
+    navigation.navigate('User')
+  }
 
   const isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
       getCurrentUserInfo()
       sendToken()
+      
     } else {
       console.log('Please Login')
     }
@@ -110,86 +116,81 @@ export function LogFirma({ navigation }) {
       }
     }
   };
-  const signOut = async () => {
+
+   const signOut = async () => {
 
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      setUserInfo({}); // Remember to remove the user from your app's state as well
+      setUserInfo({});
+      test2() // Remember to remove the user from your app's state as well
     } catch (error) {
       console.error(error);
     }
-    
 
   };
 
 
 
   const sendToken = async () => {
-
     const token = userInfo.idToken
     //  console.log(token)
-    
     axios
       .post("http://192.168.1.143:5000/google/api/v1/auth/google", {
         idToken: token
         // headers: {
         //   'Authorization': `Bearer ${token}` ,
         // }
-
       })
       .then(function (response) {
         console.log(response.data)
+        cycki()
         // alert(JSON.stringify());
       })
       .catch(function (error) {
         alert(error.message);
       })
-    
+
   }
 
-  const test=async()=>{
+  const test = async () => {
     axios
-    .get("http://192.168.1.143:5000/google/me")
-    .then(function (response) {
-      // handle success
-      
+      .get("http://192.168.1.143:5000/google/me")
+      .then(function (response) {
 
+        console.log(response.data)
 
-      console.log(response.data)
-      
-  })
-  .catch(function (error) {
-      // handle error
-      alert(error.message);
-  })
-  .finally(function () {
-      // always executed
-      alert('Finally called');
-  });
+      })
+      .catch(function (error) {
+        // handle error
+        alert(error.message);
+      })
+      .finally(function () {
+        // always executed
+        alert('Finally called');
+      });
   }
 
-  const test2=async()=>{
+  const test2 = async () => {
     axios
-    .delete("http://192.168.1.143:5000/google/api/v1/auth/logout")
-    .then(function (response) {
-      // handle success
-      console.log(response.data)
-      
-  })
-  .catch(function (error) {
-      // handle error
-      alert(error.message);
-  })
-  .finally(function () {
-      // always executed
-      alert('Finally called');
-  });
+      .delete("http://192.168.1.143:5000/google/api/v1/auth/logout")
+      .then(function (response) {
+        // handle success
+        console.log(response.data)
+
+      })
+      .catch(function (error) {
+        // handle error
+        alert(error.message);
+      })
+      .finally(function () {
+        // always executed
+        alert('Finally called');
+      });
   }
-  
+
+
   // const sendToken =async () => {
-
-
   //   const token = userInfo.idToken
   //   const waittoken =await GoogleSignin.signInSilently();
   //   if(!waittoken){
@@ -214,7 +215,7 @@ export function LogFirma({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green' }}>
 
       <Text style={styles.txtStyle}>Sign in</Text>
-      <TextInput
+      {/* <TextInput
         placeholder="Adres e-mail"
         style={styles.txtInput}
         onChangeText={text => setImie(text)}
@@ -224,59 +225,22 @@ export function LogFirma({ navigation }) {
         placeholder="password"
         style={styles.txtInput}
         secureTextEntry={true}
-      />
+      /> */}
       <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={cycki}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.zalogujStyle} onPress={test2}>
+      {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test2}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>kutas</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test3}>
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>cipa</Text>
+      </TouchableOpacity> */}
       <TouchableOpacity onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity>
 
-      <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text>
-      {/* {userInfo !== null ? (
-        <>
-
-          <Text style={styles.txtStyle}>
-            Name: {userInfo.user.name}
-          </Text>
-          <Text style={styles.txtStyle}>
-            Email: {userInfo.user.email}
-          </Text>
-          
-        </>
-      ) : (
-        <GoogleSigninButton
-          style={{ width: 312, height: 48 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Light}
-          onPress={signInGoogle}
-        />
-        
-      )}*/}
-      {/* <GoogleSigninButton
-          style={{ width: 312, height: 48 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Light}
-          onPress={signInGoogle}
-        /> 
-    {loaded ? 
-      <>
-
-          <Text style={styles.txtStyle}>
-            Name: {userInfo.user.name}
-          </Text>
-          <Text style={styles.txtStyle}>
-            Email: {userInfo.user.email}
-          </Text>
-          
-        </>:
-        <Text>NieZalogowany</Text>
-    }  */}
-
+     
 
       {/* {!userInfo.idToken ?
         <GoogleSigninButton
@@ -286,9 +250,9 @@ export function LogFirma({ navigation }) {
           onPress={signInGoogle}
           onSuccess={sendToken}
 
-        /> :
+        /> : */}
 
-        <>
+      {/* <>
 
           <Text style={styles.txtStyle}>
             Name: {userInfo.user.name}
@@ -297,24 +261,24 @@ export function LogFirma({ navigation }) {
             Email: {userInfo.user.email}
           </Text>
 
-
         </>
-
 
       } */}
       <GoogleSigninButton
-          style={{ width: 312, height: 48 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Light}
-          onPress={signInGoogle}
-          onSuccess={sendToken}
+        style={{ width: 312, height: 48 }}
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Light}
+        onPress={signInGoogle}
+        onSuccess={sendToken}
 
-        />
+      />
+       <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text>
     </View>
   );
 }
 
 export default LogFirma;
+
 
 const styles = StyleSheet.create({
   container: {

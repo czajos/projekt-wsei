@@ -33,8 +33,6 @@ export function ProfilFirma({ navigation }) {
             .then(function (response) {
                 // handle success
                 const data = response.data.data.restaurant
-
-
                 console.log(data)
                 setData(response.data.data.restaurant)
             })
@@ -77,6 +75,8 @@ type : 'image/jpeg',
 name : 'image.jpg'})
 
     const saveTable = () => {
+        console.log(datas)
+
         axios
             .post("http://192.168.1.143:5000/table/create", datas, {
 
@@ -86,10 +86,10 @@ name : 'image.jpg'})
                     'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
                 },
                 
-
             })
             .then(function (response) {
                 alert(JSON.stringify(response.data));
+
             })
             .catch(function (error) {
                 alert(error.message);

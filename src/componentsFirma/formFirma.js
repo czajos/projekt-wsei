@@ -34,16 +34,32 @@ export const formFirma = ({ navigation }) => {
   //  useEffect(()=>{
   // submitPost()
   // })
+  const datas=new FormData()
+  datas.append('image', {
+  uri : image,
+  type : 'image/jpeg',
+  name : 'image.jpg'})
+   datas.append('name',nazwarestauracji)
+   datas.append('category',typrestauracji)
+   datas.append('city',adreslokalu)
+   datas.append('phone',numertel)
+   datas.append('description',description)
+
 
   const submitPost = () => {
     axios
-      .post("http://192.168.1.143:5000/restaurant/create", {
-        name: nazwarestauracji,
-        category: typrestauracji,
-        city: adreslokalu,
-        phone: numertel,
-        description: description,
-        imageUrl:image
+      .post("http://192.168.1.143:5000/restaurant/create",datas, {
+        // name: nazwarestauracji,
+        // category: typrestauracji,
+        // city: adreslokalu,
+        // phone: numertel,
+        // description: description,
+        // imageUrl:image,
+        
+        headers: {
+          // 'Content-Type': 'multipart/form-data',
+          'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
+        }
 
       })
       .then(function (response) {
@@ -51,6 +67,24 @@ export const formFirma = ({ navigation }) => {
       })
       .catch(function (error) {
         alert(error.message);
+      });
+  }
+
+  const test = async () => {
+    axios
+      .get("http://192.168.1.143:5000/google/me")
+      .then(function (response) {
+
+        console.log(response.data)
+
+      })
+      .catch(function (error) {
+        // handle error
+        alert(error.message);
+      })
+      .finally(function () {
+        // always executed
+        alert('Finally called');
       });
   }
 
@@ -65,6 +99,24 @@ export const formFirma = ({ navigation }) => {
       setImage(image.path)
     });
   };
+
+  // const test = async () => {
+  //   axios
+  //     .get("http://192.168.1.143:5000/google/me")
+  //     .then(function (response) {
+
+  //       console.log(response.data)
+
+  //     })
+  //     .catch(function (error) {
+  //       // handle error
+  //       alert(error.message);
+  //     })
+  //     .finally(function () {
+  //       // always executed
+  //       alert('Finally called');
+  //     });
+  // }
 
   return (
     <View style={styles.container}>

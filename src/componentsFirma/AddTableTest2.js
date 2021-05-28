@@ -123,7 +123,6 @@ export function AddTableTest2({ navigation }) {
     // }
     const sendTable=()=>{
         console.log(xx)
-
         axios
             .post("http://192.168.1.143:5000/table/create", xx, {
 
@@ -154,7 +153,7 @@ export function AddTableTest2({ navigation }) {
                     <View>
                         <Text style={styles.txtStyle1}>{item.text}</Text>
                     </View>
-                    <TouchableOpacity style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} onPress={() => clickImage()} >
+                    <TouchableOpacity style={{ width: '100%', height: 300}} onPress={() => clickImage()} >
                     <View>
                         <ImageBackground style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} onPress={() => clickImage()} source={{ uri: imagee }}></ImageBackground>
                         </View>

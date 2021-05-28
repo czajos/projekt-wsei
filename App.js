@@ -27,7 +27,11 @@ import ChoiceTable from './src/components/ChoiceTable'
 import { ProfilFirma } from './src/componentsFirma/ProfilFirma'
 import { createStackNavigator } from '@react-navigation/stack';
 // import { EditTable } from './src/componentsFirma/EditTable'
-import { AddTableTest2 } from './src/componentsFirma/AddTableTest2';
+// import { AddTable } from './src/componentsFirma/AddTable';
+ import { ListAddTable } from './src/componentsFirma/ListAddTable';
+ import { AddOneTable } from './src/componentsFirma/AddOneTable';
+
+
 
 
 
@@ -127,31 +131,31 @@ export default function App() {
   )
   const RootStackScreen = ({ userToken }) => (
     <RootStack.Navigator headerMode='none'>
-      {userToken ? (
-
+      
         <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
 
-      ) :
-        <>
-          <RootStack.Screen name="Home" component={DrawerNavigation} />
+      
+        
+          <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />
           
 
-        </>
-      }
+        
+      
     </RootStack.Navigator>
   )
 
   const CompanyStackNavigation = ({ navigation }) => (
-     <Drawer.Navigator drawerContent={props => <DrawerFirma {...props} />} options={{ headerShown: false }} >
+     <Drawer.Navigator name="Kutasowo" drawerContent={props => <DrawerFirma {...props} />} options={{ headerShown: false }} >
      {/* <Drawer.Navigator  options={{ headerShown: false }} > */}
     
 
       <CompanyStack.Screen name="Idź dalej" component={formFirma} options={{ headerShown: false }} />
-      <CompanyStack.Screen name="Dodaj stolik" component={AddTableTest2} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Dodaj stolik" component={ListAddTable} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Menu panel" component={MenuPanel} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Profil firmy" component={ProfilFirma} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Dodaj" component={AddOneTable} options={{ headerShown: false }} />
       
       {/* <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} /> */}
 
