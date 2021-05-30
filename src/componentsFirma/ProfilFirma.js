@@ -28,7 +28,7 @@ export function ProfilFirma({ navigation }) {
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/restaurant/get/1')
+            .get('http://192.168.1.143:5000/restaurant/get/2')
 
             .then(function (response) {
                 // handle success

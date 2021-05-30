@@ -15,8 +15,6 @@ import axios from 'axios'
 
 
 
-
-
 export function LogFirma({ navigation }) {
 
   const { signIn } = React.useContext(AuthContext)
@@ -129,8 +127,6 @@ export function LogFirma({ navigation }) {
     }
 
   };
-
-
 
   const sendToken = async () => {
     const token = userInfo.idToken
