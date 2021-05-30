@@ -85,7 +85,7 @@ export function AddOneTable({ navigation }) {
     });
     datas.append('numb_seats', places)
     datas.append('number_table', numberTable)
-    datas.append('id_rest', 4)
+    datas.append('id_rest', 5)
 
 
     const sendTable = () => {
@@ -99,6 +99,7 @@ export function AddOneTable({ navigation }) {
             })
             .then(function (response) {
                 back()
+                deleteData()
                 // alert(JSON.stringify(response.data));
             })
             .catch(function (error) {
@@ -108,6 +109,12 @@ export function AddOneTable({ navigation }) {
 
     const back =()=>{
         navigation.goBack()
+    }
+    const deleteData=()=>{
+        setImage(null)
+        setNumberTable(null)
+        setPlaces(null)
+
     }
 
     return (

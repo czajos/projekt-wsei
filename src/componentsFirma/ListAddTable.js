@@ -1,47 +1,52 @@
-import ImagePicker from 'react-native-image-crop-picker';
+// import ImagePicker from 'react-native-image-crop-picker';
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity,Linking} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
 // import BottomSheet from 'reanimated-bottom-sheet'
 // import Swipeout from 'react-native-swipeout'
 import { SwipeListView } from 'react-native-swipe-list-view'
-// import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
+import Icon from 'react-native-vector-icons/Ionicons'
 // import FormData from 'form-data'
+
 
 global.Buffer = global.Buffer || require('buffer').Buffer
 
 
 export function ListAddTable({ navigation }) {
-    const [bottomPanel, setBottomPanel] = useState(React.createRef())
-    const [places, setPlaces] = useState()
-    // const state = useMemo(() => ({ fileList }), [fileList]);
     const [image, setImage] = useState()
     const [numberTable, setNumberTable] = useState()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+    
+
+
+    //AXIOS GET 
 
     useEffect(() => {
-        // imageGet()
-        getData()
+         getData()
+         
     }, [])
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/table/getAll/4')
+            .get('http://192.168.1.143:5000/table/getAll/5')
 
             .then(function (response) {
                 // handle success
-                // const data = response.data.data.tables
+                const data = response.data.data.tables
                 // console.log(data)
                 setData(response.data.data.tables)
                 // console.log(response.data.data.tables)
                 // const img=data[0].image_url
                 // console.log(img)
-            
+                 
                 // setImage({uri: img})
                 setLoading(false)
+                const test=data[0].image_url
+                console.log({uri:test})
+                setImage({uri:test})
                 // imageGet()
             })
             .catch(function (error) {
@@ -55,17 +60,17 @@ export function ListAddTable({ navigation }) {
     };
 
 
-    
+
     const imageGet = () => {
         axios
             .get('http://192.168.1.143:5000/table/getAll/4')
-               
+
             .then(function (response) {
                 const data = response.data.data.tables
-                const img=data[0].image_url
-                 Buffer.from(img, 'binary').toString('base64')
-                 
-                  console.log(img)
+                const img = data[0].image_url
+                Buffer.from(img, 'binary').toString('base64')
+
+                console.log(img)
                 // setImage(data[0].image_url)
                 setImage(img)
             })
@@ -78,8 +83,65 @@ export function ListAddTable({ navigation }) {
                 alert('Finally called');
             });
     }
-let img={uri: 'http://localhost:5000/2021-05-29T16-12-34.841Zimage.jpg'}
+    let img = { uri: 'http://localhost:5000/2021-05-29T16-12-34.841Zimage.jpg' }
 
+    //DELETE TABLE
+
+    const deleteItem = (rowMap, rowKey) => {
+        const newArray = [...data]
+        const newIndex = data.findIndex(item => item.id == rowKey);
+        newArray.splice(newIndex, 1)
+        setData(newArray)
+        console.log({ newArray })
+
+        axios
+        .delete('http://192.168.1.143:5000/table/delete/4',{
+            id: newIndex
+        })
+        
+        .then(response =>{
+          console.log(response.data.data.tables)
+        })
+    }
+
+    const HiddenItemWithActions = props => {
+        const { onEdit, onDelete } = props;
+        return (
+            <View style={styles.rowBack}>
+                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} >
+                    <Icon name="create-outline"
+                        color='white'
+                        size={30}></Icon>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnDelete]} onPress={onDelete} >
+                    <Icon name="trash-outline"
+                        color='white'
+                        size={30}></Icon>
+                </TouchableOpacity>
+            </View>
+        )
+
+    }
+
+    const renderHiddenItem = (data, rowMap) => {
+        return (
+            <HiddenItemWithActions
+                data={data}
+                rowMap={rowMap}
+                onEdit={() => editItem(rowMap, data.item.id)}
+                onDelete={() => deleteItem(rowMap, data.item.id)}
+            />
+        )
+    }
+
+const deleteAxios=()=>{
+    axios
+        .delete('http://192.168.1.143:5000/table/delete/4')
+        
+        .then(response =>{
+          console.log(response.data.data.tables)
+        })
+}
 
     return (
         <View style={styles.container}>
@@ -95,9 +157,11 @@ let img={uri: 'http://localhost:5000/2021-05-29T16-12-34.841Zimage.jpg'}
             {loading ?
                 <View></View>
                 : (
-                    <FlatList
+                    <SwipeListView
                         style={{ marginTop: 60 }}
                         data={data}
+                        renderHiddenItem={renderHiddenItem}
+                        rightOpenValue={-145}
                         keyExtractor={(item, index) => {
                             return index.toString();
                         }}
@@ -117,7 +181,7 @@ let img={uri: 'http://localhost:5000/2021-05-29T16-12-34.841Zimage.jpg'}
 
                                         </View>
                                         <TouchableOpacity style={{ width: '100%' }} >
-                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={img} ></Image>
+                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }}  source={{uri: item.image_urlg}}></Image>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.podajLiczbeMiejscStyle}>
@@ -136,7 +200,6 @@ let img={uri: 'http://localhost:5000/2021-05-29T16-12-34.841Zimage.jpg'}
                             )
                         }}
                     />
-
                 )}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, opacity: 1, backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.btnFooterStyle} >
@@ -177,7 +240,7 @@ const styles = StyleSheet.create({
     dodajStoliki: {
         backgroundColor: '#F0F0F0',
         margin: 5,
-        
+
     },
 
     imageStyleLogo: {
