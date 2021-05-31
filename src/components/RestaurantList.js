@@ -1,29 +1,105 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity,ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import ComponentRest from './ComponentRest'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { SwipeListView } from 'react-native-swipe-list-view'
+import axios from 'axios'
+
 
 export function RestaurantList({ navigation }) {
+    const [city, setCity] = useState()
+    const [loading, setLoading] = useState(true)
+    const [data, setData] = useState()
+
+    // const dupa =()=>{
+    //     setLoading(false)
+    // }
+
+    const getData = () => {
+        axios
+            .get(`http://192.168.1.143:5000/restaurant/getAll/${city}`)
+
+            .then(function (response) {
+                // handle success
+                const data = response.data.data.tables
+                // console.log(data)
+                setData(response.data.data.restaurant)
+
+
+                // setImage({uri: img})
+                setLoading(false)
+
+            })
+            .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            .finally(function () {
+                // always executed
+                alert('Finally called');
+            });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name="arrow-back-outline"
                         color={'white'}
                         size={30}></Icon>
                 </TouchableOpacity>
                 <Image style={styles.imageStyleLogo} source={require('../../logo.png')}></Image>
-                
+
             </View>
-            
-            <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-            <TouchableOpacity  onPress={() => navigation.navigate('Wybierz stolik')}>
-              <ComponentRest >
-              {/* <ImageBackground source={require('../../restable.jpg')} style={{width:150,height:150}}></ImageBackground> */}
-              </ComponentRest>
-              </TouchableOpacity>
-              <ComponentRest ></ComponentRest>
+            <View style={styles.box2}>
+                <Text style={styles.titleBox}>Wyszukaj wybraną restauracje</Text>
+                <View style={styles.container2}>
+                    <TextInput
+                        style={styles.txtInput}
+                        onChangeText={text => setCity(text)}
+                        value={city}
+                    />
+                    <TouchableOpacity style={styles.search} onPress={getData}>
+                        <Text style={styles.txtSearch}>Szukaj</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
+            {loading ?
+                <View></View>
+                : (<SwipeListView
+                    style={{ marginTop: 60 }}
+                     data={data}
+
+
+                    keyExtractor={(item, index) => {
+                        return index.toString();
+                    }}
+                    renderItem={({ item }) => {
+                        console.log("item", item)
+
+                        return (
+                            <>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('Wybierz stolik')}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <TouchableOpacity style={styles.logoRestStyles}>
+                                                <Image style={{width:150,height:150}} source={{uri: item.image_url}}></Image>
+                                                </TouchableOpacity>
+                                                <Text 
+                                                style={styles.nameRestStyles}>{item.name}</Text>
+                                                
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </>
+                        )
+                    }}
+                />
+                )}
+
         </View>
     )
 }
@@ -33,9 +109,9 @@ export default RestaurantList;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection:'column',
+        flexDirection: 'column',
         backgroundColor: 'white',
-        
+
     },
     header: {
         flexDirection: 'row',
@@ -52,9 +128,111 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: 'center',
         height: 75,
-        marginLeft:25  
+        marginLeft: 25
 
     },
 
+    box1: {
+        marginTop: 50
 
+    },
+    box2: {
+        marginBottom: 100,
+
+    },
+    titleBox: {
+        textAlign: 'center',
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 24,
+        marginBottom: 30
+    },
+    inputAndroid: {
+        fontSize: 18,
+        color: 'black',
+        textAlign: 'center'
+
+    },
+    container2: {
+
+        flexDirection: 'row',
+        justifyContent: 'center',
+        //alignItems: 'center',
+    },
+    txtInput: {
+        borderWidth: 1,
+        width: 250,
+        height: 50,
+        textAlign: 'center',
+        backgroundColor: 'white',
+        borderRadius: 50,
+        borderWidth: 0,
+        color: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 0.5,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 0.5,
+        elevation: 2,
+
+    },
+    search: {
+        width: '30%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#5B9CE6',
+        borderRadius: 50,
+        marginLeft: 10,
+    },
+    logoRestStyles: {
+
+        backgroundColor: 'white',
+        color: 'white',
+        height: 150,
+        width: 150,
+        marginTop: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        shadowOffset: {
+            width: 0,
+            height: 0.5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+
+        elevation: 5,
+        borderRadius: 10
+    },
+    nameRestStyles: {
+        backgroundColor: 'white',
+        color: 'black',
+        textAlign: 'center',
+        height: 50,
+        width: 150,
+        marginTop: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        shadowOffset: {
+            width: 0,
+            height: 0.5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+
+        elevation: 5,
+        borderRadius: 10
+    },
 })
+
+// <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+// <TouchableOpacity onPress={() => navigation.navigate('Wybierz stolik')}>
+//     <ComponentRest >
+//         {/* <ImageBackground source={require('../../restable.jpg')} style={{width:150,height:150}}></ImageBackground> */}
+//     </ComponentRest>
+// </TouchableOpacity>
+// <ComponentRest ></ComponentRest>
+// </View>

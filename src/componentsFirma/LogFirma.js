@@ -225,7 +225,7 @@ export function LogFirma({ navigation }) {
       <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.zalogujStyle} onPress={cycki}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test2}>

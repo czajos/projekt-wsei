@@ -26,6 +26,7 @@ export const formFirma = ({ navigation }) => {
   const [nazwarestauracji, setNazwaRestauracji] = useState()
   const [typrestauracji, setTypRestauracji] = useState()
   const [adreslokalu, setAdresResturacji] = useState()
+  const [city, setCity] = useState()
   const [numertel, setNumerTel] = useState()
   const [nip, setNip] = useState()
   const [description, setDescription] = useState()
@@ -41,9 +42,12 @@ export const formFirma = ({ navigation }) => {
   name : 'image.jpg'})
    datas.append('name',nazwarestauracji)
    datas.append('category',typrestauracji)
-   datas.append('city',adreslokalu)
+   datas.append('city',city)
+   datas.append('street',adreslokalu)
    datas.append('phone',numertel)
    datas.append('description',description)
+   datas.append('user_id',1)
+
 
 
   const submitPost = () => {
@@ -144,9 +148,14 @@ export const formFirma = ({ navigation }) => {
           value={typrestauracji}
         />
         <TextInput
+          placeholder="Miasto"
+          style={styles.txtInput}
+          onChangeText={text => setCity(text)}
+          value={city}
+        />
+        <TextInput
           placeholder="Adres lokalu"
           style={styles.txtInput}
-          type="number"
           onChangeText={text => setAdresResturacji(text)}
           value={adreslokalu}
         />

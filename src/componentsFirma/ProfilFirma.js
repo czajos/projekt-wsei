@@ -28,7 +28,7 @@ export function ProfilFirma({ navigation }) {
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/restaurant/get/2')
+            .get('http://192.168.1.143:5000/restaurant/get/1')
 
             .then(function (response) {
                 // handle success
@@ -46,13 +46,14 @@ export function ProfilFirma({ navigation }) {
             });
     };
 
-    
+
     const pullData = () => {
         axios
             .put('http://192.168.1.143:5000/restaurant/update/1', {
                 name: data.name,
                 category: data.category,
                 city: data.city,
+                street: data.street,
                 phone: data.phone,
                 description: data.description
 
@@ -68,11 +69,12 @@ export function ProfilFirma({ navigation }) {
     }
 
 
-const datas=new FormData()
-datas.append('image', {
-uri : image,
-type : 'image/jpeg',
-name : 'image.jpg'})
+    const datas = new FormData()
+    datas.append('image', {
+        uri: image,
+        type: 'image/jpeg',
+        name: 'image.jpg'
+    })
 
     const saveTable = () => {
         console.log(datas)
@@ -85,7 +87,7 @@ name : 'image.jpg'})
                     'Accept-Language': 'en-US,en;q=0.8',
                     'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
                 },
-                
+
             })
             .then(function (response) {
                 alert(JSON.stringify(response.data));
@@ -94,7 +96,7 @@ name : 'image.jpg'})
             .catch(function (error) {
                 alert(error.message);
             });
-        
+
     }
 
     const choosePhotoFromLibrary = () => {
@@ -121,13 +123,13 @@ name : 'image.jpg'})
             <View style={styles.header} >
                 <TouchableOpacity style={styles.imageStyleLogo} onPress={() => choosePhotoFromLibrary()}>
                     <View >
-                        <ImageBackground style={styles.imageStyleLogo} imageStyle={{ borderRadius: 100 }} onPress={() => choosePhotoFromLibrary()} source={{ uri: image }}></ImageBackground>
+                        <ImageBackground style={styles.imageStyleLogo} imageStyle={{ borderRadius: 100 }} onPress={() => choosePhotoFromLibrary()} source={{ uri: data.image_url }}></ImageBackground>
                     </View>
                 </TouchableOpacity>
             </View>
             <View style={styles.nameRestaurant}>
                 <TextInput
-                    style={{ fontSize: 18, fontWeight: 'bold' }}
+                    style={{ fontSize: 24, fontWeight: 'bold' }}
                     onChangeText={text => setData({ ...data, name: text })}
                     autoCorrect={false}
                     value={`${data ? data.name : ''}`}>
@@ -140,7 +142,6 @@ name : 'image.jpg'})
                     <View style={styles.boxInput}>
 
                         <TextInput
-
                             style={styles.txtInput}
                             type="text"
                             onChangeText={text => setData({ ...data, category: text })}
@@ -157,14 +158,35 @@ name : 'image.jpg'})
                     </View>
                 </View>
                 <View style={{ marginTop: 15 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Miasto</Text>
+                    <View style={styles.boxInput}>
+
+                        <TextInput
+                            style={styles.txtInput}
+                            type="text"
+                            onChangeText={text => setData({ ...data, city: text })}
+                            autoCorrect={false}
+                            value={`${data ? data.city : ''}`}
+
+                        />
+                        <TouchableOpacity>
+                            <Icon name="create-outline"
+                                color={'white'}
+                                size={20}
+                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={{ marginTop: 15 }}>
                     <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Adres lokalu</Text>
                     <View style={styles.boxInput}>
                         <TextInput
                             placeholder=""
                             style={styles.txtInput}
-                            onChangeText={text => setData({ ...data, city: text })}
+                            onChangeText={text => setData({ ...data, street: text })}
                             autoCorrect={false}
-                            value={`${data ? data.city : ''}`}
+                            value={`${data ? data.street : ''}`}
                         />
                         <TouchableOpacity>
                             <Icon name="create-outline"
@@ -230,7 +252,7 @@ name : 'image.jpg'})
                     </View>
                 </View>
                 <View style={{ alignItems: 'center', flexDirection: 'column', justifyContent: 'center', padding: 12 }}>
-                    <TouchableOpacity style={styles.btnStyle} onPress={saveTable}>
+                    <TouchableOpacity style={styles.btnStyle} onPress={pullData}>
                         <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>
                     </TouchableOpacity>
                 </View>
@@ -276,7 +298,8 @@ const styles = StyleSheet.create({
     },
     nameRestaurant: {
         justifyContent: 'space-around',
-
+        fontWeight: 'bold',
+        fontSize: 18,
         flexDirection: 'row',
         marginTop: 100
     },

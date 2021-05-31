@@ -91,11 +91,7 @@ export function AddOneTable({ navigation }) {
     const sendTable = () => {
         axios
             .post("http://192.168.1.143:5000/table/create", datas, {
-                // headers: {
-                //     // 'accept': 'application/json',
-                //     // 'Accept-Language': 'en-US,en;q=0.8',
-                //     'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
-                // },
+              
             })
             .then(function (response) {
                 back()

@@ -26,7 +26,7 @@ import RestaurantList from './src/components/RestaurantList'
 import ChoiceTable from './src/components/ChoiceTable'
 import { ProfilFirma } from './src/componentsFirma/ProfilFirma'
 import { createStackNavigator } from '@react-navigation/stack';
-// import { EditTable } from './src/componentsFirma/EditTable'
+import { EditTable } from './src/componentsFirma/EditTable'
 // import { AddTable } from './src/componentsFirma/AddTable';
  import { ListAddTable } from './src/componentsFirma/ListAddTable';
  import { AddOneTable } from './src/componentsFirma/AddOneTable';
@@ -132,8 +132,9 @@ export default function App() {
   const RootStackScreen = ({ userToken }) => (
     <RootStack.Navigator headerMode='none'>
       
-        <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
+        
 
+      <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
       
         
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
@@ -156,6 +157,8 @@ export default function App() {
       <CompanyStack.Screen name="Menu panel" component={MenuPanel} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Profil firmy" component={ProfilFirma} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj" component={AddOneTable} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} />
+
       
       {/* <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} /> */}
 

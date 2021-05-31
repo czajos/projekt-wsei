@@ -3,10 +3,12 @@ import { View, Button, Text, Dimensions, Platform, StyleSheet, Image, ScrollView
 import ImagePicker from 'react-native-image-crop-picker';
 import { FlatList } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view'
+import axios from 'axios';
 
 export const AddMenu = () => {
   const [image, setImage] = useState(null)
 
+  //Select image
   const choosePhotoFromLibrary = useCallback(() => {
     ImagePicker.openPicker({
       width: 300,
@@ -22,10 +24,37 @@ export const AddMenu = () => {
 
   });
 
+//Delete image
   const deleteImage = () => {
-
     setImage(null)
     console.log(image)
+  }
+
+// Axios post
+const datas = new FormData();
+
+    datas.append('image', {
+        uri: image,
+        type: 'image/jpeg',
+        name: 'image.jpg'
+    });
+
+    const sendMenu =()=>{
+      axios
+           .post('',datas)
+
+           .then(function (response) {
+            back()
+            deleteData()
+            // alert(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+            alert(error.message);
+        });
+    }
+
+    const back =()=>{
+      navigation.goBack()
   }
 
   const renderItem = useCallback(({ image }) => {
@@ -58,7 +87,7 @@ export const AddMenu = () => {
         <TouchableOpacity style={styles.btnFooterStyle} onPress={() => choosePhotoFromLibrary()}>
           <Text style={styles.txtStyleBottomSheet}>Dodaj obraz</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnFooterStyle} onPress={() => { navigation.navigate('Menu panel') }}>
+        <TouchableOpacity style={styles.btnFooterStyle} onPress={sendMenu}>
           <Text style={styles.txtStyleBottomSheet}>Zapisz</Text>
         </TouchableOpacity>
       </View>

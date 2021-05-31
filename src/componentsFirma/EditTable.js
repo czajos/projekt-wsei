@@ -1,49 +1,54 @@
-import React, { useState, useEffect, componentDidMount, useCallback } from 'react';
-import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+import React, { useState, useMemo, useCallback } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/Ionicons'
+// import { FlatList } from 'react-native-gesture-handler';
 import BottomSheet from 'reanimated-bottom-sheet'
-import ImagePicker from 'react-native-image-crop-picker';
-
-// import { createStackNavigator } from 'react-navigation-stack';
+// import Swipeout from 'react-native-swipeout'
+import { SwipeListView } from 'react-native-swipe-list-view'
+import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
+import FormData from 'form-data'
+// import EditTable from './EditTable'
+// import { createStackNavigator } from '@react-navigation/stack';
 
 
 
-export const EditTable = ({ navigation }) => {
+export function EditTable({ navigation }) {
     const [bottomPanel, setBottomPanel] = useState(React.createRef())
-    const [image, setImage] = useState(null)
-
     const [places, setPlaces] = useState()
+    const [image, setImage] = useState(null)
+    const [numberTable, setNumberTable] = useState()
+
 
     const clickImage = () => {
         bottomPanel.current.snapTo(0)
     }
     const fall = new Animated.Value(1)
 
-    const choosePhotoFromLibrary = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-        }).then(image => {
-
-            console.log(image)
-            setImage(image.path)
-        });
-    };
-
     const takePhotoFromCamera = useCallback(() => {
         ImagePicker.openCamera({
             width: 300,
             height: 400,
         }).then(image => {
+            // selectImage(image);
             setImage(image.path)
-
             console.log(image);
         });
-    })
+    });
+
+    const choosePhotoFromLibrary = useCallback(() => {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+        }).then(image => {
+            // selectImage(image);
+            setImage(image.path)
+            console.log(image);
+
+        });
+    });
 
 
     renderSheet = () => (
@@ -69,26 +74,47 @@ export const EditTable = ({ navigation }) => {
         </View>
     )
 
-    const submitPost = () => {
-        axios
-            .post("http://192.168.1.143:5000/restaurant/create", {
-                name: nazwarestauracji,
-                category: typrestauracji,
-                city: adreslokalu,
-                phone: numertel,
-                description: description
 
+    // WYSYŁKA DO BACKEND
+    const datas = new FormData();
+
+    datas.append('image', {
+        uri: image,
+        type: 'image/jpeg',
+        name: 'image.jpg'
+    });
+    datas.append('numb_seats', places)
+    datas.append('number_table', numberTable)
+    datas.append('id_rest', 5)
+
+
+    const sendTable = () => {
+        axios
+            .post("http://192.168.1.143:5000/table/create", datas, {
+              
             })
             .then(function (response) {
-                alert(JSON.stringify(response.data));
+                back()
+                deleteData()
+                // alert(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 alert(error.message);
             });
     }
 
+    const back =()=>{
+        navigation.goBack()
+    }
+    const deleteData=()=>{
+        setImage(null)
+        setNumberTable(null)
+        setPlaces(null)
+
+    }
+
     return (
-        <View >
+        <View style={styles.container}>
             <BottomSheet
                 ref={bottomPanel}
                 snapPoints={[330, 0]}
@@ -99,31 +125,40 @@ export const EditTable = ({ navigation }) => {
                 renderHeader={renderHeader}
             >
             </BottomSheet>
+
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.navigate('Dodaj stolik')}>
+                <TouchableOpacity style={{ marginLeft: -20 }} onPress={() => navigation.goBack()}>
                     <Icon name="arrow-back-outline"
                         color={'white'}
                         size={30}></Icon>
                 </TouchableOpacity>
                 <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
             </View>
+
             <Animated.View
                 style={{ flex: 1, opacity: Animated.add(1, Animated.multiply(fall, 0.8)) }}>
-                
-
+                <View style={styles.dodajStoliki}>
+                    <Text style={styles.txtStyle1}>Utwórz stolik</Text>
+                </View>
+                <View>
                     <View style={styles.item}>
-                        <View>
-                            <Text style={styles.txtStyle1}></Text>
+                        <View style={{ justifyContent: 'space-around', flexDirection: 'row' }}>
+                            <Text style={styles.txtStyle1}>Stolik numer</Text>
+                            <TextInput
+                                style={styles.txtStyle1}
+                                onChangeText={text => setNumberTable(text)}
+                                value={numberTable}
+                            ></TextInput>
+
                         </View>
-                        <TouchableOpacity style={{ width: '100%' }} onPress={() => clickImage()}>
-                            <View>
-                                <ImageBackground style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></ImageBackground>
-                            </View>
-                            {/* <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={item.url}></Image> */}
+                        <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
+                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></Image>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.podajLiczbeMiejscStyle}>
-                        <Text style={styles.txtStyle1}>Liczba miejsc</Text>
+                        <Text style={styles.txtStyle1}
+                        // onChangeText={}
+                        >Liczba miejsc</Text>
                         <TextInput
                             style={styles.styleInput}
                             keyboardType='numeric'
@@ -131,14 +166,25 @@ export const EditTable = ({ navigation }) => {
                             value={places}
                         ></TextInput>
                     </View>
-
-               
+                </View>
             </Animated.View>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, opacity: 1, backgroundColor: 'white' }}>
+
+                <TouchableOpacity style={styles.btnFooterStyle} onPress={sendTable}>
+                    <Text style={styles.txtStyleBottomSheet}>Zatwierdź</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
+
 }
 
-//export default formFirma;
+const resizeMode = 'center';
+
+EditTable.navigationOptions = {
+    headerShown: false,
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

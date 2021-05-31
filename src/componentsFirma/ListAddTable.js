@@ -22,10 +22,12 @@ export function ListAddTable({ navigation }) {
     
 
 
+
     //AXIOS GET 
 
     useEffect(() => {
          getData()
+         deleteItem()
          
     }, [])
 
@@ -38,16 +40,11 @@ export function ListAddTable({ navigation }) {
                 const data = response.data.data.tables
                 // console.log(data)
                 setData(response.data.data.tables)
-                // console.log(response.data.data.tables)
-                // const img=data[0].image_url
-                // console.log(img)
+               
                  
                 // setImage({uri: img})
                 setLoading(false)
-                const test=data[0].image_url
-                console.log({uri:test})
-                setImage({uri:test})
-                // imageGet()
+                
             })
             .catch(function (error) {
                 // handle error
@@ -87,43 +84,45 @@ export function ListAddTable({ navigation }) {
 
     //DELETE TABLE
 
-    const deleteItem = (rowMap, rowKey) => {
-        const newArray = [...data]
-        const newIndex = data.findIndex(item => item.id == rowKey);
-        newArray.splice(newIndex, 1)
-        setData(newArray)
-        console.log({ newArray })
-
-        axios
-        .delete('http://192.168.1.143:5000/table/delete/4',{
-            id: newIndex
-        })
+    const deleteItem = (item,rowMap, rowKey) => {
+        // const newArray = [...data]
+        //  const newIndex = data.findIndex(item => item.id == rowKey);
+        //  newArray.splice(newIndex, 1)
+        //  setData(newArray)
+        console.log('id', item)
+        axios.delete(`http://192.168.1.143:5000/table/delete/${item}`)
         
         .then(response =>{
           console.log(response.data.data.tables)
+          console.log(newIndex)
+
         })
     }
 
     const HiddenItemWithActions = props => {
         const { onEdit, onDelete } = props;
+       
         return (
             <View style={styles.rowBack}>
-                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} >
+                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} onPress={() => navigation.navigate('Edit table')}>
                     <Icon name="create-outline"
                         color='white'
                         size={30}></Icon>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnDelete]} onPress={onDelete} >
+                
                     <Icon name="trash-outline"
                         color='white'
                         size={30}></Icon>
                 </TouchableOpacity>
             </View>
         )
-
+        
+                        
+        
     }
 
-    const renderHiddenItem = (data, rowMap) => {
+    const renderHiddenItem = (data, rowMap,item) => {
         return (
             <HiddenItemWithActions
                 data={data}
@@ -167,6 +166,7 @@ const deleteAxios=()=>{
                         }}
                         renderItem={({ item }) => {
                             console.log("item", item)
+                            
                             return (
                                 <>
                                     <View style={styles.item}>
@@ -180,8 +180,10 @@ const deleteAxios=()=>{
                                             ></TextInput>
 
                                         </View>
+                                        <TouchableOpacity onPress={()=>deleteItem(item.id)}><Text>{item.id}</Text></TouchableOpacity>
+                                        
                                         <TouchableOpacity style={{ width: '100%' }} >
-                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }}  source={{uri: item.image_urlg}}></Image>
+                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }}  source={{uri: item.image_url}}></Image>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.podajLiczbeMiejscStyle}>
