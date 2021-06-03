@@ -49,7 +49,7 @@ export function ProfilFirma({ navigation }) {
 
     const pullData = () => {
         axios
-            .put('http://192.168.1.143:5000/restaurant/update/1', {
+            .put('http://192.168.1.143:5000/restaurant/update/3', {
                 name: data.name,
                 category: data.category,
                 city: data.city,

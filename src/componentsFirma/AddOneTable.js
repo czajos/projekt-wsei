@@ -85,7 +85,7 @@ export function AddOneTable({ navigation }) {
     });
     datas.append('numb_seats', places)
     datas.append('number_table', numberTable)
-    datas.append('id_rest', 5)
+    datas.append('id_rest', 3)
 
 
     const sendTable = () => {

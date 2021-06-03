@@ -16,7 +16,11 @@ export function EditProfilUser({ navigation }) {
     const [lastName, setLastName] = useState()
     const [numertel, setNumerTel] = useState()
     const [data, setData] = useState([])
+    const [data2, setData2] = useState([])
+
     const [loading, setLoading] = useState(true)
+
+
 
     useEffect(() => {
         getData()
@@ -25,15 +29,15 @@ export function EditProfilUser({ navigation }) {
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/restaurant/get/1')
+            .get('http://192.168.1.143:5000/login/me')
 
             .then(function (response) {
                 // handle success
-                const data = response.data.data.restaurant
+                // const data = response.data.data.restaurant
+                console.log(response.data)
 
+                setData2(response.data)
 
-                console.log(data)
-                setData(response.data.data.restaurant)
             })
             .catch(function (error) {
                 // handle error
@@ -57,17 +61,12 @@ export function EditProfilUser({ navigation }) {
     // }
     const pullData = () => {
         axios
-            .put('http://192.168.1.143:5000/restaurant/update/1', {
-                name: data.name,
-                category: data.category,
-                city: data.city,
-                phone: data.phone,
-                description: data.description
-
+            .put('http://192.168.1.143:5000/login/update', {
+                phone: data2.phone,
             })
             .then(function (response) {
                 // setTypRestauracji({ category: response.data.data })
-                console.log(data.category)
+                // console.log(data.category)
                 alert(JSON.stringify(response.data));
             })
             .catch(function (error) {
@@ -99,34 +98,21 @@ export function EditProfilUser({ navigation }) {
                         size={30}></Icon>
                 </TouchableOpacity>
             </View>
-            <View style={styles.header} >
-                <TouchableOpacity style={styles.imageStyleLogo} onPress={() => choosePhotoFromLibrary()}>
-                    <View >
-                        <ImageBackground style={styles.imageStyleLogo} imageStyle={{ borderRadius: 100 }} onPress={() => choosePhotoFromLibrary()} source={{ uri: image }}></ImageBackground>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.nameRestaurant}>
-                <TextInput
-                    style={{ fontSize: 18, fontWeight: 'bold' }}
-                    onChangeText={text => setData({ ...data, name: text })}
-                    autoCorrect={false}
-                    value={`${data ? data.name : ''}`}>
-                </TextInput>
-            </View>
+
+
             <ScrollView>
 
-                <View style={{ marginTop: 15 }}>
-                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Imie</Text>
+                <View style={{ marginTop: 100 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Imie i nazwisko</Text>
                     <View style={styles.boxInput}>
 
                         <TextInput
 
                             style={styles.txtInput}
                             type="text"
-                            onChangeText={text => setData({ ...data, category: text })}
+                            // onChangeText={text => setData({ ...data, category: text })}
                             autoCorrect={false}
-                            value={`${data ? data.category : ''}`}
+                            value={`${data ? data2.name : ''}`}
 
                         />
                         <TouchableOpacity>
@@ -137,24 +123,7 @@ export function EditProfilUser({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ marginTop: 15 }}>
-                    <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Nazwisko</Text>
-                    <View style={styles.boxInput}>
-                        <TextInput
-                            placeholder=""
-                            style={styles.txtInput}
-                            onChangeText={text => setData({ ...data, city: text })}
-                            autoCorrect={false}
-                            value={`${data ? data.city : ''}`}
-                        />
-                        <TouchableOpacity>
-                            <Icon name="create-outline"
-                                color={'white'}
-                                size={20}
-                                style={{ padding: 10, backgroundColor: '#3B9CE6', borderRadius: 10 }}></Icon>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+
                 <View style={{ marginTop: 15 }}>
                     <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Tel. kontaktowy</Text>
                     <View style={styles.boxInput}>
@@ -162,9 +131,9 @@ export function EditProfilUser({ navigation }) {
                             placeholder=""
                             style={styles.txtInput}
                             keyboardType='numeric'
-                            onChangeText={text => setData({ ...data, phone: text })}
+                            onChangeText={text => setData2({ ...data2, phone: text })}
                             autoCorrect={false}
-                            value={`${data ? data.phone : ''}`}
+                            value={`${data2 ? data2.phone : ''}`}
 
                         />
                         <TouchableOpacity>
@@ -175,7 +144,7 @@ export function EditProfilUser({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-               
+
                 <View style={{ alignItems: 'center', flexDirection: 'column', justifyContent: 'center', padding: 12 }}>
                     <TouchableOpacity style={styles.btnStyle} onPress={pullData}>
                         <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>

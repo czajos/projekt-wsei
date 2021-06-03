@@ -23,6 +23,7 @@ import {EditProfilUser} from './src/components/EditProfilUser'
 import {RegisterFormUser} from './src/components/RegisterFormUser'
 // import ComponentRest from './src/components/ComponentRest';
 import RestaurantList from './src/components/RestaurantList'
+import SearchOneRest from './src/components/SearchOneRest'
 import ChoiceTable from './src/components/ChoiceTable'
 import { ProfilFirma } from './src/componentsFirma/ProfilFirma'
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,6 +31,8 @@ import { EditTable } from './src/componentsFirma/EditTable'
 // import { AddTable } from './src/componentsFirma/AddTable';
  import { ListAddTable } from './src/componentsFirma/ListAddTable';
  import { AddOneTable } from './src/componentsFirma/AddOneTable';
+import TimeReservation from './src/components/TimeReservation'
+
 
 
 
@@ -100,10 +103,13 @@ export default function App() {
         }, headerShown: false
       }} />
       <Drawer.Screen name="Lista restauracji" component={RestaurantList} options={{ headerShown: false }} />
+      <Drawer.Screen name="Wyszukaj restauracje" component={SearchOneRest} options={{ headerShown: false }} />
       <Drawer.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} />
       <Drawer.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} />
       <Drawer.Screen name="Formularz rejestracyjny" component={RegisterFormUser} options={{ headerShown: false }} />
       <Drawer.Screen name="Edycja profilu użytkownika" component={EditProfilUser} options={{ headerShown: false }} />
+      <Drawer.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} />
+
     </Drawer.Navigator>
   )
 
@@ -134,11 +140,14 @@ export default function App() {
       
         
 
-      <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
+     
+          {/* <RootStack.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} /> */}
       
+           {/* <RootStack.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} /> */}
         
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />
+          <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
           
 
         

@@ -7,11 +7,11 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import axios from 'axios'
 
 
-export function RestaurantList({ navigation }) {
-    const [city, setCity] = useState()
+export function SearchOneRest({ navigation }) {
+    const [name, setName] = useState()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState()
-    const [idRest,setIdRest]=useState()
+    const [idRest, setIdRest] = useState()
 
     // const dupa =()=>{
     //     setLoading(false)
@@ -19,16 +19,13 @@ export function RestaurantList({ navigation }) {
 
     const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getByCity/${city}`)
+            .get(`http://192.168.1.143:5000/restaurant/getByName/${name}`)
 
             .then(function (response) {
                 // handle success
                 const data = response.data.data.tables
-                // console.log(data)
                 setData(response.data.data.restaurant)
-                // setImage({uri: img})
                 setLoading(false)
-
             })
             .catch(function (error) {
                 // handle error
@@ -39,13 +36,14 @@ export function RestaurantList({ navigation }) {
                 alert('Finally called');
             });
     };
-const choiceRest=(item)=>{
-     setIdRest(item)
-     console.log(item)
 
-     navigation.navigate('Czas rezerwacji',{item}) //Przekazanie parametru id restauracji do następnego komponentu 
-}
-    
+    const choiceRest = (item) => {
+        setIdRest(item)
+        console.log(idRest)
+
+         navigation.navigate('Wybierz stolik',{item})
+    }
+
 
     return (
         <View style={styles.container}>
@@ -63,8 +61,8 @@ const choiceRest=(item)=>{
                 <View style={styles.container2}>
                     <TextInput
                         style={styles.txtInput}
-                        onChangeText={text => setCity(text)}
-                        value={city}
+                        onChangeText={text => setName(text)}
+                        value={name}
                     />
                     <TouchableOpacity style={styles.search} onPress={getData}>
                         <Text style={styles.txtSearch}>Szukaj</Text>
@@ -73,8 +71,10 @@ const choiceRest=(item)=>{
             </View>
             {loading ?
                 <View></View>
-                : (<FlatList
-                    style={{ padding:10 }}
+                : (
+                
+                <FlatList
+                    style={{ padding: 10 }}
                     // contentContainerStyle={{ 
                     //     flexDirection: 'row',
                     //     justifyContent: 'space-around',
@@ -92,7 +92,7 @@ const choiceRest=(item)=>{
                         return (
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-                                <TouchableOpacity onPress={()=>choiceRest(item.id)}>
+                                <TouchableOpacity onPress={() => choiceRest(item.id)}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <TouchableOpacity style={styles.logoRestStyles}>
@@ -114,7 +114,7 @@ const choiceRest=(item)=>{
         </View>
     )
 }
-export default RestaurantList;
+export default SearchOneRest;
 
 
 const styles = StyleSheet.create({
@@ -238,8 +238,8 @@ const styles = StyleSheet.create({
 
         elevation: 5,
         borderRadius: 10,
-        fontSize:20,
-        
+        fontSize: 20,
+
     },
     txtSearch: {
         color: 'white',

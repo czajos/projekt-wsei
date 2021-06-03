@@ -1,6 +1,6 @@
 // import ImagePicker from 'react-native-image-crop-picker';
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity,Linking} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
 // import BottomSheet from 'reanimated-bottom-sheet'
@@ -19,32 +19,32 @@ export function ListAddTable({ navigation }) {
     const [numberTable, setNumberTable] = useState()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-    
+
 
 
 
     //AXIOS GET 
 
     useEffect(() => {
-         getData()
-         deleteItem()
-         
+        getData()
+        deleteItem()
+
     }, [])
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/table/getAll/5')
+            .get('http://192.168.1.143:5000/table/getAll/3')
 
             .then(function (response) {
                 // handle success
                 const data = response.data.data.tables
                 // console.log(data)
                 setData(response.data.data.tables)
-               
-                 
+
+
                 // setImage({uri: img})
                 setLoading(false)
-                
+
             })
             .catch(function (error) {
                 // handle error
@@ -60,7 +60,7 @@ export function ListAddTable({ navigation }) {
 
     const imageGet = () => {
         axios
-            .get('http://192.168.1.143:5000/table/getAll/4')
+            .get('http://192.168.1.143:5000/table/getAll/3')
 
             .then(function (response) {
                 const data = response.data.data.tables
@@ -84,24 +84,26 @@ export function ListAddTable({ navigation }) {
 
     //DELETE TABLE
 
-    const deleteItem = (item,rowMap, rowKey) => {
+    const deleteItem = (item, rowMap, rowKey) => {
         // const newArray = [...data]
         //  const newIndex = data.findIndex(item => item.id == rowKey);
         //  newArray.splice(newIndex, 1)
         //  setData(newArray)
         console.log('id', item)
         axios.delete(`http://192.168.1.143:5000/table/delete/${item}`)
-        
-        .then(response =>{
-          console.log(response.data.data.tables)
-          console.log(newIndex)
 
-        })
+            .then(response => {
+                console.log(response.data.data.tables)
+                console.log(newIndex)
+
+            })
+
+            getData()
     }
 
     const HiddenItemWithActions = props => {
         const { onEdit, onDelete } = props;
-       
+
         return (
             <View style={styles.rowBack}>
                 <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} onPress={() => navigation.navigate('Edit table')}>
@@ -110,19 +112,19 @@ export function ListAddTable({ navigation }) {
                         size={30}></Icon>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnDelete]} onPress={onDelete} >
-                
+
                     <Icon name="trash-outline"
                         color='white'
-                        size={30}></Icon>
+                        size={20}></Icon>
                 </TouchableOpacity>
             </View>
         )
-        
-                        
-        
+
+
+
     }
 
-    const renderHiddenItem = (data, rowMap,item) => {
+    const renderHiddenItem = (data, rowMap, item) => {
         return (
             <HiddenItemWithActions
                 data={data}
@@ -133,44 +135,47 @@ export function ListAddTable({ navigation }) {
         )
     }
 
-const deleteAxios=()=>{
-    axios
-        .delete('http://192.168.1.143:5000/table/delete/4')
-        
-        .then(response =>{
-          console.log(response.data.data.tables)
-        })
-}
+    const deleteAxios = () => {
+        axios
+            .delete('http://192.168.1.143:5000/table/delete/4')
+
+            .then(response => {
+                console.log(response.data.data.tables)
+            })
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
             </View>
+            
             <View
                 style={{ flex: 1 }}>
                 <View style={styles.dodajStoliki}>
+                <TouchableOpacity onPress={getData}>
                     <Text style={styles.txtStyle1}>Lista twoich stolików</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-            {loading ?
-                <View></View>
-                : (
+           
+                    
                     <SwipeListView
                         style={{ marginTop: 60 }}
                         data={data}
-                        renderHiddenItem={renderHiddenItem}
-                        rightOpenValue={-145}
+                        // renderHiddenItem={renderHiddenItem}
+                        // rightOpenValue={-145}
                         keyExtractor={(item, index) => {
                             return index.toString();
                         }}
                         renderItem={({ item }) => {
                             console.log("item", item)
-                            
+
                             return (
                                 <>
                                     <View style={styles.item}>
-                                        <View style={{ justifyContent: 'space-around', flexDirection: 'row' }}>
+                                        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                        <View style={{marginLeft:-100,flexDirection: 'row' }}>
                                             <Text style={styles.txtStyle1}>Stolik numer</Text>
                                             <TextInput
                                                 style={styles.txtStyle1}
@@ -178,12 +183,18 @@ const deleteAxios=()=>{
                                                 // onChangeText={text => setNumberTable(text)}
                                                 value={item.number_table.toString()}
                                             ></TextInput>
-
+                                            </View>
+                                            <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnDelete]}  onPress={() => deleteItem(item.id)}>
+                                                <Icon name="close-circle-outline"
+                                                    color='black'
+                                                    size={40}></Icon>
+                                            </TouchableOpacity>
+                                            
                                         </View>
-                                        <TouchableOpacity onPress={()=>deleteItem(item.id)}><Text>{item.id}</Text></TouchableOpacity>
-                                        
+
+
                                         <TouchableOpacity style={{ width: '100%' }} >
-                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }}  source={{uri: item.image_url}}></Image>
+                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.podajLiczbeMiejscStyle}>
@@ -202,7 +213,7 @@ const deleteAxios=()=>{
                             )
                         }}
                     />
-                )}
+                
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, opacity: 1, backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.btnFooterStyle} >
                     <Text style={styles.txtStyleBottomSheet} onPress={() => navigation.navigate('Dodaj')}>+ Nowy stolik</Text>
@@ -359,7 +370,7 @@ const styles = StyleSheet.create({
 
     },
     backRightBtnDelete: {
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         //right: 75,
 
     },
@@ -369,14 +380,15 @@ const styles = StyleSheet.create({
         margin: 3
     },
     btnRgihtBtn: {
-        bottom: 0,
+        
         justifyContent: 'center',
         //position:'absolute',
-        padding: 18,
-        marginVertical: 8,
-        height: 80,
+        padding: 12,
+        // marginVertical: 8,
+        height: 40,
 
-        borderRadius: 20
+        borderRadius: 100,
+        marginRight:-150
 
 
     },

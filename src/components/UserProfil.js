@@ -1,8 +1,12 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import axios from 'axios'
 
 
 export function UserProfil({ navigation }) {
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>

@@ -36,7 +36,7 @@ export function HomeScreen({ navigation }) {
       <View style={styles.box1}>
         <Text style={styles.titleBox}>Znajdź restauracje w swoim mieście</Text>
         <View style={styles.container}>
-          <View style={styles.txtInput} >
+          {/* <View style={styles.txtInput} >
             <RNPickerSelect
               placeholder={{ label: "Lokalizacja" }}
               useNativeAndroidPickerStyle={false}
@@ -47,7 +47,7 @@ export function HomeScreen({ navigation }) {
             >
 
             </RNPickerSelect>
-          </View>
+          </View> */}
           <TouchableOpacity style={styles.search} onPress={() => navigation.navigate('Lista restauracji')}>
             <Text style={styles.txtSearch}>Szukaj</Text>
           </TouchableOpacity>
@@ -56,8 +56,8 @@ export function HomeScreen({ navigation }) {
       <View style={styles.box2}>
         <Text style={styles.titleBox}>Wyszukaj wybraną restauracje</Text>
         <View style={styles.container}>
-          <TextInput style={styles.txtInput} />
-          <TouchableOpacity style={styles.search} onPress={() => navigation.navigate('')}>
+          {/* <TextInput style={styles.txtInput} /> */}
+          <TouchableOpacity style={styles.search} onPress={() => navigation.navigate('Wyszukaj restauracje')}>
             <Text style={styles.txtSearch}>Szukaj</Text>
           </TouchableOpacity>
         </View>
@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
 
   },
   search: {
-    width: '30%',
-    height: 50,
+    width: '40%',
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#5B9CE6',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   txtSearch: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 18
   },
   box1: {
     marginTop: 50

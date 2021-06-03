@@ -10,7 +10,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-community/google-signin';
-import StackCompany from './StackCompany'
+// import StackCompany from './StackCompany'
 import axios from 'axios'
 
 
@@ -82,7 +82,7 @@ export function LogFirma({ navigation }) {
   //   }
   // }
   
-  const cycki=()=>{
+  const nextPage=()=>{
     navigation.navigate('User')
   }
 
@@ -130,17 +130,20 @@ export function LogFirma({ navigation }) {
 
   const sendToken = async () => {
     const token = userInfo.idToken
+    const role='company'
     //  console.log(token)
     axios
       .post("http://192.168.1.143:5000/google/api/v1/auth/google", {
-        idToken: token
+        idToken: token,
+        role:role
         // headers: {
         //   'Authorization': `Bearer ${token}` ,
         // }
+       
       })
       .then(function (response) {
         console.log(response.data)
-        cycki()
+        nextPage()
         // alert(JSON.stringify());
       })
       .catch(function (error) {
@@ -181,7 +184,7 @@ export function LogFirma({ navigation }) {
       })
       .finally(function () {
         // always executed
-        alert('Finally called');
+        // alert('Finally called');
       });
   }
 
@@ -222,12 +225,10 @@ export function LogFirma({ navigation }) {
         style={styles.txtInput}
         secureTextEntry={true}
       /> */}
-      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
-        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
+      
+      {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test2}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>kutas</Text>
       </TouchableOpacity> */}
@@ -268,7 +269,10 @@ export function LogFirma({ navigation }) {
         onSuccess={sendToken}
 
       />
-       <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
+      </TouchableOpacity>
+       {/* <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text> */}
     </View>
   );
 }

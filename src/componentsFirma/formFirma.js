@@ -33,8 +33,28 @@ export const formFirma = ({ navigation }) => {
   const [image, setImage] = useState(null)
 
   //  useEffect(()=>{
-  // submitPost()
+  //    moszna()
   // })
+
+const moszna=()=>{
+     axios
+          .get('http://192.168.1.143:5000/google/me')
+
+          .then(function (response) {
+
+            console.log(response.data)
+    
+          })
+          .catch(function (error) {
+            // handle error
+            // alert(error.message);
+          })
+          .finally(function () {
+            // always executed
+            // alert('Finally called');
+          });
+}
+
   const datas=new FormData()
   datas.append('image', {
   uri : image,
@@ -46,7 +66,7 @@ export const formFirma = ({ navigation }) => {
    datas.append('street',adreslokalu)
    datas.append('phone',numertel)
    datas.append('description',description)
-   datas.append('user_id',1)
+   datas.append('user_id',5)
 
 
 
