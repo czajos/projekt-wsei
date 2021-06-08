@@ -1,77 +1,101 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback,useEffect } from 'react';
 import { View, Button, Text, Dimensions, Platform, StyleSheet, Image, ScrollView, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view'
-import axios from 'axios';
+import axios from 'axios'
+import Icon from 'react-native-vector-icons/Ionicons'
+// import FormData from 'form-data'
+import { useIsFocused } from '@react-navigation/native';
 
-export const AddMenu = () => {
+export const AddMenu = ({ navigation }) => {
   const [image, setImage] = useState(null)
+  const [data, setData] = useState([])
+  const isFocused = useIsFocused();
 
-  //Select image
-  const choosePhotoFromLibrary = useCallback(() => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-    }).then(image => {
-      setImage({
-        image: {
-          uri: image.path
-        }
-      })
 
-    });
 
-  });
+     //AXIOS GET 
+     useEffect(() => {
+      getData()
+      deleteItem()
 
-//Delete image
+  }, [isFocused])
+
+  const getData = () => {
+      axios
+          .get('http://192.168.1.143:5000/restaurant/menu/get/3')
+
+          .then(function (response) {
+              // handle success
+              const data = response.data.data.menu
+              console.log(data)
+              setData(response.data.data.menu)
+
+
+              // setImage({uri: img})
+              // setLoading(false)
+
+          })
+          .catch(function (error) {
+              // handle error
+              alert(error.message);
+          })
+          .finally(function () {
+              // always executed
+              alert('Finally called');
+          });
+  };
+
+  //Delete image
   const deleteImage = () => {
     setImage(null)
     console.log(image)
   }
 
-// Axios post
-const datas = new FormData();
+  const deleteItem = (item) => {
+    console.log(item)
+    axios
+      .delete(`http://192.168.1.143:5000/restaurant/menu/delete/${item}`)
+      .then(response => {
 
-    datas.append('image', {
-        uri: image,
-        type: 'image/jpeg',
-        name: 'image.jpg'
-    });
-
-    const sendMenu =()=>{
-      axios
-           .post('',datas)
-
-           .then(function (response) {
-            back()
-            deleteData()
-            // alert(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            alert(error.message);
-        });
-    }
-
-    const back =()=>{
-      navigation.goBack()
+      })
+    getData()
   }
 
-  const renderItem = useCallback(({ image }) => {
+  // // Axios post
+  // const datas = new FormData();
 
-    console.log(image)
-    return (
+  //     datas.append('image', {
+  //         uri: image,
+  //         type: 'image/jpeg',
+  //         name: 'image.jpg'
+  //     });
 
-      <View style={styles.item}>
-        <Image style={{ width: '100%', height: '80%', resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={image}></Image>
-        <TouchableOpacity style={styles.deleteBottom}  onPress={deleteImage}>
-          <Text style={styles.txtDeleteBottom}>Usuń</Text>
-        </TouchableOpacity>
-      </View>
+  //     const sendMenu =()=>{
+  //       axios
+  //            .post('',datas)
 
-    );
+  //            .then(function (response) {
+  //             back()
+  //             deleteData()
+  //             // alert(JSON.stringify(response.data));
+  //         })
+  //         .catch(function (error) {
+  //             alert(error.message);
+  //         });
+  //     }
 
-  }, []);
+  const back = () => {
+    navigation.goBack()
+  }
+
+  //Dodaj zdjęcie menu
+  const goToAdd = () => {
+    navigation.navigate('Strona Menu')
+  }
+
+
 
   return (
     <View style={styles.container}>
@@ -79,16 +103,43 @@ const datas = new FormData();
         <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
       </View>
       <Text style={styles.txtStyle}>Dodaj lub edytuj Menu </Text>
-      <ScrollView >
-        {image ? renderItem(image) : null}
-      </ScrollView>
+      <SwipeListView
+        style={{ marginTop: 60 }}
+        data={data}
+        // renderHiddenItem={renderHiddenItem}
+        // rightOpenValue={-145}
+        keyExtractor={(item, index) => {
+          return index.toString();
+        }}
+        renderItem={({ item }) => {
+          console.log("item", item)
 
+          return (
+            <View>
+              <View style={styles.item}>
+
+                <TouchableOpacity style={{ width: '100%' }} >
+                  <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{uri: item.menu_url}}></Image>
+                </TouchableOpacity>
+                <View style={{ flexDirection: 'column' }}>
+                  <Text style={styles.txtStyleSite}>Strona numer</Text>
+                  <Text style={styles.txtStyleSite}>{item.page.toString()}</Text>
+                </View>
+                <TouchableOpacity style={styles.deleteBottom} onPress={()=>deleteItem(item.id)}>
+                <Text style={styles.txtDeleteBottom}>Usuń</Text>
+              </TouchableOpacity>
+              </View>
+             
+            </View>
+          )
+        }}
+      />
       <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', padding: 10, opacity: 1, backgroundColor: 'white' }}>
-        <TouchableOpacity style={styles.btnFooterStyle} onPress={() => choosePhotoFromLibrary()}>
+        <TouchableOpacity style={styles.btnFooterStyle} onPress={goToAdd}>
           <Text style={styles.txtStyleBottomSheet}>Dodaj obraz</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnFooterStyle} onPress={sendMenu}>
-          <Text style={styles.txtStyleBottomSheet}>Zapisz</Text>
+        <TouchableOpacity style={styles.btnFooterStyle} onPress={()=>navigation.goBack()}>
+          <Text style={styles.txtStyleBottomSheet}>Wyjdź</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -113,7 +164,7 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: "contain",
     justifyContent: 'center',
-    height:80
+    height: 80
   },
   imageStyleLogo: {
     width: '80%',
@@ -144,24 +195,40 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   item: {
-    width: '100%',
-    height: 450,
-    justifyContent:'center',
-    alignItems:'center'
+    backgroundColor: 'white',
+    // borderColor: 'grey',
+    //borderWidth: 1,
+    padding: 10,
+    marginVertical: 8,
+    // marginHorizontal: 16,
+    height: 'auto',
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+
+    elevation: 5,
+    borderRadius: 10,
+    width: 'auto'
+
   },
-  deleteBottom:{
-    marginTop:10,
+  deleteBottom: {
+    marginTop: 10,
     backgroundColor: 'white',
     width: '30%',
     height: 35,
     borderRadius: 50,
-    borderWidth:2,
-    borderColor:'#1B92C4'
+    borderWidth: 2,
+    borderColor: '#1B92C4'
   },
-  txtDeleteBottom:{
-    color:'#1B92C4',
-    fontSize:20,
-    fontWeight:'bold',
-    textAlign:'center'
+  txtDeleteBottom: {
+    color: '#1B92C4',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
-}) 
+})

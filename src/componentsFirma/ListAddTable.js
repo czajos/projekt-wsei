@@ -77,7 +77,7 @@ export function ListAddTable({ navigation }) {
                 alert('Finally called');
             });
     }
-    let img = { uri: 'http://localhost:5000/2021-05-29T16-12-34.841Zimage.jpg' }
+    
 
     //DELETE TABLE
 

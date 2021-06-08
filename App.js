@@ -38,6 +38,10 @@ import Comments from './src/components/Comments'
 import AddComments from './src/components/AddComments'
 import InfoAboutRest from './src/components/InfoAboutRest'
 import MenuRest from './src/components/MenuRest'
+import {AddPageMenu} from './src/componentsFirma/AddPageMenu'
+import {EditMenu} from './src/componentsFirma/EditMenu'
+
+
 
 
 
@@ -124,7 +128,6 @@ export default function App() {
 
   const HomeFirmaNavigation = ({ navigation }) => (
     <CompanyStack.Navigator>
-
       <CompanyStack.Screen name="Dla firm" component={HomeFirma} options={{
         headerStyle: {
           backgroundColor: 'green', elevation: 0,
@@ -132,16 +135,12 @@ export default function App() {
       }} />
       <CompanyStack.Screen name="Załóż konto" component={RegisterFirma} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Zaloguj się jako firma" component={SignInCompanyScreen} options={{ headerShown: false }} />
-      
-
     </CompanyStack.Navigator>
   )
 
   const SignInCompanyScreen = () => (
     <CompanyStack.Navigator>
-
       <CompanyStack.Screen name="Zaloguj się jako firma" component={LogFirma} options={{ headerShown: false }} />
-
     </CompanyStack.Navigator>
   )
   const RootStackScreen = ({ userToken }) => (
@@ -153,8 +152,9 @@ export default function App() {
           {/* <RootStack.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} /> */}
       
            {/* <RootStack.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} /> */}
-          {/* <RootStack.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} /> */}
+          {/* <RootStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} /> */}
 
+          {/* <RootStack.Screen name="Strona Menu" component={AddPageMenu} options={{ headerShown: false }} /> */}
         
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />
@@ -170,10 +170,11 @@ export default function App() {
      <Drawer.Navigator name="Kutasowo" drawerContent={props => <DrawerFirma {...props} />} options={{ headerShown: false }} >
      {/* <Drawer.Navigator  options={{ headerShown: false }} > */}
     
-
       <CompanyStack.Screen name="Idź dalej" component={formFirma} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj stolik" component={ListAddTable} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Strona Menu" component={AddPageMenu} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Edit Menu" component={EditMenu} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Menu panel" component={MenuPanel} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Profil firmy" component={ProfilFirma} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj" component={AddOneTable} options={{ headerShown: false }} />
