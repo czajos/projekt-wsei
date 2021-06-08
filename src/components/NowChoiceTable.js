@@ -9,7 +9,7 @@ import axios from 'axios'
 
 
 
-export function ChoiceTable({route,navigation }) {
+export function NowChoiceTable({route,navigation }) {
     const {item}=route.params
     const [data, setData] = useState([])
     const [secondData, setSecondData] = useState([])
@@ -24,6 +24,7 @@ export function ChoiceTable({route,navigation }) {
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
+        
     }, [isFocused])
 
     const getData = () => {
@@ -31,7 +32,7 @@ export function ChoiceTable({route,navigation }) {
             .get(`http://192.168.1.143:5000/table/getAll/${item}`)
 
             .then(function (response) {
-                // handle success
+                // handle success 
                 setData(response.data.data.tables)
                 console.log(item)
             })
@@ -54,11 +55,11 @@ export function ChoiceTable({route,navigation }) {
     // datas.append('month', month)
     // datas.append('day', day)
 
-
+//Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
             .post("http://192.168.1.143:5000/reserwation/create", {
-                id_restaurant:2,
+                id_restaurant:item,
                 id_table:idTable,
                 hour:hour,
                 min:minute,
@@ -66,19 +67,7 @@ export function ChoiceTable({route,navigation }) {
                 month:month,
                 day:day
             } )
-                // name: nazwarestauracji,
-                // category: typrestauracji,
-                // city: adreslokalu,
-                // phone: numertel,
-                // description: description,
-                // imageUrl:image,
-
-                // headers: {
-                //     // 'Content-Type': 'multipart/form-data',
-                //     'Content-Type': `multipart/form-data; boundary=${datas._boundary}`,
-                // }
-
-            
+                
             .then(function (response) {
                 alert(JSON.stringify(response.data));
             })
@@ -88,11 +77,17 @@ export function ChoiceTable({route,navigation }) {
         load()
     }
 
+//Wybór stolika
     const choiceRest = (item) => {
         setIdTable(item)
         console.log(item)
         setLoading(false)
         //  navigation.navigate('Wybierz stolik')
+    }
+
+    //Informacje o restauracji
+    const info=()=>{
+        navigation.navigate('Info',{item})
     }
 
     const load = () => {
@@ -125,10 +120,10 @@ export function ChoiceTable({route,navigation }) {
                         <TouchableOpacity style={styles.btn} onPress={getData}>
                             <Text style={{ color: 'white', fontSize: 15 }} >MENU</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={()=>info(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate('Comments')}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
                         </TouchableOpacity>
                     </View>
@@ -210,6 +205,7 @@ export function ChoiceTable({route,navigation }) {
                                             style={styles.txtInput}
                                             onChangeText={text => setHour(text)}
                                             value={hour}
+                                            keyboardType='numeric'
                                         />
 
                                         <TextInput
@@ -217,6 +213,7 @@ export function ChoiceTable({route,navigation }) {
                                             style={styles.txtInput}
                                             onChangeText={text => setMinute(text)}
                                             value={minute}
+                                            keyboardType='numeric'
                                         />
                                     </View>
                                 </View>
@@ -228,18 +225,21 @@ export function ChoiceTable({route,navigation }) {
                                             style={styles.txtInput}
                                             onChangeText={text => setYear(text)}
                                             value={year}
+                                            keyboardType='numeric'
                                         />
                                         <TextInput
-                                            placeholder="miesiąc"
+                                            placeholder="mies."
                                             style={styles.txtInput}
                                             onChangeText={text => setMonth(text)}
                                             value={month}
+                                            keyboardType='numeric'
                                         />
                                         <TextInput
                                             placeholder="dzień"
                                             style={styles.txtInput}
                                             onChangeText={text => setDay(text)}
                                             value={day}
+                                            keyboardType='numeric'
                                         />
                                     </View>
                                 </View>
@@ -259,7 +259,7 @@ export function ChoiceTable({route,navigation }) {
         </View>
     )
 }
-export default ChoiceTable;
+export default NowChoiceTable;
 
 
 const styles = StyleSheet.create({

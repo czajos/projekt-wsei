@@ -22,47 +22,45 @@ export function TimeReservation({ route, navigation }) {
     const [idTable, setIdTable] = useState()
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
-    useEffect(() => {
-        getData()
-        // getDataRest()
-    }, [isFocused])
+    // useEffect(() => {
+    //     getData()
+    //     // getDataRest()
+    // }, [isFocused])
 
-    const getData = () => {
-        axios
-            .get(`http://192.168.1.143:5000/restaurant/getByCity/${item}`)
+    // const getData = () => {
+    //     axios
+    //         .get(`http://192.168.1.143:5000/restaurant/getByCity/${item}`)
 
-            .then(function (response) {
-                // handle success
-                
-                // console.log(data)
-                setData(response.data.data.restaurant)
-                console.log(item)
+    //         .then(function (response) {
+    //             // handle success
+    //             // console.log(data)
+    //             setData(response.data.data.restaurant)
+    //             console.log(item)
+    //             // setImage({uri: img})
+    //             // setLoading(false)
 
+    //         })
+    //         .catch(function (error) {
+    //             // handle error
+    //             alert(error.message);
+    //         })
+    //         .finally(function () {
+    //             // always executed
+    //             alert('Finally called');
+    //         });
 
-                // setImage({uri: img})
-                // setLoading(false)
+    // };
 
-            })
-            .catch(function (error) {
-                // handle error
-                alert(error.message);
-            })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
-
-    };
-
-
-    const choiceRest = (item) => {
-        setIdTable(item)
-        console.log(item)
-        setLoading(false)
-        //  navigation.navigate('Wybierz stolik')
+//Przkierowanie na restauracje z widokiem stolików
+    const choiceTable = () => {
+        navigation.navigate('Wybierz stolik', { item })
     }
 
     const load = () => {
+        setLoading(false)
+    }
+
+    const loadBack = () => {
         setLoading(true)
     }
 
@@ -79,24 +77,55 @@ export function TimeReservation({ route, navigation }) {
                 <View style={styles.imageStyleLogo}></View>
                 {/* <Image style={styles.imageStyleLogo} source={require('../../logo.png')}></Image> */}
             </View>
-            <View style={{marginTop:70}}>
-                    <Text style={styles.txtStyleName}>{`${data ? data.name : ''}`}</Text>
-                </View>
-                <View style={styles.nameRestaurant}>
-                    <Text style={styles.txtStyle1}>Kiedy chcesz zarezerwować stolik ?</Text>
-                </View>
-                <View style={styles.buttonArea}>
-                    <TouchableOpacity style={styles.btn} onPress={getData}>
-                        <Text style={{ color: 'white', fontSize: 18,fontWeight:'bold' }} >Teraz</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn}>
-                        <Text style={{ color: 'white', fontSize: 18,fontWeight:'bold' }}>Dziś</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn}>
-                        <Text style={{ color: 'white', fontSize: 18,fontWeight:'bold' }}>W inny dzień</Text>
-                    </TouchableOpacity>
-                </View>
-         
+            <View style={{ marginTop: 70 }}>
+                <Text style={styles.txtStyleName}>{`${data ? data.name : ''}`}</Text>
+            </View>
+            {loading ?
+                <>
+                    <View style={styles.nameRestaurant}>
+                        <Text style={styles.txtStyle1}>Kiedy chcesz zarezerwować stolik ?</Text>
+                    </View>
+                    <View style={styles.buttonArea}>
+                        <TouchableOpacity style={styles.btn} onPress={choiceTable}>
+                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }} >Dziś</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn} onPress={load}>
+                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>W inny dzień</Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
+                : (
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.txtStyle1}>Data rezerwacji</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TextInput
+                                placeholder="rok /"
+                                style={styles.txtInput}
+                                onChangeText={text => setYear(text)}
+                                value={year}
+                                keyboardType='numeric'
+                            />
+                            <TextInput
+                                placeholder="mies /"
+                                style={styles.txtInput}
+                                onChangeText={text => setMonth(text)}
+                                value={month}
+                                keyboardType='numeric'
+                            />
+                            <TextInput
+                                placeholder="dzień"
+                                style={styles.txtInput}
+                                onChangeText={text => setDay(text)}
+                                value={day}
+                                keyboardType='numeric'
+                            />
+                        </View>
+                        <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={loadBack}>
+                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Wróć</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                )}
         </View>
     )
 }
@@ -156,7 +185,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 50
     },
-   
+
     txtStyle1: {
         fontSize: 30,
         color: 'black',
@@ -164,7 +193,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         // fontWeight:'bold'
     },
-    
+
     btnStyle: {
         backgroundColor: '#5B9CE6',
         padding: 20,
@@ -182,7 +211,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         // fontWeight:'bold'
     },
-    
-    
+    txtInput: {
+        alignSelf: 'stretch',
+        width: 50,
+        height: 50,
+        fontSize: 17,
+        borderRadius: 3,
+        alignItems: 'center',
+        borderBottomColor: 'lightgrey',
+        borderBottomWidth: 1,
+        marginBottom: 10
+    },
+
 
 })

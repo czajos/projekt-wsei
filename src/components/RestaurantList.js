@@ -34,10 +34,10 @@ export function RestaurantList({ navigation }) {
                 // handle error
                 alert(error.message);
             })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
     };
 const choiceRest=(item)=>{
      setIdRest(item)

@@ -32,10 +32,12 @@ import { EditTable } from './src/componentsFirma/EditTable'
  import { ListAddTable } from './src/componentsFirma/ListAddTable';
  import { AddOneTable } from './src/componentsFirma/AddOneTable';
 import TimeReservation from './src/components/TimeReservation'
-
-
-
-
+import MyReservation from './src/components/MyReservation'
+import NowChoiceTable from './src/components/NowChoiceTable'
+import Comments from './src/components/Comments'
+import AddComments from './src/components/AddComments'
+import InfoAboutRest from './src/components/InfoAboutRest'
+import MenuRest from './src/components/MenuRest'
 
 
 
@@ -104,11 +106,18 @@ export default function App() {
       }} />
       <Drawer.Screen name="Lista restauracji" component={RestaurantList} options={{ headerShown: false }} />
       <Drawer.Screen name="Wyszukaj restauracje" component={SearchOneRest} options={{ headerShown: false }} />
-      <Drawer.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} />
+      <Drawer.Screen name="Wybierz stolik" component={NowChoiceTable} options={{ headerShown: false }} />
       <Drawer.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} />
       <Drawer.Screen name="Formularz rejestracyjny" component={RegisterFormUser} options={{ headerShown: false }} />
       <Drawer.Screen name="Edycja profilu użytkownika" component={EditProfilUser} options={{ headerShown: false }} />
       <Drawer.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} />
+      <Drawer.Screen name="Moje rezerwacje" component={MyReservation} options={{ headerShown: false }} />
+      <Drawer.Screen name="Comments" component={Comments} options={{ headerShown: false }} />
+      <Drawer.Screen name="Add comments" component={AddComments} options={{ headerShown: false }} />
+      <Drawer.Screen name="Info" component={InfoAboutRest} options={{ headerShown: false }} />
+      <Drawer.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} />
+
+
 
     </Drawer.Navigator>
   )
@@ -144,6 +153,8 @@ export default function App() {
           {/* <RootStack.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} /> */}
       
            {/* <RootStack.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} /> */}
+          {/* <RootStack.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} /> */}
+
         
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />

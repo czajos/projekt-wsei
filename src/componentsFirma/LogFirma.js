@@ -33,7 +33,7 @@ export function LogFirma({ navigation }) {
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
-      // hostedDomain:'http://192.168.43.185:5000/google/login',
+      
       webClientId: '937323497149-fqllg32e0gpnv8m4ovr824mc6vm3a0ji.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
@@ -269,7 +269,7 @@ export function LogFirma({ navigation }) {
         onSuccess={sendToken}
 
       />
-      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={nextPage}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
        {/* <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text> */}

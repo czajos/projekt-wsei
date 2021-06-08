@@ -9,6 +9,7 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import axios from 'axios'
 import Icon from 'react-native-vector-icons/Ionicons'
 // import FormData from 'form-data'
+import { useIsFocused } from '@react-navigation/native';
 
 
 global.Buffer = global.Buffer || require('buffer').Buffer
@@ -19,17 +20,13 @@ export function ListAddTable({ navigation }) {
     const [numberTable, setNumberTable] = useState()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-
-
-
-
+    const isFocused = useIsFocused();
     //AXIOS GET 
-
     useEffect(() => {
         getData()
         deleteItem()
 
-    }, [])
+    }, [isFocused])
 
     const getData = () => {
         axios
@@ -98,7 +95,11 @@ export function ListAddTable({ navigation }) {
 
             })
 
-            getData()
+        getData()
+    }
+
+    const editTable=()=>{
+        navigation.navigate('Edit table')
     }
 
     const HiddenItemWithActions = props => {
@@ -106,7 +107,7 @@ export function ListAddTable({ navigation }) {
 
         return (
             <View style={styles.rowBack}>
-                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} onPress={() => navigation.navigate('Edit table')}>
+                <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnEdit]} onPress={editTable}>
                     <Icon name="create-outline"
                         color='white'
                         size={30}></Icon>
@@ -149,71 +150,76 @@ export function ListAddTable({ navigation }) {
             <View style={styles.header}>
                 <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
             </View>
-            
+
             <View
                 style={{ flex: 1 }}>
                 <View style={styles.dodajStoliki}>
-                <TouchableOpacity onPress={getData}>
-                    <Text style={styles.txtStyle1}>Lista twoich stolików</Text>
+                    <TouchableOpacity onPress={getData}>
+                        <Text style={styles.txtStyle1}>Lista twoich stolików</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-           
-                    
-                    <SwipeListView
-                        style={{ marginTop: 60 }}
-                        data={data}
-                        // renderHiddenItem={renderHiddenItem}
-                        // rightOpenValue={-145}
-                        keyExtractor={(item, index) => {
-                            return index.toString();
-                        }}
-                        renderItem={({ item }) => {
-                            console.log("item", item)
-
-                            return (
-                                <>
-                                    <View style={styles.item}>
-                                        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                        <View style={{marginLeft:-100,flexDirection: 'row' }}>
-                                            <Text style={styles.txtStyle1}>Stolik numer</Text>
-                                            <TextInput
-                                                style={styles.txtStyle1}
-                                                keyboardType='numeric'
-                                                // onChangeText={text => setNumberTable(text)}
-                                                value={item.number_table.toString()}
-                                            ></TextInput>
-                                            </View>
-                                            <TouchableOpacity style={[styles.btnRgihtBtn, styles.backRightBtnDelete]}  onPress={() => deleteItem(item.id)}>
-                                                <Icon name="close-circle-outline"
-                                                    color='black'
-                                                    size={40}></Icon>
-                                            </TouchableOpacity>
-                                            
-                                        </View>
 
 
-                                        <TouchableOpacity style={{ width: '100%' }} >
-                                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
+            <SwipeListView
+                style={{ marginTop: 60 }}
+                data={data}
+                // renderHiddenItem={renderHiddenItem}
+                // rightOpenValue={-145}
+                keyExtractor={(item, index) => {
+                    return index.toString();
+                }}
+                renderItem={({ item }) => {
+                    console.log("item", item)
+
+                    return (
+                        <>
+                            <View style={styles.item}>
+                                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <TouchableOpacity style={styles.btnRgihtBtn} onPress={editTable}>
+                                            <Icon name="create-outline"
+                                                color='black'
+                                                size={30}></Icon>
                                         </TouchableOpacity>
-                                    </View>
-                                    <View style={styles.podajLiczbeMiejscStyle}>
-                                        <Text style={styles.txtStyle1}
-                                        // onChangeText={}
-                                        >Liczba miejsc</Text>
+                                        <Text style={styles.txtStyle1}>Stolik numer</Text>
                                         <TextInput
-                                            style={styles.styleInput}
-                                            //  keyboardType='text'
-                                            type='number'
-                                            // onChangeText={text => setPlaces(ftext)}
-                                            value={item.numb_seats.toString()}
+                                            style={styles.txtStyle1}
+                                            keyboardType='numeric'
+                                            // onChangeText={text => setNumberTable(text)}
+                                            value={item.number_table.toString()}
                                         ></TextInput>
                                     </View>
-                                </>
-                            )
-                        }}
-                    />
-                
+                                    <TouchableOpacity style={styles.btnRgihtBtn} onPress={() => deleteItem(item.id)}>
+                                        <Icon name="close-circle-outline"
+                                            color='black'
+                                            size={30}></Icon>
+                                    </TouchableOpacity>
+
+                                </View>
+
+
+                                <TouchableOpacity style={{ width: '100%' }} >
+                                    <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.podajLiczbeMiejscStyle}>
+                                <Text style={styles.txtStyle1}
+                                // onChangeText={}
+                                >Liczba miejsc</Text>
+                                <TextInput
+                                    style={styles.styleInput}
+                                    //  keyboardType='text'
+                                    type='number'
+                                    // onChangeText={text => setPlaces(ftext)}
+                                    value={item.numb_seats.toString()}
+                                ></TextInput>
+                            </View>
+                        </>
+                    )
+                }}
+            />
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, opacity: 1, backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.btnFooterStyle} >
                     <Text style={styles.txtStyleBottomSheet} onPress={() => navigation.navigate('Dodaj')}>+ Nowy stolik</Text>
@@ -380,7 +386,7 @@ const styles = StyleSheet.create({
         margin: 3
     },
     btnRgihtBtn: {
-        
+
         justifyContent: 'center',
         //position:'absolute',
         padding: 12,
@@ -388,7 +394,7 @@ const styles = StyleSheet.create({
         height: 40,
 
         borderRadius: 100,
-        marginRight:-150
+        
 
 
     },

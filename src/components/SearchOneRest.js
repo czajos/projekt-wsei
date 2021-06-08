@@ -40,10 +40,8 @@ export function SearchOneRest({ navigation }) {
     const choiceRest = (item) => {
         setIdRest(item)
         console.log(idRest)
-
          navigation.navigate('Wybierz stolik',{item})
     }
-
 
     return (
         <View style={styles.container}>

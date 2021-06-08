@@ -268,7 +268,7 @@ export function LogScreen({ navigation }) {
         onSuccess={sendToken}
 
       />
-      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={nextPage}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
        {/* <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text> */}

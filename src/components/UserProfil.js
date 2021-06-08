@@ -18,7 +18,7 @@ export function UserProfil({ navigation }) {
                     <TouchableOpacity style={styles.btnStyles} onPress={()=>navigation.navigate('Edycja profilu użytkownika')}>
                         <Text style={styles.txtStyle} >Edytuj profil</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btnStyles}>
+                    <TouchableOpacity style={styles.btnStyles} onPress={()=>navigation.navigate('Moje rezerwacje')}>
                         <Text style={styles.txtStyle} >Moje rezerwacje</Text>
                     </TouchableOpacity>
                 </View>
