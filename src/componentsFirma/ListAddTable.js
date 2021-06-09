@@ -54,31 +54,6 @@ export function ListAddTable({ navigation }) {
     };
 
 
-
-    const imageGet = () => {
-        axios
-            .get('http://192.168.1.143:5000/table/getAll/3')
-
-            .then(function (response) {
-                const data = response.data.data.tables
-                const img = data[0].image_url
-                Buffer.from(img, 'binary').toString('base64')
-
-                console.log(img)
-                // setImage(data[0].image_url)
-                setImage(img)
-            })
-            .catch(function (error) {
-                // handle error
-                alert(error.message);
-            })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
-    }
-    
-
     //DELETE TABLE
 
     const deleteItem = (item, rowMap, rowKey) => {
@@ -98,8 +73,8 @@ export function ListAddTable({ navigation }) {
         getData()
     }
 
-    const editTable=()=>{
-        navigation.navigate('Edit table')
+    const editTable=(item)=>{
+        navigation.navigate('Edit table',{item})
     }
 
     const HiddenItemWithActions = props => {
@@ -136,14 +111,7 @@ export function ListAddTable({ navigation }) {
         )
     }
 
-    const deleteAxios = () => {
-        axios
-            .delete('http://192.168.1.143:5000/table/delete/4')
-
-            .then(response => {
-                console.log(response.data.data.tables)
-            })
-    }
+   
 
     return (
         <View style={styles.container}>
@@ -177,7 +145,7 @@ export function ListAddTable({ navigation }) {
                             <View style={styles.item}>
                                 <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <TouchableOpacity style={styles.btnRgihtBtn} onPress={editTable}>
+                                        <TouchableOpacity style={styles.btnRgihtBtn} onPress={()=>editTable(item.id)}>
                                             <Icon name="create-outline"
                                                 color='black'
                                                 size={30}></Icon>
@@ -187,7 +155,7 @@ export function ListAddTable({ navigation }) {
                                             style={styles.txtStyle1}
                                             keyboardType='numeric'
                                             // onChangeText={text => setNumberTable(text)}
-                                            value={item.number_table.toString()}
+                                            value={item.number_table}
                                         ></TextInput>
                                     </View>
                                     <TouchableOpacity style={styles.btnRgihtBtn} onPress={() => deleteItem(item.id)}>

@@ -1,5 +1,5 @@
 import ImagePicker from 'react-native-image-crop-picker';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
@@ -15,12 +15,53 @@ import FormData from 'form-data'
 
 
 
-export function EditTable({ navigation }) {
+export function EditTable({ route, navigation }) {
     const [bottomPanel, setBottomPanel] = useState(React.createRef())
-    const [places, setPlaces] = useState()
+    const [numb_seats, setPlaces] = useState()
     const [image, setImage] = useState(null)
-    const [numberTable, setNumberTable] = useState()
+    const [number_table, setNumberTable] = useState()
+    const { item } = route.params
+    const [data, setData] = useState([])
 
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+    const getData = () => {
+        axios
+            .get(`http://192.168.1.143:5000/table/getOne/${item}`)
+
+            .then(function (response) {
+
+                setData(response.data.data.tables)
+
+            })
+            .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+        //   .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        //   });
+    };
+
+    const edit = () => {
+        axios
+            .put(`http://192.168.1.143:5000/table/update/${item}`, {
+                numb_seats: data.numb_seats,
+                number_table: data.number_table
+            })
+            .then(function (response) {
+                back()
+
+            })
+            .catch(function (error) {
+                alert(error.message);
+            });
+            
+    }
 
     const clickImage = () => {
         bottomPanel.current.snapTo(0)
@@ -75,43 +116,17 @@ export function EditTable({ navigation }) {
     )
 
 
-    // WYSYŁKA DO BACKEND
-    const datas = new FormData();
-
-    datas.append('image', {
-        uri: image,
-        type: 'image/jpeg',
-        name: 'image.jpg'
-    });
-    datas.append('numb_seats', places)
-    datas.append('number_table', numberTable)
-    datas.append('id_rest', 5)
 
 
-    const sendTable = () => {
-        axios
-            .post("http://192.168.1.143:5000/table/create", datas, {
-              
-            })
-            .then(function (response) {
-                back()
-                deleteData()
-                // alert(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                alert(error.message);
-            });
-    }
-
-    const back =()=>{
+    const back = () => {
         navigation.goBack()
     }
-    const deleteData=()=>{
-        setImage(null)
-        setNumberTable(null)
-        setPlaces(null)
+    // const deleteData = () => {
+    //     setImage(null)
+    //     setNumberTable(null)
+    //     setPlaces(null)
 
-    }
+    // }
 
     return (
         <View style={styles.container}>
@@ -138,7 +153,7 @@ export function EditTable({ navigation }) {
             <Animated.View
                 style={{ flex: 1, opacity: Animated.add(1, Animated.multiply(fall, 0.8)) }}>
                 <View style={styles.dodajStoliki}>
-                    <Text style={styles.txtStyle1}>Utwórz stolik</Text>
+                    <Text style={styles.txtStyle1}>Edytuj stolik</Text>
                 </View>
                 <View>
                     <View style={styles.item}>
@@ -146,13 +161,14 @@ export function EditTable({ navigation }) {
                             <Text style={styles.txtStyle1}>Stolik numer</Text>
                             <TextInput
                                 style={styles.txtStyle1}
-                                onChangeText={text => setNumberTable(text)}
-                                value={numberTable}
+                                keyboardType='numeric'
+                                onChangeText={text => setData({ ...data, number_table: text })}
+                                value={`${data ? data.number_table : ''}`}
                             ></TextInput>
 
                         </View>
                         <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
-                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></Image>
+                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: data.image_url }}></Image>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.podajLiczbeMiejscStyle}>
@@ -162,15 +178,16 @@ export function EditTable({ navigation }) {
                         <TextInput
                             style={styles.styleInput}
                             keyboardType='numeric'
-                            onChangeText={text => setPlaces(text)}
-                            value={places}
+                            onChangeText={text => setData({ ...data, numb_seats: text })}
+                            value={`${data ? data.numb_seats : ''}`}
+
                         ></TextInput>
                     </View>
                 </View>
             </Animated.View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, opacity: 1, backgroundColor: 'white' }}>
 
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={sendTable}>
+                <TouchableOpacity style={styles.btnFooterStyle} onPress={edit}>
                     <Text style={styles.txtStyleBottomSheet}>Zatwierdź</Text>
                 </TouchableOpacity>
             </View>

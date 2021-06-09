@@ -37,7 +37,7 @@ import NowChoiceTable from './src/components/NowChoiceTable'
 import Comments from './src/components/Comments'
 import AddComments from './src/components/AddComments'
 import InfoAboutRest from './src/components/InfoAboutRest'
-import MenuRest from './src/components/MenuRest'
+import {MenuRest} from './src/components/MenuRest'
 import {AddPageMenu} from './src/componentsFirma/AddPageMenu'
 import {EditMenu} from './src/componentsFirma/EditMenu'
 
@@ -154,7 +154,8 @@ export default function App() {
            {/* <RootStack.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} /> */}
           {/* <RootStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} /> */}
 
-          {/* <RootStack.Screen name="Strona Menu" component={AddPageMenu} options={{ headerShown: false }} /> */}
+          {/* <RootStack.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} /> */}
+      {/* <RootStack.Screen name="Add comments" component={AddComments} options={{ headerShown: false }} /> */}
         
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />

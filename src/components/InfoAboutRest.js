@@ -63,46 +63,35 @@ export function InfoAboutRest({ route, navigation }) {
                 <View >
                     <Text style={styles.textOpinie}>Informacje o restauracji</Text>
                 </View>
-                
                     <View style={styles.styleInItem}>
-                        
-                      
-                        <ScrollView>
-
-                            <View style={{ marginTop: 15 }}>
-                                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Typ restauracji</Text>
+                        <ScrollView >
+                            <View style={{ marginTop: 15,alignItems:'center'  }}>
+                                <Text style={{  fontSize: 16, color: 'grey' }}>Typ restauracji</Text>
                                 <View style={styles.boxInput}>
-
                                     <Text style={styles.txtInput}>{`${data ? data.category : ''}`}</Text>
-
                                 </View>
                             </View>
-                            <View style={{ marginTop: 15 }}>
-                                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Miasto</Text>
+                            <View style={{ marginTop: 15,alignItems:'center'  }}>
+                                <Text style={{  fontSize: 16, color: 'grey' }}>Miasto</Text>
                                 <View style={styles.boxInput}>
-
                                     <Text style={styles.txtInput}>{`${data ? data.city : ''}`}</Text>
-
                                 </View>
                             </View>
-
-                            <View style={{ marginTop: 15 }}>
-                                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Adres lokalu</Text>
+                            <View style={{ marginTop: 15,alignItems:'center' }}>
+                                <Text style={{  fontSize: 16, color: 'grey' }}>Adres lokalu</Text>
                                 <View style={styles.boxInput}>
                                     <Text style={styles.txtInput}>{`${data ? data.street : ''}`}</Text>
-
                                 </View>
                             </View>
-                            <View style={{ marginTop: 15 }}>
-                                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Tel. kontaktowy</Text>
+                            <View style={{ marginTop: 15,alignItems:'center'  }}>
+                                <Text style={{  fontSize: 16, color: 'grey' }}>Tel. kontaktowy</Text>
                                 <View style={styles.boxInput}>
                                     <Text style={styles.txtInput}>{`${data ? data.phone : ''}`}</Text>
-
                                 </View>
                             </View>
 
-                            <View style={{ marginTop: 15 }}>
-                                <Text style={{ marginLeft: 10, fontSize: 16, color: 'grey' }}>Opis</Text>
+                            <View style={{ marginTop: 15,alignItems:'center'  }}>
+                                <Text style={{  fontSize: 16, color: 'grey' }}>Opis</Text>
                                 <View style={styles.boxInput}>
                                  <Text style={styles.txtInput}>{`${data ? data.description : ''}`}</Text>
 
@@ -190,39 +179,21 @@ const styles = StyleSheet.create({
         borderRadius: 50
 
     },
-    item: {
-        backgroundColor: 'white',
-        height: 'auto',
-        width: '80%',
-        padding: 10,
-        // marginVertical: 8,
-        marginHorizontal: 16,
-        // alignItems: 'center',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 0.5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
 
-        elevation: 5,
-        borderRadius: 10,
-        marginTop: 20
-    },
     styleInItem: {
         flexDirection: 'row',
-        padding: 5,
-        justifyContent: 'space-between'
+        // padding: 5,
+        // justifyContent: 'space-between',
+        alignItems:'center',
+        justifyContent:'center'
     },
     txtInput: {
-
-       
         height: 50,
         fontSize: 17,
         // borderBottomColor: 'black',
         // borderBottomWidth: 1,
-        color: 'black'
+        color: 'black',
+        marginTop:10
     },
 
     boxInput: {
@@ -231,7 +202,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         width: '80%',
         justifyContent: 'center',
-        marginLeft: 10
     },
 
 })

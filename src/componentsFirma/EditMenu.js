@@ -1,5 +1,5 @@
 import ImagePicker from 'react-native-image-crop-picker';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback,useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Animated, { onChange } from 'react-native-reanimated';
@@ -15,11 +15,16 @@ import FormData from 'form-data'
 
 
 
-export function EditMenu({ navigation }) {
+export function EditMenu({ route,navigation }) {
     const [bottomPanel, setBottomPanel] = useState(React.createRef())
     const [image, setImage] = useState(null)
     const [page,setPage] = useState()
-
+    const [data,setData]=useState([])
+    const {item}=route.params
+//Get one MENU
+useEffect(() => {
+    getData()
+  },[])
 
     const clickImage = () => {
         bottomPanel.current.snapTo(0)
@@ -73,6 +78,26 @@ export function EditMenu({ navigation }) {
         </View>
     )
 
+    
+      const getData = () => {
+        axios
+          .get(`http://192.168.1.143:5000/restaurant/menu/getOne/${item}`)
+    
+          .then(function (response) {
+            
+            setData(response.data.data.menu)
+    
+          })
+          .catch(function (error) {
+            // handle error
+            alert(error.message);
+          })
+        //   .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        //   });
+      };
+
 
     // WYSYŁKA DO BACKEND
     const datas = new FormData();
@@ -83,18 +108,18 @@ export function EditMenu({ navigation }) {
         name: 'image.jpg'
     });
     datas.append('page', page)
-    datas.append('id_rest', 3)
+    // datas.append('id_rest', 3)
 
 
     const sendMenu = () => {
         axios
-            .put("", datas, {
-              
+            .put(`http://192.168.1.143:5000/restaurant/menu/update/${item}`,  {
+              page:data.page,
+              image:data.image
             })
             .then(function (response) {
                 back()
-                deleteData()
-                // alert(JSON.stringify(response.data));
+                
             })
             .catch(function (error) {
                 alert(error.message);
@@ -141,15 +166,15 @@ export function EditMenu({ navigation }) {
                     <View style={styles.item}>
                         
                         <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
-                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></Image>
+                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri:  data.menu_url  }}></Image>
                         </TouchableOpacity>
                         <View style={{  flexDirection: 'column' }}>
                             <Text style={styles.txtStyleSite}>Strona numer</Text>
                             <TextInput
                                 placeholder="podaj nr strony"
                                 style={styles.txtStyleSite}
-                                onChangeText={text => setPage(text)}
-                                value={page}
+                                onChangeText={text => setData({ ...data, page: text })}
+                                value={`${data ? data.page : ''}`}
                             ></TextInput>
                         </View>
                     </View>

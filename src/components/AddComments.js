@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
@@ -19,8 +18,19 @@ export function AddComments({ navigation }) {
     const [numertel, setNumerTel] = useState()
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
+    const [ratingg,setRatingg]=useState()
 
     const [loading, setLoading] = useState(true)
+
+    const ratingCompleted=(rating)=> {
+        // console.log("Rating is: " + rating)
+        setRatingg(rating)
+       
+      }
+      const check=()=>{
+        console.log(ratingg)
+      }
+      
 
     return (
         <View style={styles.container}>
@@ -34,13 +44,21 @@ export function AddComments({ navigation }) {
             </View>
             <View style={{ alignItems: 'center', marginTop: 10 }}>
                 <View >
-                    <Text style={styles.textOpinie}>Opinie</Text>
+                    <Text style={styles.textOpinie}>Dodaj opinie</Text>
                 </View>
 
                 <View style={styles.item}>
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Users</Text>
-                        <Text style={styles.text2}>Data</Text>
+                        <Rating
+                            imageSize={18}
+                            startingValue={0}
+                            style={{ marginTop: 0 }}
+                            ratingCount={5}
+                            showRating
+                            onFinishRating={ratingCompleted}
+                        />
+                        
                     </View>
                     <View style={styles.styleInItem}>
                         <TextInput
@@ -50,7 +68,7 @@ export function AddComments({ navigation }) {
                             style={styles.textComment}></TextInput>
 
                     </View>
-                    <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'green', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }}>
+                    <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'green', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={check}>
                         <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Dodaj</Text>
                     </TouchableOpacity>
 

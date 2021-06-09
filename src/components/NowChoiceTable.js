@@ -9,8 +9,8 @@ import axios from 'axios'
 
 
 
-export function NowChoiceTable({route,navigation }) {
-    const {item}=route.params
+export function NowChoiceTable({ route, navigation }) {
+    const { item } = route.params
     const [data, setData] = useState([])
     const [secondData, setSecondData] = useState([])
     const [loading, setLoading] = useState(true)
@@ -24,7 +24,7 @@ export function NowChoiceTable({route,navigation }) {
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
-        
+
     }, [isFocused])
 
     const getData = () => {
@@ -55,19 +55,19 @@ export function NowChoiceTable({route,navigation }) {
     // datas.append('month', month)
     // datas.append('day', day)
 
-//Wysłanie rezerwacji z formularza
+    //Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
             .post("http://192.168.1.143:5000/reserwation/create", {
-                id_restaurant:item,
-                id_table:idTable,
-                hour:hour,
-                min:minute,
-                year:year,
-                month:month,
-                day:day
-            } )
-                
+                id_restaurant: item,
+                id_table: idTable,
+                hour: hour,
+                min: minute,
+                year: year,
+                month: month,
+                day: day
+            })
+
             .then(function (response) {
                 alert(JSON.stringify(response.data));
             })
@@ -77,7 +77,7 @@ export function NowChoiceTable({route,navigation }) {
         load()
     }
 
-//Wybór stolika
+    //Wybór stolika
     const choiceRest = (item) => {
         setIdTable(item)
         console.log(item)
@@ -86,12 +86,16 @@ export function NowChoiceTable({route,navigation }) {
     }
 
     //Informacje o restauracji
-    const info=()=>{
-        navigation.navigate('Info',{item})
+    const info = () => {
+        navigation.navigate('Info', { item })
     }
 
     const load = () => {
         setLoading(true)
+    }
+    //GO to MENU
+    const goToMenu = () => {
+        navigation.navigate('Menu rest', { item })
     }
 
     return (
@@ -117,13 +121,13 @@ export function NowChoiceTable({route,navigation }) {
                         />
                     </View>
                     <View style={styles.buttonArea}>
-                        <TouchableOpacity style={styles.btn} onPress={getData}>
+                        <TouchableOpacity style={styles.btn} onPress={()=>goToMenu(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }} >MENU</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={()=>info(item.id)}>
+                        <TouchableOpacity style={styles.btn} onPress={() => info(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate('Comments')}>
+                        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Comments')}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
                         </TouchableOpacity>
                     </View>

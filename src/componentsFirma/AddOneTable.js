@@ -94,13 +94,14 @@ export function AddOneTable({ navigation }) {
               
             })
             .then(function (response) {
-                back()
+                
                 deleteData()
                 // alert(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 alert(error.message);
             });
+            back()
     }
 
     const back =()=>{
