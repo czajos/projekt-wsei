@@ -21,6 +21,7 @@ export function EditMenu({ route,navigation }) {
     const [page,setPage] = useState()
     const [data,setData]=useState([])
     const {item}=route.params
+    const [imageChange,setImageChange]=useState(true)
 //Get one MENU
 useEffect(() => {
     getData()
@@ -52,6 +53,7 @@ useEffect(() => {
             console.log(image);
 
         });
+       setImageChange(false) 
     });
 
 
@@ -101,21 +103,22 @@ useEffect(() => {
 
     // WYSYŁKA DO BACKEND
     const datas = new FormData();
-
+    
     datas.append('image', {
         uri: image,
         type: 'image/jpeg',
         name: 'image.jpg'
     });
-    datas.append('page', page)
+
+    datas.append('page', data.page)
     // datas.append('id_rest', 3)
 
 
     const sendMenu = () => {
         axios
-            .put(`http://192.168.1.143:5000/restaurant/menu/update/${item}`,  {
-              page:data.page,
-              image:data.image
+            .put(`http://192.168.1.143:5000/restaurant/menu/update/${item}`, datas, {
+            //   page:data.page,
+            //   image:image
             })
             .then(function (response) {
                 back()
@@ -135,6 +138,8 @@ useEffect(() => {
         setPage(null)
     }
 
+
+    
     return (
         <View style={styles.container}>
             <BottomSheet
@@ -166,8 +171,14 @@ useEffect(() => {
                     <View style={styles.item}>
                         
                         <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
+                       {imageChange ? 
                             <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri:  data.menu_url  }}></Image>
-                        </TouchableOpacity>
+                            : (
+
+                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri:  image  }}></Image>
+
+                            ) }
+                            </TouchableOpacity>
                         <View style={{  flexDirection: 'column' }}>
                             <Text style={styles.txtStyleSite}>Strona numer</Text>
                             <TextInput

@@ -5,32 +5,45 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
+import FormData from 'form-data'
 
 
-
-
-
-export function AddComments({ navigation }) {
-    const [image, setImage] = useState(null)
-    const [nazwarestauracji, setNazwaRestauracji] = useState('')
-    const [name, setName] = useState()
-    const [lastName, setLastName] = useState()
-    const [numertel, setNumerTel] = useState()
+export function AddComments({ route, navigation }) {
     const [data, setData] = useState([])
-    const [data2, setData2] = useState([])
-    const [ratingg,setRatingg]=useState()
-
+    const [ratingg, setRatingg] = useState()
+    const [ratingValue, setRatingValue] = useState(3)
     const [loading, setLoading] = useState(true)
+    const [comment, setComment] = useState()
+    const { item } = route.params
 
-    const ratingCompleted=(rating)=> {
+    const ratingCompleted = (rating) => {
         // console.log("Rating is: " + rating)
-        setRatingg(rating)
-       
-      }
-      const check=()=>{
-        console.log(ratingg)
-      }
-      
+        setRatingValue(rating)
+
+    }
+    
+    const check = () => {
+        console.log(ratingValue)
+        console.log(item)
+    }
+    //Wysyłga backend
+    const datas = new FormData()
+    datas.append('commnet', comment)
+    datas.append('rating', ratingValue)
+
+    const submitComment = () => {
+        axios
+            .post(`http://192.168.1.143:5000/comment/add/${item}`,  {
+                 comment:comment,
+                 rating:ratingValue
+            })
+            .then(function (response) {
+                alert(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                alert(error.message);
+            });
+    }
 
     return (
         <View style={styles.container}>
@@ -58,17 +71,20 @@ export function AddComments({ navigation }) {
                             showRating
                             onFinishRating={ratingCompleted}
                         />
-                        
+
                     </View>
                     <View style={styles.styleInItem}>
                         <TextInput
                             multiline={true}
                             numberOfLines={3}
                             placeholder='Dodaj komentarz'
-                            style={styles.textComment}></TextInput>
+                            style={styles.textComment}
+                            onChangeText={text => setComment(text)}
+                            value={comment}
+                        ></TextInput>
 
                     </View>
-                    <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'green', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={check}>
+                    <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'green', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={submitComment}>
                         <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Dodaj</Text>
                     </TouchableOpacity>
 

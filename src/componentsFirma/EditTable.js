@@ -12,6 +12,7 @@ import axios from 'axios'
 import FormData from 'form-data'
 // import EditTable from './EditTable'
 // import { createStackNavigator } from '@react-navigation/stack';
+import { useIsFocused } from '@react-navigation/native';
 
 
 
@@ -22,11 +23,14 @@ export function EditTable({ route, navigation }) {
     const [number_table, setNumberTable] = useState()
     const { item } = route.params
     const [data, setData] = useState([])
+    const[imageChange,setImageChange]=useState(true)
 
+    const isFocused=useIsFocused()
+    
     useEffect(() => {
         getData()
 
-    }, [])
+    }, [isFocused])
 
     const getData = () => {
         axios
@@ -47,20 +51,34 @@ export function EditTable({ route, navigation }) {
         //   });
     };
 
+    const datas = new FormData()
+    // if(imageChange){
+    datas.append('image', {
+        uri: image,
+        type: 'image/jpeg',
+        name: 'image.jpg'
+    })
+
+    datas.append('numb_seats', data.numb_seats)
+    datas.append('number_table', data.number_table)
+
     const edit = () => {
+        console.log(item)
+        console.log(datas)
         axios
-            .put(`http://192.168.1.143:5000/table/update/${item}`, {
-                numb_seats: data.numb_seats,
-                number_table: data.number_table
+            .put(`http://192.168.1.143:5000/table/update/${item}`,datas,{
+                // numb_seats: data.numb_seats,
+                // number_table: data.number_table,
+                // image:image
             })
             .then(function (response) {
-                back()
+                
 
             })
             .catch(function (error) {
                 alert(error.message);
             });
-            
+            back()
     }
 
     const clickImage = () => {
@@ -68,6 +86,7 @@ export function EditTable({ route, navigation }) {
     }
     const fall = new Animated.Value(1)
 
+    //Add image
     const takePhotoFromCamera = useCallback(() => {
         ImagePicker.openCamera({
             width: 300,
@@ -77,6 +96,7 @@ export function EditTable({ route, navigation }) {
             setImage(image.path)
             console.log(image);
         });
+        setImageChange(false)
     });
 
     const choosePhotoFromLibrary = useCallback(() => {
@@ -89,10 +109,11 @@ export function EditTable({ route, navigation }) {
             console.log(image);
 
         });
+        setImageChange(false)
     });
 
 
-    renderSheet = () => (
+   const renderSheet = () => (
         <View style={{ backgroundColor: 'white' }}>
             <TouchableOpacity style={styles.btnAddPhoto} onPress={() => choosePhotoFromLibrary()}>
                 <Text style={styles.txtStyleBottomSheet} >Dodaj zdjęcie z galeri</Text>
@@ -106,7 +127,7 @@ export function EditTable({ route, navigation }) {
         </View>
     )
     //renderowanie nagłowka w dolnym akruszu
-    renderHeader = () => (
+   const renderHeader = () => (
         <View style={{
             backgroundColor: 'white', height: 45, justifyContent: 'center', alignItems: 'center', borderTopColor: 'lightgrey',
             borderTopWidth: 2,
@@ -116,17 +137,11 @@ export function EditTable({ route, navigation }) {
     )
 
 
-
-
     const back = () => {
         navigation.goBack()
+        setImageChange(true)
     }
-    // const deleteData = () => {
-    //     setImage(null)
-    //     setNumberTable(null)
-    //     setPlaces(null)
-
-    // }
+  
 
     return (
         <View style={styles.container}>
@@ -168,7 +183,11 @@ export function EditTable({ route, navigation }) {
 
                         </View>
                         <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
+                        {imageChange ? 
                             <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: data.image_url }}></Image>
+                            :(
+                                <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></Image>
+                            )}
                         </TouchableOpacity>
                     </View>
                     <View style={styles.podajLiczbeMiejscStyle}>

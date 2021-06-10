@@ -1,26 +1,43 @@
 import React, { useState, useEffect } from 'react';
-
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
+import { SwipeListView } from 'react-native-swipe-list-view'
+import { useIsFocused } from '@react-navigation/native';
 
 
 
 
 
-export function Comments({ navigation }) {
-    const [image, setImage] = useState(null)
-    const [nazwarestauracji, setNazwaRestauracji] = useState('')
-    const [name, setName] = useState()
-    const [lastName, setLastName] = useState()
-    const [numertel, setNumerTel] = useState()
+
+export function Comments({ route, navigation }) {
     const [data, setData] = useState([])
-    const [data2, setData2] = useState([])
-
     const [loading, setLoading] = useState(true)
+    const { item } = route.params
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        getData()
+    }, [isFocused])
+
+    const addComment = () => {
+        navigation.navigate('Add comments', { item })
+    }
+
+    const getData = () => {
+        axios
+            .get(`http://192.168.1.143:5000/comment/getAll/${item}`)
+            .then(function (response) {
+                // alert(JSON.stringify(response.data));
+                setData(response.data.data.comment)
+            })
+            .catch(function (error) {
+                alert(error.message);
+            });
+    }
 
     return (
         <View style={styles.container}>
@@ -36,21 +53,39 @@ export function Comments({ navigation }) {
                 <View >
                     <Text style={styles.textOpinie}>Opinie</Text>
                 </View>
-                <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={()=>navigation.navigate('Add comments')}>
-                        <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Dodaj opinie</Text>
-                    </TouchableOpacity>
-                <View style={styles.item}>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Users</Text>
-                        <Text style={styles.text2}>Data</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Usersddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</Text>
-                        
-                    </View>
-                    
-                    
-                </View>
+                <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={() => addComment()}>
+                    <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Dodaj opinie</Text>
+                </TouchableOpacity>
+                <SwipeListView
+                    style={{ width: '100%'}}
+                    data={data}
+                    keyExtractor={(item, index) => {
+                        return index.toString();
+                    }}
+                    renderItem={({ item }) => {
+                        console.log("item", item)
+
+                        return (
+                            <View style={styles.item}>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>Users</Text>
+                                    {/* <Text style={styles.text2}>Data</Text> */}
+                                    <Rating
+                                        imageSize={18}
+                                        startingValue={item.rating}
+                                        style={{ marginTop: 0 }}
+                                        ratingCount={5}
+                                        showRating
+                                        // onFinishRating={ratingCompleted}
+                                    />
+                                </View>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>{item.comment}</Text>
+                                </View>
+                            </View>
+                        )
+                    }}
+                />
             </View>
         </View>
     )
@@ -115,7 +150,7 @@ const styles = StyleSheet.create({
     textOpinie: {
         fontSize: 22,
         color: 'black',
-        fontWeight:'bold'
+        fontWeight: 'bold'
     },
     textComment: {
         fontSize: 17,
@@ -158,7 +193,10 @@ const styles = StyleSheet.create({
 
         elevation: 5,
         borderRadius: 10,
-        marginTop:20
+        marginTop: 20,
+        marginBottom: 20,
+
+       
     },
     styleInItem: {
         flexDirection: 'row',

@@ -24,7 +24,7 @@ export function ListAddTable({ navigation }) {
     //AXIOS GET 
     useEffect(() => {
         getData()
-        deleteItem()
+        // deleteItem()
 
     }, [isFocused])
 
@@ -34,12 +34,7 @@ export function ListAddTable({ navigation }) {
 
             .then(function (response) {
                 // handle success
-                const data = response.data.data.tables
-                // console.log(data)
                 setData(response.data.data.tables)
-
-
-                // setImage({uri: img})
                 setLoading(false)
 
             })
@@ -47,10 +42,10 @@ export function ListAddTable({ navigation }) {
                 // handle error
                 alert(error.message);
             })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
     };
 
 

@@ -93,7 +93,7 @@ export const AddMenu = ({ navigation }) => {
                   <Text style={styles.txtStyleSite}>Strona numer</Text>
                   <Text style={styles.txtStyleSite}>{item.page.toString()}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <TouchableOpacity style={styles.deleteBottom} onPress={() => deleteItem(item.id)}>
                     <Text style={styles.txtDeleteBottom}>Usuń</Text>
                   </TouchableOpacity>

@@ -63,6 +63,7 @@ const choiceRest=(item)=>{
                 <View style={styles.container2}>
                     <TextInput
                         style={styles.txtInput}
+                        placeholder="Wyszukaj miasto"
                         onChangeText={text => setCity(text)}
                         value={city}
                     />

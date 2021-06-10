@@ -3,8 +3,6 @@ import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity, Im
 import { TextInput } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Ionicons'
-
-
 // import { createStackNavigator } from 'react-navigation-stack';
 import axios from 'axios'
 

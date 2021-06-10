@@ -22,34 +22,29 @@ export function TimeReservation({ route, navigation }) {
     const [idTable, setIdTable] = useState()
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
-    // useEffect(() => {
-    //     getData()
-    //     // getDataRest()
-    // }, [isFocused])
+    useEffect(() => {
+        getData()
+    }, [isFocused])
 
-    // const getData = () => {
-    //     axios
-    //         .get(`http://192.168.1.143:5000/restaurant/getByCity/${item}`)
+    const getData = () => {
+        axios
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
 
-    //         .then(function (response) {
-    //             // handle success
-    //             // console.log(data)
-    //             setData(response.data.data.restaurant)
-    //             console.log(item)
-    //             // setImage({uri: img})
-    //             // setLoading(false)
+            .then(function (response) {
+                // handle success 
 
-    //         })
-    //         .catch(function (error) {
-    //             // handle error
-    //             alert(error.message);
-    //         })
-    //         .finally(function () {
-    //             // always executed
-    //             alert('Finally called');
-    //         });
-
-    // };
+                console.log(response.data.data)
+                setData(response.data.data)
+            })
+            .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
+    };
 
 //Przkierowanie na restauracje z widokiem stolików
     const choiceTable = () => {
@@ -75,7 +70,7 @@ export function TimeReservation({ route, navigation }) {
             </View>
             <View style={styles.header} >
                 <View style={styles.imageStyleLogo}></View>
-                {/* <Image style={styles.imageStyleLogo} source={require('../../logo.png')}></Image> */}
+                <Image style={styles.imageStyleLogo} source={{uri: data.image_url}}></Image>
             </View>
             <View style={{ marginTop: 70 }}>
                 <Text style={styles.txtStyleName}>{`${data ? data.name : ''}`}</Text>

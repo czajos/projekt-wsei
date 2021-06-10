@@ -12,6 +12,7 @@ import axios from 'axios'
 export function NowChoiceTable({ route, navigation }) {
     const { item } = route.params
     const [data, setData] = useState([])
+    const [data2, setData2] = useState([])
     const [secondData, setSecondData] = useState([])
     const [loading, setLoading] = useState(true)
     const [hour, setHour] = useState()
@@ -20,11 +21,12 @@ export function NowChoiceTable({ route, navigation }) {
     const [month, setMonth] = useState()
     const [day, setDay] = useState()
     const [idTable, setIdTable] = useState()
+    const [test,setTest]=useState(4,5)
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
-
+        getData2()
     }, [isFocused])
 
     const getData = () => {
@@ -40,10 +42,29 @@ export function NowChoiceTable({ route, navigation }) {
                 // handle error
                 alert(error.message);
             })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
+    };
+    const getData2 = () => {
+        axios
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
+
+            .then(function (response) {
+                // handle success 
+
+                console.log(response.data.data)
+                setData2(response.data.data)
+            })
+            .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
     };
 
     // const datas = new FormData()
@@ -84,6 +105,7 @@ export function NowChoiceTable({ route, navigation }) {
         setLoading(false)
         //  navigation.navigate('Wybierz stolik')
     }
+    
 
     //Informacje o restauracji
     const info = () => {
@@ -98,6 +120,10 @@ export function NowChoiceTable({ route, navigation }) {
         navigation.navigate('Menu rest', { item })
     }
 
+    const goToComment = () => {
+        navigation.navigate('Comments', { item })
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: 'green', padding: 5 }}>
@@ -109,25 +135,33 @@ export function NowChoiceTable({ route, navigation }) {
             </View>
             <View style={styles.header} >
                 <View style={styles.imageStyleLogo}></View>
-                {/* <Image style={styles.imageStyleLogo} source={require('../../logo.png')}></Image> */}
+                <Image style={styles.imageStyleLogo} source={{uri: data2.image_url}}></Image>
             </View>
             {loading ?
                 <>
                     <View style={styles.nameRestaurant}>
-                        {/* <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data ? secondData.name : ''}`}</Text> */}
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text>
+                        {data2.avg  ? 
                         <Rating
-                            imageSize={20}
+                            imageSize={18}
+                            startingValue={`${data2 ? parseInt(data2.avg) : ''}`}
                             style={{ marginTop: 0 }}
+                            ratingCount={5}
+                            showRating
+                        // onFinishRating={ratingCompleted}
                         />
+                        :(
+                            <Text>Brak ocen</Text>
+                        )}
                     </View>
                     <View style={styles.buttonArea}>
-                        <TouchableOpacity style={styles.btn} onPress={()=>goToMenu(item.id)}>
+                        <TouchableOpacity style={styles.btn} onPress={() => goToMenu(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }} >MENU</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={() => info(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Comments')}>
+                        <TouchableOpacity style={styles.btn} onPress={() => goToComment(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
                         </TouchableOpacity>
                     </View>
@@ -253,6 +287,9 @@ export function NowChoiceTable({ route, navigation }) {
 
                                 <TouchableOpacity style={styles.btnStyle} onPress={submitPost}>
                                     <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zarezerwuj</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.btnStyle} onPress={load}>
+                                    <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Wróć</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
