@@ -34,12 +34,16 @@ import { EditTable } from './src/componentsFirma/EditTable'
 import TimeReservation from './src/components/TimeReservation'
 import MyReservation from './src/components/MyReservation'
 import NowChoiceTable from './src/components/NowChoiceTable'
+import OtherDayChoiceTable from './src/components/OtherDayChoiceTable'
 import Comments from './src/components/Comments'
 import AddComments from './src/components/AddComments'
 import InfoAboutRest from './src/components/InfoAboutRest'
 import {MenuRest} from './src/components/MenuRest'
 import {AddPageMenu} from './src/componentsFirma/AddPageMenu'
 import {EditMenu} from './src/componentsFirma/EditMenu'
+import { CreateOpeningHours } from './src/componentsFirma/CreateOpeningHours';
+import { OpeningHours } from './src/componentsFirma/OpeningHours';
+
 
 
 
@@ -111,6 +115,8 @@ export default function App() {
       <Drawer.Screen name="Lista restauracji" component={RestaurantList} options={{ headerShown: false }} />
       <Drawer.Screen name="Wyszukaj restauracje" component={SearchOneRest} options={{ headerShown: false }} />
       <Drawer.Screen name="Wybierz stolik" component={NowChoiceTable} options={{ headerShown: false }} />
+      <Drawer.Screen name="Wybierz stolik w inny dzień" component={OtherDayChoiceTable} options={{ headerShown: false }} />
+
       <Drawer.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} />
       <Drawer.Screen name="Formularz rejestracyjny" component={RegisterFormUser} options={{ headerShown: false }} />
       <Drawer.Screen name="Edycja profilu użytkownika" component={EditProfilUser} options={{ headerShown: false }} />
@@ -146,24 +152,13 @@ export default function App() {
   const RootStackScreen = ({ userToken }) => (
     <RootStack.Navigator headerMode='none'>
       
-        
+      {/* <RootStack.Screen name="Godziny otwarcia" component={CreateOpeningHours} options={{ headerShown: false }} /> */}
+      {/* <RootStack.Screen name="Godziny otwarcia" component={OpeningHours} options={{ headerShown: false }} /> */}
 
-     
-          {/* <RootStack.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} /> */}
       
-           {/* <RootStack.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} /> */}
-          {/* <RootStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} /> */}
-
-          {/* <RootStack.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} /> */}
-      {/* <RootStack.Screen name="Add comments" component={AddComments} options={{ headerShown: false }} /> */}
-        
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />
           <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
-          
-
-        
-      
     </RootStack.Navigator>
   )
 

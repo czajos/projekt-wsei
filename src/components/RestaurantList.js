@@ -92,7 +92,7 @@ const choiceRest=(item)=>{
 
                         return (
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap',marginTop:20 }}>
                                 <TouchableOpacity onPress={()=>choiceRest(item.id)}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>

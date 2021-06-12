@@ -13,15 +13,20 @@ export function TimeReservation({ route, navigation }) {
     const { item } = route.params
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [loading2, setLoading2] = useState(true)
     const [year, setYear] = useState()
     const [month, setMonth] = useState()
     const [day, setDay] = useState()
+    const [respo, setRespo] = useState([])
+    const [responseTime, setResponseTime] = useState([])
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
+        
+        // getTime()
     }, [isFocused])
-//Pobranie danych o restauracji (zdjęcie i nazwa)
+    //Pobranie danych o restauracji (zdjęcie i nazwa)
     const getData = () => {
         axios
             .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
@@ -36,47 +41,59 @@ export function TimeReservation({ route, navigation }) {
                 // handle error
                 alert(error.message);
             })
-            // .finally(function () {
-            //     // always executed
-            //     alert('Finally called');
-            // });
+        // .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        // });
+        // if(respo!=null){
+        //     choiceTableOtherDay()
+        // }
+        // choiceTableOtherDay()
     };
 
-//Wysłanie daty 
+    //Wysłanie daty 
     const getTime = () => {
         axios
-            .post(`http://192.168.1.143:5000/table/getByDate/${item}`,{
-                year:year,
-                month:month,
-                day:day
+            .post(`http://192.168.1.143:5000/table/getByDate/${item}`, {
+                year: year,
+                month: month,
+                day: day
             })
 
             .then(function (response) {
                 // handle success 
+                setRespo(response.data.data.tables)
+                console.log("kupa",response.data.data.tables)
+                console.log('data', response.data.date_booking)
+                setResponseTime(response.data.date_booking)
+                
+                // setData(response.data.data)
+                // choiceTableOtherDay()
 
-                console.log(response.data.data)
-                setData(response.data.data)
             })
             .catch(function (error) {
                 // handle error
                 alert(error.message);
             })
-            // .finally(function () {
-            //     // always executed
-            //     alert('Finally called');
-            // });
-            choiceTableToday()
+        // .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        // });
+     
+            
+    
     };
 
-//Przkierowanie na restauracje z widokiem stolików
+    //Przkierowanie na restauracje z widokiem stolików
     const choiceTableNow = () => {
         navigation.navigate('Wybierz stolik', { item })
     }
 
-const choiceTableToday =()=>{
-    navigation.navigate('Wybierz stolik', { item })
-    
-}
+    const choiceTableOtherDay = () => {
+        
+        navigation.navigate('Wybierz stolik w inny dzień', { item, respo, responseTime })
+        
+    }
 
     const load = () => {
         setLoading(false)
@@ -97,13 +114,15 @@ const choiceTableToday =()=>{
             </View>
             <View style={styles.header} >
                 <View style={styles.imageStyleLogo}></View>
-                <Image style={styles.imageStyleLogo} source={{uri: data.image_url}}></Image>
+                <Image style={styles.imageStyleLogo} source={{ uri: data.image_url }}></Image>
             </View>
             <View style={{ marginTop: 70 }}>
                 <Text style={styles.txtStyleName}>{`${data ? data.name : ''}`}</Text>
             </View>
             {loading ?
+            
                 <>
+                
                     <View style={styles.nameRestaurant}>
                         <Text style={styles.txtStyle1}>Kiedy chcesz zarezerwować stolik ?</Text>
                     </View>
@@ -142,13 +161,13 @@ const choiceTableToday =()=>{
                                 keyboardType='numeric'
                             />
                         </View>
-                        <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={loadBack}>
-                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Wróć</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={getTime}>
-                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Szukaj</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={choiceTableOtherDay}>
+                                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Wróć</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={getTime}>
+                                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Szukaj</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
 

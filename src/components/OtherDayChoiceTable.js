@@ -9,7 +9,7 @@ import axios from 'axios'
 
 
 
-export function NowChoiceTable({ route, navigation }) {
+export function OtherDayChoiceTable({ route, navigation }) {
     const { item } = route.params
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
@@ -23,34 +23,41 @@ export function NowChoiceTable({ route, navigation }) {
     const [idTable, setIdTable] = useState()
     const [test, setTest] = useState(4, 54)
     const [time, setTime] = useState([])
+    const {respo}=route.params
+    const {responseTime}=route.params
+    const {chuj}=route.params
+
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
-        getData()
+        setData(chuj)
+        console.log(respo)
+        setTime(responseTime)
         getData2()
     }, [isFocused])
 
-    const getData = () => {
-        axios
-            .post(`http://192.168.1.143:5000/table/getTableToday/${item}`)
+    
+    // const getData = () => {
+    //     axios
+    //         .post(`http://192.168.1.143:5000/table/getByDate/${item}`)
 
-            .then(function (response) {
-                // handle success 
-                setData(response.data.data.tables)
-                const time = response.data.date_booking
-                console.log('to', time)
-                setTime(response.data.date_booking)
+    //         .then(function (response) {
+    //             // handle success 
+    //             setData(response.data.data.tables)
+    //             const time = response.data.date_booking
+    //             console.log('to', time)
+    //             setTime(response.data.date_booking)
 
-            })
-            .catch(function (error) {
-                // handle error
-                alert(error.message);
-            })
-        // .finally(function () {
-        //     // always executed
-        //     alert('Finally called');
-        // });
-    };
+    //         })
+    //         .catch(function (error) {
+    //             // handle error
+    //             alert(error.message);
+    //         })
+    //     // .finally(function () {
+    //     //     // always executed
+    //     //     alert('Finally called');
+    //     // });
+    // };
     const getData2 = () => {
         axios
             .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
@@ -58,7 +65,7 @@ export function NowChoiceTable({ route, navigation }) {
             .then(function (response) {
                 // handle success 
 
-                console.log(response.data.data)
+                // console.log(response.data.data)
                 setData2(response.data.data)
             })
             .catch(function (error) {
@@ -105,7 +112,7 @@ export function NowChoiceTable({ route, navigation }) {
     //Wybór stolika
     const choiceRest = (item) => {
         setIdTable(item)
-        console.log(item)
+        // console.log(item)
         setLoading(false)
         //  navigation.navigate('Wybierz stolik')
     }
@@ -309,7 +316,7 @@ export function NowChoiceTable({ route, navigation }) {
         </View>
     )
 }
-export default NowChoiceTable;
+export default OtherDayChoiceTable;
 
 
 const styles = StyleSheet.create({

@@ -1,12 +1,11 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios'
-import { useIsFocused } from '@react-navigation/native';
 
 
 
-export const OpeningHours = ({ navigation }) => {
+export const CreateOpeningHours = ({ navigation }) => {
   const [monOpen, setMonOpen] = useState()
   const [monClose, setMonClose] = useState()
 
@@ -27,52 +26,52 @@ export const OpeningHours = ({ navigation }) => {
 
   const [sunOpen, setSunOpen] = useState()
   const [sunClose, setSunClose] = useState()
-  const [id,setId]=useState(3)
-  const[data,setData]=useState([])
-  const isFocused=useIsFocused()
+const [id,setId]=useState(3)
 
-  useEffect(()=>{
-   getData()
-  },[isFocused])
+
  
-  const getData = () => {
+
+  // const datas=new FormData()
+  
+  //  datas.append('mon_open',monOpen)
+  //  datas.append('mon_close',monClose)
+  //  datas.append('tue_open',tueOpen)
+  //  datas.append('tue_close',tueClose)
+  //  datas.append('wed_open',wedOpen)
+  //  datas.append('wed_close',wedClose)
+  //  datas.append('thu_open',thuOpen)
+  //  datas.append('thu_close',thuClose)
+  //  datas.append('fri_open',friOpen)
+  //  datas.append('fri_close',friClose)
+  //  datas.append('sat_open',satOpen)
+  //  datas.append('sat_close',satClose)
+  //  datas.append('sun_open',sunOpen)
+  //  datas.append('sun_close',sunClose)
+
+  const submit = () => {
     axios
-      .get(`http://192.168.1.143:5000/restaurant/openTime/get/${id}`, {
-        
+      .post(`http://192.168.1.143:5000/restaurant/openTime/add/${id}`, {
+        mon_open:monOpen ==null ? '00:00' : monOpen, 
+        mon_close:monClose ==null ? '00:00' : monClose,
+        tue_open:tueOpen ==null ? '00:00' : tueOpen,
+        tue_close:tueClose ==null ? '00:00' : tueClose,
+        wed_open:wedOpen ==null ? '00:00' : wedOpen,
+        wed_close:wedClose ==null ? '00:00' : wedClose,
+        thu_open:thuOpen ==null ? '00:00' : thuOpen,
+        thu_close:thuClose == null ? '00:00' : thuClose,
+        fri_open:friOpen ==null ? '00:00' : friOpen,
+        fri_close:friClose ==null ? '00:00' : friClose,
+        sat_open:satOpen ==null ? '00:00' : satOpen,
+        sat_close:satClose ==null ? '00:00' : satClose,
+        sun_open:sunOpen ==null ? '00:00' : sunOpen,
+        sun_close:sunClose ==null ? '00:00' : sunClose,
       })
       .then(function (response) {
-        setData(response.data.data.time)
+        alert(JSON.stringify(response.data));
       })
       .catch(function (error) {
         alert(error.message);
       });
-  }
-
-  const updata=()=>{
-      axios 
-           .put(`http://192.168.1.143:5000/restaurant/openTime/update/${id}`,{
-            mon_open:data.mon_open ==null ? '00:00' : data.mon_open, 
-            mon_close:data.mon_close ==null ? '00:00' : data.mon_close,
-            tue_open:data.tue_open ==null ? '00:00' : data.tue_open,
-            tue_close:data.tue_close ==null ? '00:00' : data.tue_close,
-            wed_open:data.wed_open ==null ? '00:00' : data.wed_open,
-            wed_close:data.wed_close ==null ? '00:00' : data.wed_close,
-            thu_open:data.thu_open ==null ? '00:00' : data.thu_open,
-            thu_close:data.thu_close == null ? '00:00' : data.thu_close,
-            fri_open:data.fri_open ==null ? '00:00' : data.fri_open,
-            fri_close:data.fri_close ==null ? '00:00' : data.fri_close,
-            sat_open:data.sat_open ==null ? '00:00' : data.sat_open,
-            sat_close:data.sat_close ==null ? '00:00' : data.sat_close,
-            sun_open:data.sun_open ==null ? '00:00' : data.sun_open,
-            sun_close:data.sun_close ==null ? '00:00' : data.sun_close,
-           })
-           .then(function (response) {
-            alert(JSON.stringify(response.data));
-            
-          })
-          .catch(function (error) {
-            alert(error.message);
-          });
   }
 
 
@@ -82,7 +81,7 @@ export const OpeningHours = ({ navigation }) => {
         <Image style={styles.image} source={require('../../logodlafirm.png')}></Image>
       </View>
       <View style={styles.title}>
-        <Text style={styles.txtStyle1}>Edytuj godziny otwarcia restauracji</Text>
+        <Text style={styles.txtStyle1}>Podaj godziny otwarcia restauracji</Text>
       </View>
       <ScrollView style={styles.datastyle}>
         <View style={styles.addHoursStyle}>
@@ -98,16 +97,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             // type="text"
-            onChangeText={text => setData({...data, mon_open: text})}
-            value={`${data? data.mon_open : ''}`}
+            onChangeText={text => setMonOpen(text)}
+            value={monOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, mon_close : text})}
-            value={data.mon_close}
+            onChangeText={text => setMonClose(text)}
+            value={monClose}
           />
         </View>
 
@@ -118,16 +117,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             type="text"
-            onChangeText={text => setData({...data, tue_open: text})}
-            value={data.tue_open}
+            onChangeText={text => setTueOpen(text)}
+            value={tueOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, tue_close: text})}
-            value={data.tue_close}
+            onChangeText={text => setTueClose(text)}
+            value={tueClose}
           />
         </View>
 
@@ -138,16 +137,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             type="text"
-            onChangeText={text => setData({...data, wed_open: text})}
-            value={data.wed_open}
+            onChangeText={text => setWedOpen(text)}
+            value={wedOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, wed_close: text})}
-            value={data.wed_close}
+            onChangeText={text => setWedClose(text)}
+            value={wedClose}
           />
         </View>
 
@@ -158,17 +157,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             type="text"
-            onChangeText={text => setData({...data, thu_open:text})}
-            value={data.thu_open}
+            onChangeText={text => setThuOpen(text)}
+            value={thuOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, thu_close:text})}
-
-            value={data.thu_close}
+            onChangeText={text => setThuClose(text)}
+            value={thuClose}
           />
         </View>
 
@@ -179,18 +177,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             type="text"
-            onChangeText={text => setData({...data, fri_open:text})}
-
-            value={data.fri_open}
+            onChangeText={text => setFriOpen(text)}
+            value={friOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, fri_close:text})}
-
-            value={data.fri_close}
+            onChangeText={text => setFriClose(text)}
+            value={friClose}
           />
         </View>
 
@@ -201,17 +197,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             type="text"
-            onChangeText={text => setData({...data, sat_open:text})}
-
-            value={data.sat_open}
+            onChangeText={text => setSatOpen(text)}
+            value={satOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, sat_close:text})}
-            value={data.sat_close}
+            onChangeText={text => setSatClose(text)}
+            value={satClose}
           />
         </View>
 
@@ -222,16 +217,16 @@ export const OpeningHours = ({ navigation }) => {
             keyboardType='numeric'
             style={styles.txtInputOpen}
             type="text"
-            onChangeText={text => setData({...data, sun_open:text})}
-            value={data.sun_open}
+            onChangeText={text => setSunOpen(text)}
+            value={sunOpen}
           />
           <TextInput
             placeholder="godz : min"
             keyboardType='numeric'
             style={styles.txtInput}
             type="text"
-            onChangeText={text => setData({...data, sun_close:text})}
-            value={data.sun_close}
+            onChangeText={text => setSunClose(text)}
+            value={sunClose}
           />
         </View>
       </ScrollView>
@@ -239,7 +234,7 @@ export const OpeningHours = ({ navigation }) => {
         <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj stolik')}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Idź dalej</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyle} onPress={updata}>
+        <TouchableOpacity style={styles.btnStyle} onPress={submit}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>
         </TouchableOpacity>
       </View>
