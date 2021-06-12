@@ -43,6 +43,11 @@ export function AddComments({ route, navigation }) {
             .catch(function (error) {
                 alert(error.message);
             });
+            back()
+    }
+
+    const back=()=>{
+        navigation.goBack()
     }
 
     return (
@@ -69,6 +74,8 @@ export function AddComments({ route, navigation }) {
                             style={{ marginTop: 0 }}
                             ratingCount={5}
                             showRating
+                           
+
                             onFinishRating={ratingCompleted}
                         />
 

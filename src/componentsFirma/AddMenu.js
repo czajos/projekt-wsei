@@ -87,7 +87,7 @@ export const AddMenu = ({ navigation }) => {
             <View>
               <View style={styles.item}>
                 <TouchableOpacity style={{ width: '100%' }} >
-                  <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.menu_url }}></Image>
+                  <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'column' }}>
                   <Text style={styles.txtStyleSite}>Strona numer</Text>

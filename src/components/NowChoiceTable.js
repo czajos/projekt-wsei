@@ -21,7 +21,8 @@ export function NowChoiceTable({ route, navigation }) {
     const [month, setMonth] = useState()
     const [day, setDay] = useState()
     const [idTable, setIdTable] = useState()
-    const [test,setTest]=useState(4,5)
+    const [test, setTest] = useState(4, 54)
+    const [time, setTime] = useState([])
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
@@ -31,21 +32,24 @@ export function NowChoiceTable({ route, navigation }) {
 
     const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/table/getAll/${item}`)
+            .post(`http://192.168.1.143:5000/table/getByDate/${item}`)
 
             .then(function (response) {
                 // handle success 
                 setData(response.data.data.tables)
-                console.log(item)
+                const time = response.data.date_booking
+                console.log('to', time)
+                setTime(response.data.date_booking)
+
             })
             .catch(function (error) {
                 // handle error
                 alert(error.message);
             })
-            // .finally(function () {
-            //     // always executed
-            //     alert('Finally called');
-            // });
+        // .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        // });
     };
     const getData2 = () => {
         axios
@@ -61,10 +65,10 @@ export function NowChoiceTable({ route, navigation }) {
                 // handle error
                 alert(error.message);
             })
-            // .finally(function () {
-            //     // always executed
-            //     alert('Finally called');
-            // });
+        // .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        // });
     };
 
     // const datas = new FormData()
@@ -105,7 +109,7 @@ export function NowChoiceTable({ route, navigation }) {
         setLoading(false)
         //  navigation.navigate('Wybierz stolik')
     }
-    
+
 
     //Informacje o restauracji
     const info = () => {
@@ -135,24 +139,29 @@ export function NowChoiceTable({ route, navigation }) {
             </View>
             <View style={styles.header} >
                 <View style={styles.imageStyleLogo}></View>
-                <Image style={styles.imageStyleLogo} source={{uri: data2.image_url}}></Image>
+                <Image style={styles.imageStyleLogo} source={{ uri: data2.image_url }}></Image>
             </View>
             {loading ?
                 <>
                     <View style={styles.nameRestaurant}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text>
-                        {data2.avg  ? 
-                        <Rating
-                            imageSize={18}
-                            startingValue={`${data2 ? parseInt(data2.avg) : ''}`}
-                            style={{ marginTop: 0 }}
-                            ratingCount={5}
-                            showRating
-                        // onFinishRating={ratingCompleted}
-                        />
-                        :(
-                            <Text>Brak ocen</Text>
-                        )}
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text>
+                            <Text style={{ fontSize: 18, color:'grey',marginTop:5 }}>{'Data rezerwacji: ' + time}</Text>
+                        </View>
+                        {data2.avg ?
+                            <Rating
+                                imageSize={18}
+                                startingValue={`${data2 ? data2.avg : ''}`}
+                                style={{ marginTop: 0 }}
+                                ratingCount={5}
+                                showRating
+                                fractions={1}
+                            // readonly={true}
+                            // onFinishRating={ratingCompleted}
+                            />
+                            : (
+                                <Text>Brak ocen</Text>
+                            )}
                     </View>
                     <View style={styles.buttonArea}>
                         <TouchableOpacity style={styles.btn} onPress={() => goToMenu(item.id)}>

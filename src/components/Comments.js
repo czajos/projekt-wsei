@@ -76,6 +76,7 @@ export function Comments({ route, navigation }) {
                                         style={{ marginTop: 0 }}
                                         ratingCount={5}
                                         showRating
+                                        
                                         // onFinishRating={ratingCompleted}
                                     />
                                 </View>

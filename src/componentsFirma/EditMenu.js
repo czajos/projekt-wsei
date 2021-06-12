@@ -172,7 +172,7 @@ useEffect(() => {
                         
                         <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
                        {imageChange ? 
-                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri:  data.menu_url  }}></Image>
+                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri:  data.image_url  }}></Image>
                             : (
 
                             <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri:  image  }}></Image>
@@ -183,6 +183,7 @@ useEffect(() => {
                             <Text style={styles.txtStyleSite}>Strona numer</Text>
                             <TextInput
                                 placeholder="podaj nr strony"
+                                keyboardType='numeric'
                                 style={styles.txtStyleSite}
                                 onChangeText={text => setData({ ...data, page: text })}
                                 value={`${data ? data.page : ''}`}

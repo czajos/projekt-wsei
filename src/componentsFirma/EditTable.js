@@ -23,10 +23,10 @@ export function EditTable({ route, navigation }) {
     const [number_table, setNumberTable] = useState()
     const { item } = route.params
     const [data, setData] = useState([])
-    const[imageChange,setImageChange]=useState(true)
+    const [imageChange, setImageChange] = useState(true)
 
-    const isFocused=useIsFocused()
-    
+    const isFocused = useIsFocused()
+
     useEffect(() => {
         getData()
 
@@ -66,19 +66,19 @@ export function EditTable({ route, navigation }) {
         console.log(item)
         console.log(datas)
         axios
-            .put(`http://192.168.1.143:5000/table/update/${item}`,datas,{
+            .put(`http://192.168.1.143:5000/table/update/${item}`, datas, {
                 // numb_seats: data.numb_seats,
                 // number_table: data.number_table,
                 // image:image
             })
             .then(function (response) {
-                
+
 
             })
             .catch(function (error) {
                 alert(error.message);
             });
-            back()
+        back()
     }
 
     const clickImage = () => {
@@ -113,7 +113,7 @@ export function EditTable({ route, navigation }) {
     });
 
 
-   const renderSheet = () => (
+    const renderSheet = () => (
         <View style={{ backgroundColor: 'white' }}>
             <TouchableOpacity style={styles.btnAddPhoto} onPress={() => choosePhotoFromLibrary()}>
                 <Text style={styles.txtStyleBottomSheet} >Dodaj zdjęcie z galeri</Text>
@@ -127,7 +127,7 @@ export function EditTable({ route, navigation }) {
         </View>
     )
     //renderowanie nagłowka w dolnym akruszu
-   const renderHeader = () => (
+    const renderHeader = () => (
         <View style={{
             backgroundColor: 'white', height: 45, justifyContent: 'center', alignItems: 'center', borderTopColor: 'lightgrey',
             borderTopWidth: 2,
@@ -141,7 +141,7 @@ export function EditTable({ route, navigation }) {
         navigation.goBack()
         setImageChange(true)
     }
-  
+
 
     return (
         <View style={styles.container}>
@@ -183,11 +183,11 @@ export function EditTable({ route, navigation }) {
 
                         </View>
                         <TouchableOpacity style={{ width: '100%' }} onPress={clickImage}>
-                        {imageChange ? 
-                            <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: data.image_url }}></Image>
-                            :(
-                                <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></Image>
-                            )}
+                            {imageChange ?
+                                <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: data.image_url }}></Image>
+                                : (
+                                    <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: image }}></Image>
+                                )}
                         </TouchableOpacity>
                     </View>
                     <View style={styles.podajLiczbeMiejscStyle}>

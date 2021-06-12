@@ -12,20 +12,16 @@ import axios from 'axios'
 export function TimeReservation({ route, navigation }) {
     const { item } = route.params
     const [data, setData] = useState([])
-    const [secondData, setSecondData] = useState([])
     const [loading, setLoading] = useState(true)
-    const [hour, setHour] = useState()
-    const [minute, setMinute] = useState()
     const [year, setYear] = useState()
     const [month, setMonth] = useState()
     const [day, setDay] = useState()
-    const [idTable, setIdTable] = useState()
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
     }, [isFocused])
-
+//Pobranie danych o restauracji (zdjęcie i nazwa)
     const getData = () => {
         axios
             .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
@@ -46,10 +42,41 @@ export function TimeReservation({ route, navigation }) {
             // });
     };
 
+//Wysłanie daty 
+    const getTime = () => {
+        axios
+            .post(`http://192.168.1.143:5000/table/getByDate/${item}`,{
+                year:year,
+                month:month,
+                day:day
+            })
+
+            .then(function (response) {
+                // handle success 
+
+                console.log(response.data.data)
+                setData(response.data.data)
+            })
+            .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
+            choiceTableToday()
+    };
+
 //Przkierowanie na restauracje z widokiem stolików
-    const choiceTable = () => {
+    const choiceTableNow = () => {
         navigation.navigate('Wybierz stolik', { item })
     }
+
+const choiceTableToday =()=>{
+    navigation.navigate('Wybierz stolik', { item })
+    
+}
 
     const load = () => {
         setLoading(false)
@@ -81,7 +108,7 @@ export function TimeReservation({ route, navigation }) {
                         <Text style={styles.txtStyle1}>Kiedy chcesz zarezerwować stolik ?</Text>
                     </View>
                     <View style={styles.buttonArea}>
-                        <TouchableOpacity style={styles.btn} onPress={choiceTable}>
+                        <TouchableOpacity style={styles.btn} onPress={choiceTableNow}>
                             <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }} >Dziś</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={load}>
@@ -115,9 +142,14 @@ export function TimeReservation({ route, navigation }) {
                                 keyboardType='numeric'
                             />
                         </View>
+                        <View style={{flexDirection:'row'}}>
                         <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={loadBack}>
                             <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Wróć</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={getTime}>
+                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Szukaj</Text>
+                        </TouchableOpacity>
+                        </View>
                     </View>
 
                 )}
@@ -208,7 +240,7 @@ const styles = StyleSheet.create({
     },
     txtInput: {
         alignSelf: 'stretch',
-        width: 50,
+        width: 60,
         height: 50,
         fontSize: 17,
         borderRadius: 3,
