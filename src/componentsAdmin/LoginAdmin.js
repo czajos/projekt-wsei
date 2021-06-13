@@ -4,20 +4,20 @@ import {useHistory} from 'react-router-dom';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { AuthContext } from '../componentsFirma/AuthContext'
+// import { AuthContext } from '../componentsFirma/AuthContext'
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-community/google-signin';
-// import StackCompany from './StackCompany'
+
 import axios from 'axios'
 
 
 
-export function LogFirma({ navigation }) {
+export function LoginAdmin({ navigation }) {
 
-  const { signIn } = React.useContext(AuthContext)
+//   const { signIn } = React.useContext(AuthContext)
   const [pushData, setPushData] = useState([])
   const [userInfo, setUserInfo] = useState({});
   // const [user, setUser] = useState({})
@@ -83,7 +83,7 @@ export function LogFirma({ navigation }) {
   // }
   
   const nextPage=()=>{
-    navigation.navigate('User')
+    navigation.navigate('Admin panel')
   }
 
   const isSignedIn = async () => {
@@ -143,7 +143,7 @@ export function LogFirma({ navigation }) {
       })
       .then(function (response) {
         console.log(response.data)
-        nextPage()
+        // nextPage()
         // alert(JSON.stringify());
       })
       .catch(function (error) {
@@ -214,7 +214,7 @@ export function LogFirma({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green' }}>
 
       <Text style={styles.txtStyle}>Sign in</Text>
-      {/* <TextInput
+      <TextInput
         placeholder="Adres e-mail"
         style={styles.txtInput}
         onChangeText={text => setImie(text)}
@@ -224,7 +224,7 @@ export function LogFirma({ navigation }) {
         placeholder="password"
         style={styles.txtInput}
         secureTextEntry={true}
-      /> */}
+      />
       
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
@@ -235,7 +235,7 @@ export function LogFirma({ navigation }) {
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test3}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>cipa</Text>
       </TouchableOpacity> */}
-      <TouchableOpacity onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity>
+      {/* <TouchableOpacity onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity> */}
 
      
 
@@ -261,23 +261,23 @@ export function LogFirma({ navigation }) {
         </>
 
       } */}
-      <GoogleSigninButton
+      {/* <GoogleSigninButton
         style={{ width: 312, height: 48 }}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Light}
         onPress={signInGoogle}
         onSuccess={sendToken}
 
-      />
+      /> */}
       <TouchableOpacity style={styles.zalogujStyle} onPress={nextPage}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
-        <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Admin')}>Jesteś administratorem?</Text>
+       {/* <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text> */}
     </View>
   );
 }
 
-export default LogFirma;
+export default LoginAdmin;
 
 
 const styles = StyleSheet.create({

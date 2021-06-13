@@ -40,7 +40,7 @@ export function SearchOneRest({ navigation }) {
     const choiceRest = (item) => {
         setIdRest(item)
         console.log(idRest)
-         navigation.navigate('Wybierz stolik',{item})
+        navigation.navigate('Czas rezerwacji',{item})
     }
 
     return (

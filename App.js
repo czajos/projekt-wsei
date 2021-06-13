@@ -24,7 +24,7 @@ import {RegisterFormUser} from './src/components/RegisterFormUser'
 // import ComponentRest from './src/components/ComponentRest';
 import RestaurantList from './src/components/RestaurantList'
 import SearchOneRest from './src/components/SearchOneRest'
-import ChoiceTable from './src/components/ChoiceTable'
+// import ChoiceTable from './src/components/ChoiceTable'
 import { ProfilFirma } from './src/componentsFirma/ProfilFirma'
 import { createStackNavigator } from '@react-navigation/stack';
 import { EditTable } from './src/componentsFirma/EditTable'
@@ -45,7 +45,12 @@ import { CreateOpeningHours } from './src/componentsFirma/CreateOpeningHours';
 import { OpeningHours } from './src/componentsFirma/OpeningHours';
 import { DeleteComments } from './src/componentsFirma/DeleteComments';
 import Rezerwation from './src/componentsFirma/Rezerwation'
-
+import {AdminPanel} from './src/componentsAdmin/AdminPanel'
+import {LoginAdmin} from './src/componentsAdmin/LoginAdmin';
+import { DrawerAdmin } from './src/componentsAdmin/DrawerAdmin'
+import { Users } from './src/componentsAdmin/Users'
+import { CompanyUsers } from './src/componentsAdmin/CompanyUsers'
+import { InfoRestaurantAdmin } from './src/componentsAdmin/InfoRestaurantAdmin'
 
 
 
@@ -56,7 +61,7 @@ const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
 const CompanyStack = createStackNavigator();
 const UserStack = createStackNavigator();
-
+const AdminStack=createStackNavigator()
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true)
@@ -150,17 +155,19 @@ export default function App() {
       <CompanyStack.Screen name="Zaloguj się jako firma" component={LogFirma} options={{ headerShown: false }} />
     </CompanyStack.Navigator>
   )
+
   const RootStackScreen = ({ userToken }) => (
     <RootStack.Navigator headerMode='none'>
       
       {/* <RootStack.Screen name="Godziny otwarcia" component={CreateOpeningHours} options={{ headerShown: false }} /> */}
       {/* <RootStack.Screen name="Godziny otwarcia" component={OpeningHours} options={{ headerShown: false }} /> */}
-      {/* <RootStack.Screen name="Rezerwacje" component={Rezerwation} options={{ headerShown: false }} /> */}
+      {/* <RootStack.Screen name="Info rest" component={InfoRestaurantAdmin} options={{ headerShown: false }} /> */}
 
-      
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
           <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />
           <RootStack.Screen name="User" component={CompanyStackNavigation} options={{ animationEnabled: false }} />
+          <RootStack.Screen name="Admin" component={AdminStackNavigation} options={{ animationEnabled: false }} />
+
     </RootStack.Navigator>
   )
 
@@ -184,9 +191,20 @@ export default function App() {
     </Drawer.Navigator>
   )
 
+const AdminStackNavigation=()=>(
+  <Drawer.Navigator drawerContent={props => <DrawerAdmin {...props} />} >
+    <AdminStack.Screen name="Login" component={LoginAdmin} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Admin panel" component={AdminPanel} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Users" component={Users} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Company users" component={CompanyUsers} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Info rest" component={InfoRestaurantAdmin} options={{ headerShown: false }} />
+
+  </Drawer.Navigator>
+)
+
   const UserStackNavigation = ({ navigation }) => (
     <UserStack.Navigator>
-      <UserStack.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} />
+    
       <UserStack.Screen name="Lista restauracji" component={RestaurantList} options={{ headerShown: false }} />
       <UserStack.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} />
     </UserStack.Navigator>

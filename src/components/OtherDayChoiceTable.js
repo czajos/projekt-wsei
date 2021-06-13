@@ -13,7 +13,6 @@ export function OtherDayChoiceTable({ route, navigation }) {
     const { item } = route.params
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
-    const [secondData, setSecondData] = useState([])
     const [loading, setLoading] = useState(true)
     const [hour, setHour] = useState()
     const [minute, setMinute] = useState()
@@ -21,11 +20,11 @@ export function OtherDayChoiceTable({ route, navigation }) {
     const [month, setMonth] = useState()
     const [day, setDay] = useState()
     const [idTable, setIdTable] = useState()
-    const [test, setTest] = useState(4, 54)
+    const [numberTable,setNumbertable]=useState()
     const [time, setTime] = useState([])
     const {respo}=route.params
     const {responseTime}=route.params
-   
+    const [iduser,setIdUser]=useState(1)
 
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
@@ -37,27 +36,7 @@ export function OtherDayChoiceTable({ route, navigation }) {
     }, [isFocused])
 
     
-    // const getData = () => {
-    //     axios
-    //         .post(`http://192.168.1.143:5000/table/getByDate/${item}`)
-
-    //         .then(function (response) {
-    //             // handle success 
-    //             setData(response.data.data.tables)
-    //             const time = response.data.date_booking
-    //             console.log('to', time)
-    //             setTime(response.data.date_booking)
-
-    //         })
-    //         .catch(function (error) {
-    //             // handle error
-    //             alert(error.message);
-    //         })
-    //     // .finally(function () {
-    //     //     // always executed
-    //     //     alert('Finally called');
-    //     // });
-    // };
+    
     const getData2 = () => {
         axios
             .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
@@ -65,7 +44,7 @@ export function OtherDayChoiceTable({ route, navigation }) {
             .then(function (response) {
                 // handle success 
 
-                // console.log(response.data.data)
+              
                 setData2(response.data.data)
             })
             .catch(function (error) {
@@ -78,26 +57,18 @@ export function OtherDayChoiceTable({ route, navigation }) {
         // });
     };
 
-    // const datas = new FormData()
-    // datas.append('id_rest', 1)
-    // datas.append('id_table', idTable)
-    // datas.append('hour', hour)
-    // datas.append('min', minute)
-    // datas.append('year', year)
-    // datas.append('month', month)
-    // datas.append('day', day)
+   
 
     //Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
-            .post("http://192.168.1.143:5000/reserwation/create", {
+            .post(`http://192.168.1.143:5000/reserwation/create/${iduser}`, {
+                   
                 id_restaurant: item,
                 id_table: idTable,
                 hour: hour,
                 min: minute,
-                year: year,
-                month: month,
-                day: day
+                date_booking:time
             })
 
             .then(function (response) {
@@ -110,9 +81,9 @@ export function OtherDayChoiceTable({ route, navigation }) {
     }
 
     //Wybór stolika
-    const choiceRest = (item) => {
+    const choiceTable = (item) => {
+        // setNumbertable(item)
         setIdTable(item)
-        // console.log(item)
         setLoading(false)
         //  navigation.navigate('Wybierz stolik')
     }
@@ -209,7 +180,7 @@ export function OtherDayChoiceTable({ route, navigation }) {
                                         </View>
 
 
-                                        <TouchableOpacity style={{ width: '100%' }} onPress={() => choiceRest(item.id)}>
+                                        <TouchableOpacity style={{ width: '100%' }} onPress={() => choiceTable(item.id)}>
                                             <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
                                         </TouchableOpacity>
                                     </View>
@@ -274,27 +245,11 @@ export function OtherDayChoiceTable({ route, navigation }) {
                                 <View style={{ alignItems: 'center' }}>
                                     <Text style={styles.txtStyle1}>Data rezerwacji</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                                        <TextInput
-                                            placeholder="rok"
-                                            style={styles.txtInput}
-                                            onChangeText={text => setYear(text)}
-                                            value={year}
-                                            keyboardType='numeric'
-                                        />
-                                        <TextInput
-                                            placeholder="mies."
-                                            style={styles.txtInput}
-                                            onChangeText={text => setMonth(text)}
-                                            value={month}
-                                            keyboardType='numeric'
-                                        />
-                                        <TextInput
-                                            placeholder="dzień"
-                                            style={styles.txtInput}
-                                            onChangeText={text => setDay(text)}
-                                            value={day}
-                                            keyboardType='numeric'
-                                        />
+                                        <Text
+                                            style={styles.txtInputDate}
+                                            
+                                        >{time}</Text>
+                                        
                                     </View>
                                 </View>
 
@@ -457,6 +412,15 @@ const styles = StyleSheet.create({
         borderBottomColor: 'lightgrey',
         borderBottomWidth: 1,
         marginBottom: 10
+    },
+    txtInputDate: {
+        width: 100,
+        height: 50,
+        fontSize: 17,
+        alignItems: 'center',
+        borderBottomColor: 'lightgrey',
+        textAlign:'center'
+        
     },
     txt: {
         alignSelf: 'stretch',

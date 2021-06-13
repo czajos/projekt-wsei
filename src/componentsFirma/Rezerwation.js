@@ -14,27 +14,30 @@ import { useIsFocused } from '@react-navigation/native';
 export function Rezerwation({ navigation }) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-    const isFocused=useIsFocused()
+    const isFocused = useIsFocused()
 
-    useEffect(()=>{
-// getData()
-    },[isFocused])
+    useEffect(() => {
+        getData()
+    }, [isFocused])
 
-    const getData=()=>{
+    const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/reserwation/get/${2}`)
+            .get(`http://192.168.1.143:5000/reserwation/getAll/${3}`)
             .then(function (response) {
                 // alert(JSON.stringify(response.data));
-                setData(response.data.data)
+                setData(response.data)
+                console.log(response.data)
             })
             .catch(function (error) {
                 alert(error.message);
             });
     }
 
-    const deleteRezerwation=()=>{
+    const deleteRezerwation = (item) => {
+        console.log('item',item)
         axios
-             .delete(``)
+            .delete(`http://192.168.1.143:5000/reserwation/delete/${item}`)
+            getData()
     }
 
     return (
@@ -50,38 +53,41 @@ export function Rezerwation({ navigation }) {
             <View >
                 <Text style={styles.textRezerwation}>Rezerwacje</Text>
             </View>
+            <View style={{ alignItems: 'center', marginTop: 20 }}>
             <SwipeListView
+                style={{ marginBottom: 80,width:'90%' }}
                 data={data}
                 keyExtractor={(item, index) => {
-                    return index.toString()
+                    return index.toString();
                 }}
                 renderItem={({ item }) => {
-                    console.log('item', item)
+                    console.log('rezerwacje', item)
+
                     return (
-                        <View style={{ alignItems: 'center', marginTop: 20 }}>
+                        
                             <View style={styles.item}>
                                 <View style={styles.styleInItem}>
                                     <Text style={styles.text}>Numer stolika:</Text>
-                                    <Text style={styles.text2}>Dane..</Text>
+                                    <Text style={styles.text2}>{item.number_table}</Text>
                                 </View>
                                 <View style={styles.styleInItem}>
                                     <Text style={styles.text}>Data:</Text>
-                                    <Text style={styles.text2}>Godzina:</Text>
+                                    <Text style={styles.text2}>{item.date_booking}</Text>
                                 </View>
                                 <View style={styles.styleInItem}>
                                     <Text style={styles.text}>Godzina:</Text>
-                                    <Text style={styles.text2}>Godzina:</Text>
+                                    <Text style={styles.text2}>{item.time_booking}</Text>
                                 </View>
-                                <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }}>
+                                <TouchableOpacity style={styles.btnDelete} onPress={() => deleteRezerwation(item.id)}>
                                     <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Anuluj rezerwacje</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        
 
                     )
                 }}
             />
-
+            </View>
         </View>
     )
 }
@@ -165,7 +171,7 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: 'white',
         height: 'auto',
-        width: '80%',
+        width: '90%',
         padding: 10,
         // marginVertical: 8,
         marginHorizontal: 16,
@@ -179,7 +185,9 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
 
         elevation: 5,
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop:10,
+        marginBottom:20
     },
     styleInItem: {
         flexDirection: 'row',
@@ -192,5 +200,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-
+btnDelete:{
+    marginTop: 20, 
+    backgroundColor: 'red', 
+    width: 150, padding: 5, 
+    borderRadius: 50, 
+    alignItems: 'center'
+}
 })

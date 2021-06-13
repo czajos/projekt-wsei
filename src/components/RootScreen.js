@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 // import HomeScreen from './HomeScreen'
 // import LogScreen from './LogScreen'
 // import RegisterScreen from './LogScreen'
-import ChoiceTable from './ChoiceTable'
+// import ChoiceTable from './ChoiceTable'
 import RestaurantList from './RestaurantList'
 import UserProfil from './UserProfil'
 import LogFirma from '../componentsFirma/LogFirma'
@@ -18,7 +18,7 @@ const RootStack=createStackNavigator();
 
 const RootScreen=()=>(
 <RootStack.Navigator headerMode='none'>
-    <RootStack.Screen name="Wybierz stolik" component={ChoiceTable}></RootStack.Screen>
+    {/* <RootStack.Screen name="Wybierz stolik" component={ChoiceTable}></RootStack.Screen> */}
     <RootStack.Screen name="Lista restauracji" component={RestaurantList}></RootStack.Screen> 
     <RootStack.Screen name="Profil użytkownika" component={UserProfil}></RootStack.Screen> 
 </RootStack.Navigator>

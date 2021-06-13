@@ -1,47 +1,22 @@
 import React, { useState, useEffect } from 'react';
-
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
-import { useIsFocused } from '@react-navigation/native';
 
 
 
 
 
-export function MyReservation({ navigation }) {
-    
+export function CompanyUsers({ navigation }) {
+   
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(true)
-    const isFocused = useIsFocused()
-
-    useEffect(() => {
-        getData()
-    }, [isFocused])
-
-    const getData = () => {
-        axios
-            .get(`http://192.168.1.143:5000/reserwation/get/${1}`)
-            .then(function (response) {
-                // alert(JSON.stringify(response.data));
-                setData(response.data)
-                console.log(response.data)
-            })
-            .catch(function (error) {
-                alert(error.message);
-            });
-    }
-  
-    const deleteRezerwation = (item) => {
-        
-        axios
-            .delete(`http://192.168.1.143:5000/reserwation/delete/${item}`)
-            getData()
-    }
-
+    
+const info=()=>{
+    navigation.navigate('Info rest')
+}
 
     return (
         <View style={styles.container}>
@@ -52,36 +27,23 @@ export function MyReservation({ navigation }) {
                         size={30}></Icon>
                 </TouchableOpacity>
                 <View style={{ alignItems: 'center', marginTop: -10, padding: 10 }}>
-                    <Text style={{ fontSize: 35, color: 'white', alignItems: 'center', fontWeight: 'bold' }}>Moje rezerwacje</Text>
+                    <Text style={{ fontSize: 35, color: 'white', alignItems: 'center', fontWeight: 'bold' }}>Restauracje</Text>
                 </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
                 <View style={styles.item}>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Restauracja:</Text>
-                        <Text style={styles.text2}>{data.name}</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Numer stolika:</Text>
-                        <Text style={styles.text2}>{data.number_table}</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Data:</Text>
-                        <Text style={styles.text2}>{data.date_booking}</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Godzina:</Text>
-                        <Text style={styles.text2}>{data.time_booking}</Text>
-                    </View>
-                    <TouchableOpacity style={styles.btnDelete} onPress={() => deleteRezerwation(item.id)}>
-                        <Text style={{color:'white',fontSize:12,fontWeight:'bold'}}>Anuluj rezerwacje</Text>
+                    <TouchableOpacity style={styles.styleInItem} onPress={info}>
+                        <Text style={styles.text}>Nazwa restauracji</Text>
+                        <TouchableOpacity style={{ backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Usuń użytkownika</Text>
+                        </TouchableOpacity>
                     </TouchableOpacity>
                 </View>
             </View>
         </View>
     )
 }
-export default MyReservation;
+export default CompanyUsers;
 
 
 const styles = StyleSheet.create({
@@ -152,7 +114,7 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: 'white',
         height: 'auto',
-        width: '80%',
+        width: '100%',
         padding: 10,
         // marginVertical: 8,
         marginHorizontal: 16,
@@ -166,20 +128,12 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
 
         elevation: 5,
-        borderRadius: 10
+
     },
-    styleInItem:{
-        flexDirection:'row',
-        padding:5,
-        justifyContent:'space-between'
-    },
-    btnDelete:{
-        marginTop:20,
-        backgroundColor:'red',
-        width:150,
-        padding:5,
-        borderRadius:50,
-        alignItems:'center'
+    styleInItem: {
+        flexDirection: 'row',
+        padding: 5,
+        justifyContent: 'space-between'
     }
 
 })

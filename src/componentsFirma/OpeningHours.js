@@ -27,7 +27,7 @@ export const OpeningHours = ({ navigation }) => {
 
   const [sunOpen, setSunOpen] = useState()
   const [sunClose, setSunClose] = useState()
-  const [id,setId]=useState(3)
+  const [id,setId]=useState(1)
   const[data,setData]=useState([])
   const isFocused=useIsFocused()
 
