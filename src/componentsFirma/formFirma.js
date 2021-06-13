@@ -211,7 +211,7 @@ const moszna=()=>{
        </View>
       </ScrollView>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 10, }}>
-        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj stolik')}>
+        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj godziny')}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Idź dalej</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle} >

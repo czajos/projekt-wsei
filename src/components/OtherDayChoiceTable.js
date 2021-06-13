@@ -25,12 +25,12 @@ export function OtherDayChoiceTable({ route, navigation }) {
     const [time, setTime] = useState([])
     const {respo}=route.params
     const {responseTime}=route.params
-    const {chuj}=route.params
+   
 
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
-        setData(chuj)
+        setData(respo)
         console.log(respo)
         setTime(responseTime)
         getData2()

@@ -5,51 +5,43 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
-import FormData from 'form-data'
+import { SwipeListView } from 'react-native-swipe-list-view'
+import { useIsFocused } from '@react-navigation/native';
 
 
-export function AddComments({ route, navigation }) {
+
+
+
+
+export function DeleteComments({ route, navigation }) {
     const [data, setData] = useState([])
-    const [ratingg, setRatingg] = useState()
-    const [ratingValue, setRatingValue] = useState(3)
     const [loading, setLoading] = useState(true)
-    const [comment, setComment] = useState()
-    const { item } = route.params
+    // const { item } = route.params
+    const isFocused = useIsFocused()
 
-    const ratingCompleted = (rating) => {
-        // console.log("Rating is: " + rating)
-        setRatingValue(rating)
+    useEffect(() => {
+        getData()
+    }, [isFocused])
 
-    }
-    
-    const check = () => {
-        console.log(ratingValue)
-        console.log(item)
-    }
-    //Wysyłga backend
-    const datas = new FormData()
-    datas.append('commnet', comment)
-    datas.append('rating', ratingValue)
+  
 
-    const submitComment = () => {
+    const getData = () => {
         axios
-            .post(`http://192.168.1.143:5000/comment/add/${item}`,  {
-                 comment:comment,
-                 rating:ratingValue
-            })
+            .get(`http://192.168.1.143:5000/comment/getAll/${3}`)
             .then(function (response) {
-                alert(JSON.stringify(response.data));
+                // alert(JSON.stringify(response.data));
+                setData(response.data.data.comment)
             })
             .catch(function (error) {
                 alert(error.message);
             });
-            back()
     }
 
-    const back=()=>{
-        navigation.goBack()
-        setComment(null)
-        setRatingValue(null)
+    const deleteComment=(item)=>{
+        axios  
+             .delete(`http://192.168.1.143:5000/comment/delete/${item}`)
+
+             getData()
     }
 
     return (
@@ -60,49 +52,51 @@ export function AddComments({ route, navigation }) {
                         color={'white'}
                         size={30}></Icon>
                 </TouchableOpacity>
-                <Image style={styles.imageStyleLogo} source={require('../../logo.png')}></Image>
+                <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
             </View>
             <View style={{ alignItems: 'center', marginTop: 10 }}>
                 <View >
-                    <Text style={styles.textOpinie}>Dodaj opinie</Text>
+                    <Text style={styles.textOpinie}>Opinie o mojej restauracji</Text>
                 </View>
+                <SwipeListView
+                    style={{ width: '100%',marginBottom:100 }}
+                    data={data}
+                    keyExtractor={(item, index) => {
+                        return index.toString();
+                    }}
+                    renderItem={({ item }) => {
+                        console.log("item", item)
 
-                <View style={styles.item}>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Users</Text>
-                        <Rating
-                            imageSize={18}
-                            startingValue={0}
-                            style={{ marginTop: 0 }}
-                            ratingCount={5}
-                            showRating
-                           
+                        return (
+                            <View style={styles.item}>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>Users</Text>
+                                    {/* <Text style={styles.text2}>Data</Text> */}
+                                    <Rating
+                                        imageSize={18}
+                                        startingValue={item.rating}
+                                        style={{ marginTop: 0 }}
+                                        ratingCount={5}
+                                        showRating
 
-                            onFinishRating={ratingCompleted}
-                        />
-
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={3}
-                            placeholder='Dodaj komentarz'
-                            style={styles.textComment}
-                            onChangeText={text => setComment(text)}
-                            value={comment}
-                        ></TextInput>
-
-                    </View>
-                    <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'green', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={submitComment}>
-                        <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Dodaj</Text>
-                    </TouchableOpacity>
-
-                </View>
+                                    // onFinishRating={ratingCompleted}
+                                    />
+                                </View>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>{item.comment}</Text>
+                                </View>
+                                <TouchableOpacity style={styles.deleteBtn} onPress={()=>deleteComment(item.id)}>
+                                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Usuń komentarz</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }}
+                />
             </View>
         </View>
     )
 }
-export default AddComments;
+export default DeleteComments;
 
 
 const styles = StyleSheet.create({
@@ -165,9 +159,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     textComment: {
-        fontSize: 18,
-        color: 'black',
-
+        fontSize: 17,
+        color: 'black'
     },
 
     boxInput: {
@@ -206,12 +199,30 @@ const styles = StyleSheet.create({
 
         elevation: 5,
         borderRadius: 10,
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 20,
+
+
     },
     styleInItem: {
         flexDirection: 'row',
         padding: 5,
         justifyContent: 'space-between'
+    },
+    image: {
+        width: '80%',
+        resizeMode: "contain",
+        justifyContent: "center",
+        alignItems: 'center'
+
+    },
+    deleteBtn:{
+        marginTop: 20, 
+        backgroundColor: 'red',
+         width: 150, 
+         padding: 5, 
+         borderRadius: 50, 
+         alignItems: 'center'
     }
 
 })

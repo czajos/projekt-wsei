@@ -26,7 +26,7 @@ export function RestaurantList({ navigation }) {
                 const data = response.data.data.tables
                 // console.log(data)
                 setData(response.data.data.restaurant)
-                // setImage({uri: img})
+                // console.log('dane o restauracjach ',response.data.data.restaurant)
                 setLoading(false)
 
             })
@@ -74,15 +74,8 @@ const choiceRest=(item)=>{
             </View>
             {loading ?
                 <View></View>
-                : (<FlatList
+                : (<SwipeListView
                     style={{ padding:10 }}
-                    // contentContainerStyle={{ 
-                    //     flexDirection: 'row',
-                    //     justifyContent: 'space-around',
-                    //     flexWrap:'wrap' 
-
-                    //     //Needed for wrapping for the items
-                    // }}
                     data={data}
                     keyExtractor={(item, index) => {
                         return index.toString();
@@ -92,7 +85,7 @@ const choiceRest=(item)=>{
 
                         return (
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap',marginTop:20 }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap',marginTop:20,marginBottom:20 }}>
                                 <TouchableOpacity onPress={()=>choiceRest(item.id)}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -106,6 +99,7 @@ const choiceRest=(item)=>{
                                     </View>
                                 </TouchableOpacity>
                             </View>
+                            
 
                         )
                     }}
@@ -218,14 +212,15 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
 
         elevation: 5,
-        borderRadius: 10
+        borderRadius: 10,
+        // resizeMode: 'contain'
     },
     nameRestStyles: {
         backgroundColor: 'white',
         color: 'black',
         textAlign: 'center',
-        height: 50,
-        width: 150,
+        height: 70,
+        width: 190,
         marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',

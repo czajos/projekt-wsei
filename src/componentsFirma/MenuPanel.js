@@ -17,14 +17,26 @@ export function MenuPanel({ navigation }) {
           <TouchableOpacity style={styles.btnStyles}>
             <Text style={styles.txtStyle} onPress={() => navigation.navigate('Dodaj stolik')}>Edytuj stoliki</Text>
           </TouchableOpacity>
-        </View>
-        <View style={{ flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
           <TouchableOpacity style={styles.btnStyles} onPress={()=>navigation.navigate('Profil firmy')}>
             <Text style={styles.txtStyle} >Edytuj profil</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnStyles}>
+            <Text style={styles.txtStyle} onPress={() => navigation.navigate('Edytuj godziny')}>Godziny otwarcia</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 2, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
+          
+          <TouchableOpacity style={styles.btnStyles} onPress={()=>navigation.navigate('Rezerwacje')}>
             <Text style={styles.txtStyle}>Rezerwacje</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.btnStyles}>
+            <Text style={styles.txtStyle} onPress={() => navigation.navigate('Usuń komentarze')}>Komentarze</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnStyles}>
+            <Text style={styles.txtStyle} onPress={() => navigation.navigate('Dodaj menu')}>Zrób rezerwacje</Text>
+          </TouchableOpacity>
+          
+         
         </View>
       </View>
     </View>

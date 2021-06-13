@@ -43,7 +43,8 @@ import {AddPageMenu} from './src/componentsFirma/AddPageMenu'
 import {EditMenu} from './src/componentsFirma/EditMenu'
 import { CreateOpeningHours } from './src/componentsFirma/CreateOpeningHours';
 import { OpeningHours } from './src/componentsFirma/OpeningHours';
-
+import { DeleteComments } from './src/componentsFirma/DeleteComments';
+import Rezerwation from './src/componentsFirma/Rezerwation'
 
 
 
@@ -154,6 +155,7 @@ export default function App() {
       
       {/* <RootStack.Screen name="Godziny otwarcia" component={CreateOpeningHours} options={{ headerShown: false }} /> */}
       {/* <RootStack.Screen name="Godziny otwarcia" component={OpeningHours} options={{ headerShown: false }} /> */}
+      {/* <RootStack.Screen name="Rezerwacje" component={Rezerwation} options={{ headerShown: false }} /> */}
 
       
           <RootStack.Screen name="Home_" component={DrawerNavigation} />
@@ -167,6 +169,7 @@ export default function App() {
      {/* <Drawer.Navigator  options={{ headerShown: false }} > */}
     
       <CompanyStack.Screen name="Idź dalej" component={formFirma} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Dodaj godziny" component={CreateOpeningHours} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj stolik" component={ListAddTable} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Strona Menu" component={AddPageMenu} options={{ headerShown: false }} />
@@ -175,10 +178,9 @@ export default function App() {
       <CompanyStack.Screen name="Profil firmy" component={ProfilFirma} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj" component={AddOneTable} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} />
-
-      
-      {/* <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} /> */}
-
+      <CompanyStack.Screen name="Edytuj godziny" component={OpeningHours} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Usuń komentarze" component={DeleteComments} options={{ headerShown: false }} />
+      <RootStack.Screen name="Rezerwacje" component={Rezerwation} options={{ headerShown: false }} />
     </Drawer.Navigator>
   )
 

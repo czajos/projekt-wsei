@@ -187,7 +187,7 @@ export function ListAddTable({ navigation }) {
                 <TouchableOpacity style={styles.btnFooterStyle} >
                     <Text style={styles.txtStyleBottomSheet} onPress={() => navigation.navigate('Dodaj')}>+ Nowy stolik</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={getData}>
+                <TouchableOpacity style={styles.btnFooterStyle} onPress={()=>navigation.navigate('Menu panel')}>
                     <Text style={styles.txtStyleBottomSheet}>Zatwierdź</Text>
                 </TouchableOpacity>
             </View>

@@ -86,7 +86,7 @@ export const OpeningHours = ({ navigation }) => {
       </View>
       <ScrollView style={styles.datastyle}>
         <View style={styles.addHoursStyle}>
-          <Text style={styles.txtStyle2}>Dzień</Text>
+          <Text style={styles.txtStyle2}>Day</Text>
           <Text style={styles.openStyle}>Open</Text>
           <Text style={styles.closeStyle}>Close</Text>
 
@@ -236,8 +236,8 @@ export const OpeningHours = ({ navigation }) => {
         </View>
       </ScrollView>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 10, }}>
-        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Dodaj stolik')}>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Idź dalej</Text>
+        <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.goBack()}>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Wróć</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle} onPress={updata}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>

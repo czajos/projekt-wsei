@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { SwipeListView } from 'react-native-swipe-list-view'
@@ -19,11 +19,12 @@ export function TimeReservation({ route, navigation }) {
     const [day, setDay] = useState()
     const [respo, setRespo] = useState([])
     const [responseTime, setResponseTime] = useState([])
+    const [press, setPress] = useState(false)
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
-        
+
         // getTime()
     }, [isFocused])
     //Pobranie danych o restauracji (zdjęcie i nazwa)
@@ -63,10 +64,10 @@ export function TimeReservation({ route, navigation }) {
             .then(function (response) {
                 // handle success 
                 setRespo(response.data.data.tables)
-                console.log("kupa",response.data.data.tables)
+                console.log("kupa", response.data.data.tables)
                 console.log('data', response.data.date_booking)
                 setResponseTime(response.data.date_booking)
-                
+
                 // setData(response.data.data)
                 // choiceTableOtherDay()
 
@@ -79,9 +80,10 @@ export function TimeReservation({ route, navigation }) {
         //     // always executed
         //     alert('Finally called');
         // });
-     
-            
-    
+
+        //Zmiana koloru zatwierdzenia daty
+        setPress(true)
+
     };
 
     //Przkierowanie na restauracje z widokiem stolików
@@ -90,9 +92,12 @@ export function TimeReservation({ route, navigation }) {
     }
 
     const choiceTableOtherDay = () => {
-        
+
         navigation.navigate('Wybierz stolik w inny dzień', { item, respo, responseTime })
-        
+        //Zmiana koloru zatwierdzenia daty
+        setPress(false)
+
+
     }
 
     const load = () => {
@@ -102,6 +107,12 @@ export function TimeReservation({ route, navigation }) {
     const loadBack = () => {
         setLoading(true)
     }
+
+    //Zmiana koloru po zatwierdzeniu daty
+    const changeColor = {
+        style: press ? styles.iconStylePress : styles.iconStyle,
+    }
+
 
     return (
         <View style={styles.container}>
@@ -120,9 +131,7 @@ export function TimeReservation({ route, navigation }) {
                 <Text style={styles.txtStyleName}>{`${data ? data.name : ''}`}</Text>
             </View>
             {loading ?
-            
                 <>
-                
                     <View style={styles.nameRestaurant}>
                         <Text style={styles.txtStyle1}>Kiedy chcesz zarezerwować stolik ?</Text>
                     </View>
@@ -160,14 +169,25 @@ export function TimeReservation({ route, navigation }) {
                                 value={day}
                                 keyboardType='numeric'
                             />
+                            <TouchableOpacity   onPress={getTime}>
+                                <Icon name="checkmark-circle-outline"
+                                    {...changeColor}
+                                    color={'white'}
+                                    size={25}
+                                ></Icon>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={choiceTableOtherDay}>
-                                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Wróć</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ marginTop: 20, backgroundColor: '#5B9CE6', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={getTime}>
-                                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Szukaj</Text>
-                            </TouchableOpacity>
+                            <View style={{ margin: 10 }}>
+                                <TouchableOpacity style={styles.btnStyle} onPress={loadBack}>
+                                    <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Wróć</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ margin: 10 }}>
+                                <TouchableOpacity style={styles.btnStyle} onPress={choiceTableOtherDay}>
+                                    <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Szukaj</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
 
@@ -210,6 +230,7 @@ const styles = StyleSheet.create({
         marginTop: -25
 
 
+
     },
     nameRestaurant: {
         justifyContent: 'space-around',
@@ -241,13 +262,11 @@ const styles = StyleSheet.create({
     },
 
     btnStyle: {
+        marginTop: 20,
         backgroundColor: '#5B9CE6',
-        padding: 20,
-        height: 30,
-        width: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 50
+        width: 150, padding: 5,
+        borderRadius: 50,
+        alignItems: 'center'
 
     },
     txtStyleName: {
@@ -268,6 +287,18 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         marginBottom: 10
     },
+    iconStyle: {
+        padding: 10,
+        backgroundColor: 'red',
+        borderRadius: 100,
+        height: 45
+    },
+    iconStylePress: {
+        padding: 10,
+        backgroundColor: 'green',
+        borderRadius: 100,
+        height: 45
 
+    }
 
 })

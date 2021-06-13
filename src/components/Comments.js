@@ -57,7 +57,7 @@ export function Comments({ route, navigation }) {
                     <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Dodaj opinie</Text>
                 </TouchableOpacity>
                 <SwipeListView
-                    style={{ width: '100%'}}
+                    style={{ width: '100%', marginTop: 100 }}
                     data={data}
                     keyExtractor={(item, index) => {
                         return index.toString();
