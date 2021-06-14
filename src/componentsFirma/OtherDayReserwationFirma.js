@@ -9,11 +9,10 @@ import axios from 'axios'
 
 
 
-export function NowChoiceTable({ route, navigation }) {
-    const { item } = route.params
+export function OtherDayReserwationFirma({ route, navigation }) {
+    // const { item } = route.params
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
-    const [secondData, setSecondData] = useState([])
     const [loading, setLoading] = useState(true)
     const [hour, setHour] = useState()
     const [minute, setMinute] = useState()
@@ -21,46 +20,31 @@ export function NowChoiceTable({ route, navigation }) {
     const [month, setMonth] = useState()
     const [day, setDay] = useState()
     const [idTable, setIdTable] = useState()
-    const [test, setTest] = useState(4, 54)
+    const [numberTable,setNumbertable]=useState()
     const [time, setTime] = useState([])
+    const {respo}=route.params
+    const {responseTime}=route.params
+    const [iduser,setIdUser]=useState(1)
+
 
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
-        getData()
+        setData(respo)
+        console.log(respo)
+        setTime(responseTime)
         getData2()
     }, [isFocused])
 
-    //Pobranie danych o aktualnie dostępnych stolikach
-    const getData = () => {
-        axios
-            .post(`http://192.168.1.143:5000/table/getTableToday/${item}`)
-
-            .then(function (response) {
-                // handle success 
-                setData(response.data.data.tables)
-                // const time = response.data.date_booking
-                setTime(response.data.date_booking)
-
-            })
-            .catch(function (error) {
-                // handle error
-                alert(error.message);
-            })
-        // .finally(function () {
-        //     // always executed
-        //     alert('Finally called');
-        // });
-    };
-
-    //Pobranie danych informacyjnych o restauracjach 
+    
+    
     const getData2 = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${3}`)
 
             .then(function (response) {
                 // handle success 
 
-                console.log(response.data.data)
+              
                 setData2(response.data.data)
             })
             .catch(function (error) {
@@ -74,10 +58,12 @@ export function NowChoiceTable({ route, navigation }) {
     };
 
    
+
     //Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
-            .post(`http://192.168.1.143:5000/reserwation/create/${1}`, {
+            .post(`http://192.168.1.143:5000/reserwation/create/${iduser}`, {
+                   
                 id_restaurant: item,
                 id_table: idTable,
                 hour: hour,
@@ -95,31 +81,18 @@ export function NowChoiceTable({ route, navigation }) {
     }
 
     //Wybór stolika
-    const choiceRest = (item) => {
+    const choiceTable = (item) => {
+        // setNumbertable(item)
         setIdTable(item)
-        console.log(item)
         setLoading(false)
         //  navigation.navigate('Wybierz stolik')
-    }
-
-
-    //Informacje o restauracji
-    const info = () => {
-        navigation.navigate('Info', { item })
     }
 
     const load = () => {
         setLoading(true)
     }
-    //GO to MENU
-    const goToMenu = () => {
-        navigation.navigate('Menu rest', { item })
-    }
-
-    const goToComment = () => {
-        navigation.navigate('Comments', { item })
-    }
-
+    
+   
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: 'green', padding: 5 }}>
@@ -137,35 +110,12 @@ export function NowChoiceTable({ route, navigation }) {
                 <>
                     <View style={styles.nameRestaurant}>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text>
+                            {/* <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text> */}
                             <Text style={{ fontSize: 18, color:'grey',marginTop:5 }}>{'Data rezerwacji: ' + time}</Text>
                         </View>
-                        {data2.avg ?
-                            <Rating
-                                imageSize={18}
-                                startingValue={`${data2 ? data2.avg : ''}`}
-                                style={{ marginTop: 0 }}
-                                ratingCount={5}
-                                showRating
-                                fractions={1}
-                            // readonly={true}
-                            // onFinishRating={ratingCompleted}
-                            />
-                            : (
-                                <Text>Brak ocen</Text>
-                            )}
+                        
                     </View>
-                    <View style={styles.buttonArea}>
-                        <TouchableOpacity style={styles.btn} onPress={() => goToMenu(item.id)}>
-                            <Text style={{ color: 'white', fontSize: 15 }} >MENU</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => info(item.id)}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => goToComment(item.id)}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
-                        </TouchableOpacity>
-                    </View>
+                    
                     <SwipeListView
                         // style={{ marginTop: 60 }}
                         data={data}
@@ -194,7 +144,7 @@ export function NowChoiceTable({ route, navigation }) {
                                         </View>
 
 
-                                        <TouchableOpacity style={{ width: '100%' }} onPress={() => choiceRest(item.id)}>
+                                        <TouchableOpacity style={{ width: '100%' }} onPress={() => choiceTable(item.id)}>
                                             <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
                                         </TouchableOpacity>
                                     </View>
@@ -259,8 +209,11 @@ export function NowChoiceTable({ route, navigation }) {
                                 <View style={{ alignItems: 'center' }}>
                                     <Text style={styles.txtStyle1}>Data rezerwacji</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                                    <Text
-                                    style={styles.txtInputDate}>{time}</Text>
+                                        <Text
+                                            style={styles.txtInputDate}
+                                            
+                                        >{time}</Text>
+                                        
                                     </View>
                                 </View>
 
@@ -282,7 +235,7 @@ export function NowChoiceTable({ route, navigation }) {
         </View>
     )
 }
-export default NowChoiceTable;
+export default OtherDayReserwationFirma;
 
 
 const styles = StyleSheet.create({
@@ -403,15 +356,6 @@ const styles = StyleSheet.create({
 
 
     },
-    txtInputDate: {
-        width: 100,
-        height: 50,
-        fontSize: 17,
-        alignItems: 'center',
-        borderBottomColor: 'lightgrey',
-        textAlign:'center'
-        
-    },
     btnStyle: {
         backgroundColor: '#5B9CE6',
         padding: 20,
@@ -432,6 +376,15 @@ const styles = StyleSheet.create({
         borderBottomColor: 'lightgrey',
         borderBottomWidth: 1,
         marginBottom: 10
+    },
+    txtInputDate: {
+        width: 100,
+        height: 50,
+        fontSize: 17,
+        alignItems: 'center',
+        borderBottomColor: 'lightgrey',
+        textAlign:'center'
+        
     },
     txt: {
         alignSelf: 'stretch',

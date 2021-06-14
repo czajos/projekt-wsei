@@ -83,7 +83,7 @@ export function AddPageMenu({ navigation }) {
         name: 'image.jpg'
     });
     datas.append('page', page)
-    datas.append('id_rest', 3)
+    datas.append('id_rest', 93) 
 
 
     const sendMenu = () => {

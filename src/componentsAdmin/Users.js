@@ -1,25 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
-import { Rating, AirbnbRating } from 'react-native-ratings';
-import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
-import { FlatList } from 'react-native-gesture-handler';
-
-
+import { SwipeListView } from 'react-native-swipe-list-view'
+import { useIsFocused } from '@react-navigation/native';
 
 
 
 export function Users({ navigation }) {
-    const [image, setImage] = useState(null)
-    const [nazwarestauracji, setNazwaRestauracji] = useState('')
-    const [name, setName] = useState()
-    const [lastName, setLastName] = useState()
-    const [numertel, setNumerTel] = useState()
     const [data, setData] = useState([])
-    const [data2, setData2] = useState([])
+    const isFocused = useIsFocused()
 
-    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+        getData()
+    },[isFocused])
+
+    const getData=()=>{
+        axios
+             .get(`http://192.168.1.143:5000/admin/getAllUsers`)
+             .then(response =>{
+                 setData(response.data.data)
+             })
+             .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
+    }
+
+    const deleteUser=()=>{
+        axios
+             .delete(``)
+    }
 
     return (
         <View style={styles.container}>
@@ -34,16 +49,29 @@ export function Users({ navigation }) {
                 </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <View style={styles.item}>
-                    <TouchableOpacity style={styles.styleInItem}>
-                        <Text style={styles.text}>Nazwa użytkownika</Text>
-                        <TouchableOpacity style={{ backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Usuń użytkownika</Text>
-                        </TouchableOpacity>
-                    </TouchableOpacity>
+                <SwipeListView
+                    data={data}
+                    keyExtractor={(item, index) => {
+                        return index.toString()
+                    }}
+                    renderItem={({ item }) => {
+
+                        return (
+                            <View style={styles.item}>
+                                <TouchableOpacity style={styles.styleInItem}>
+                                    <Text style={styles.text}>{item.name}</Text>
+                                    <TouchableOpacity style={{ backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center',marginTop:20 }}>
+                                        <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Usuń użytkownika</Text>
+                                    </TouchableOpacity>
+                                </TouchableOpacity>
 
 
-                </View>
+                            </View>
+                        )
+                    }}
+
+                />
+
             </View>
         </View>
     )
@@ -91,7 +119,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 17,
-        color: 'black'
+        color: 'black',
     },
     text2: {
         fontSize: 17,
@@ -131,7 +159,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 1,
-
         elevation: 5,
 
     },

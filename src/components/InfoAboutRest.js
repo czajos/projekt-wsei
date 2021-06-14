@@ -41,10 +41,10 @@ export function InfoAboutRest({ route, navigation }) {
                 // handle error
                 alert(error.message);
             })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
     };
 
     

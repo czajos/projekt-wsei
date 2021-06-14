@@ -9,8 +9,8 @@ import axios from 'axios'
 
 
 
-export function NowChoiceTable({ route, navigation }) {
-    const { item } = route.params
+export function TodayReserwationFirma({ route, navigation }) {
+    // const { item } = route.params
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
     const [secondData, setSecondData] = useState([])
@@ -33,7 +33,7 @@ export function NowChoiceTable({ route, navigation }) {
     //Pobranie danych o aktualnie dostępnych stolikach
     const getData = () => {
         axios
-            .post(`http://192.168.1.143:5000/table/getTableToday/${item}`)
+            .post(`http://192.168.1.143:5000/table/getTableToday/${3}`)
 
             .then(function (response) {
                 // handle success 
@@ -52,10 +52,10 @@ export function NowChoiceTable({ route, navigation }) {
         // });
     };
 
-    //Pobranie danych informacyjnych o restauracjach 
+    //Pobranie danych informacyjnych o restauracji
     const getData2 = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${item}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${3}`)
 
             .then(function (response) {
                 // handle success 
@@ -137,35 +137,12 @@ export function NowChoiceTable({ route, navigation }) {
                 <>
                     <View style={styles.nameRestaurant}>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text>
+                            {/* <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${data2 ? data2.name : ''}`}</Text> */}
                             <Text style={{ fontSize: 18, color:'grey',marginTop:5 }}>{'Data rezerwacji: ' + time}</Text>
                         </View>
-                        {data2.avg ?
-                            <Rating
-                                imageSize={18}
-                                startingValue={`${data2 ? data2.avg : ''}`}
-                                style={{ marginTop: 0 }}
-                                ratingCount={5}
-                                showRating
-                                fractions={1}
-                            // readonly={true}
-                            // onFinishRating={ratingCompleted}
-                            />
-                            : (
-                                <Text>Brak ocen</Text>
-                            )}
+                        
                     </View>
-                    <View style={styles.buttonArea}>
-                        <TouchableOpacity style={styles.btn} onPress={() => goToMenu(item.id)}>
-                            <Text style={{ color: 'white', fontSize: 15 }} >MENU</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => info(item.id)}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => goToComment(item.id)}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
-                        </TouchableOpacity>
-                    </View>
+                    
                     <SwipeListView
                         // style={{ marginTop: 60 }}
                         data={data}
@@ -282,7 +259,7 @@ export function NowChoiceTable({ route, navigation }) {
         </View>
     )
 }
-export default NowChoiceTable;
+export default TodayReserwationFirma;
 
 
 const styles = StyleSheet.create({

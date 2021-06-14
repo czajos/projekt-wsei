@@ -18,6 +18,7 @@ import axios from 'axios'
 export function LogFirma({ navigation }) {
 
   const { signIn } = React.useContext(AuthContext)
+    // const  signOut  = React.useContext(AuthContext)
   const [pushData, setPushData] = useState([])
   const [userInfo, setUserInfo] = useState({});
   // const [user, setUser] = useState({})
@@ -46,9 +47,6 @@ export function LogFirma({ navigation }) {
     sendToken()
     
   }, [])
-
-
-
 
   const signInGoogle = async () => {
 

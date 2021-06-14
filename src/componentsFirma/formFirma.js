@@ -64,7 +64,7 @@ const moszna=()=>{
    datas.append('street',adreslokalu)
    datas.append('phone',numertel)
    datas.append('description',description)
-   datas.append('user_id',5)
+   datas.append('user_id',93)
 
 
 

@@ -19,11 +19,12 @@ export const AddMenu = ({ navigation }) => {
   useEffect(() => {
     getData()
     deleteItem()
+    
   }, [isFocused])
 
   const getData = () => {
     axios
-      .get('http://192.168.1.143:5000/restaurant/menu/get/3')
+      .get('http://192.168.1.143:5000/restaurant/menu/get/93')
 
       .then(function (response) {
         // handle success

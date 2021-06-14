@@ -33,7 +33,7 @@ export function MenuPanel({ navigation }) {
             <Text style={styles.txtStyle} onPress={() => navigation.navigate('Usuń komentarze')}>Komentarze</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnStyles}>
-            <Text style={styles.txtStyle} onPress={() => navigation.navigate('Dodaj menu')}>Zrób rezerwacje</Text>
+            <Text style={styles.txtStyle} onPress={() => navigation.navigate('Czas rezerwacji dla firm')}>Zrób rezerwacje</Text>
           </TouchableOpacity>
           
          

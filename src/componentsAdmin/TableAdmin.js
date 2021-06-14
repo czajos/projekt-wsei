@@ -15,12 +15,13 @@ import { useIsFocused } from '@react-navigation/native';
 global.Buffer = global.Buffer || require('buffer').Buffer
 
 
-export function ListAddTable({ navigation }) {
+export function TableAdmin({ route,navigation }) {
     const [image, setImage] = useState()
     const [numberTable, setNumberTable] = useState()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const isFocused = useIsFocused();
+    const {idRest}=route.params
     //AXIOS GET 
     useEffect(() => {
         getData()
@@ -30,7 +31,7 @@ export function ListAddTable({ navigation }) {
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/table/getAll/93')
+            .get(`http://192.168.1.143:5000/table/getAll/${idRest}`)
 
             .then(function (response) {
                 // handle success
@@ -140,11 +141,7 @@ export function ListAddTable({ navigation }) {
                             <View style={styles.item}>
                                 <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <TouchableOpacity style={styles.btnRgihtBtn} onPress={()=>editTable(item.id)}>
-                                            <Icon name="create-outline"
-                                                color='black'
-                                                size={30}></Icon>
-                                        </TouchableOpacity>
+                                        
                                         <Text style={styles.txtStyle1}>Stolik numer</Text>
                                         <TextInput
                                             style={styles.txtStyle1}
@@ -183,12 +180,10 @@ export function ListAddTable({ navigation }) {
                 }}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, opacity: 1, backgroundColor: 'white' }}>
-                <TouchableOpacity style={styles.btnFooterStyle} >
-                    <Text style={styles.txtStyleBottomSheet} onPress={() => navigation.navigate('Dodaj')}>+ Nowy stolik</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnFooterStyle} onPress={()=>navigation.navigate('Menu panel')}>
-                    <Text style={styles.txtStyleBottomSheet}>Zatwierdź</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, opacity: 1, backgroundColor: 'white' }}>
+                
+                <TouchableOpacity style={styles.btnFooterStyle} onPress={()=>navigation.goBack()}>
+                    <Text style={styles.txtStyleBottomSheet}>Wróć</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -198,7 +193,7 @@ export function ListAddTable({ navigation }) {
 
 const resizeMode = 'center';
 
-ListAddTable.navigationOptions = {
+TableAdmin.navigationOptions = {
     headerShown: false,
 };
 

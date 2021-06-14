@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
-import { Rating, AirbnbRating } from 'react-native-ratings';
-import ImagePicker from 'react-native-image-crop-picker';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios'
-import { FlatList } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
 
 
 
-export function InfoRestaurantAdmin({ navigation }) {
+export function InfoRestaurantAdmin({ route,navigation }) {
 
     const [data, setData] = useState([])
+    const [idRest, setIdRest] = useState([])
+    const isFocused = useIsFocused()
+    const {item}=route.params
+
+    useEffect(() => {
+        getData()
+    },[isFocused])
+
+    const getData=()=>{
+        axios
+             .get(`http://192.168.1.143:5000/admin/getRestaurant/${item}`)
+             .then(response =>{
+                 setData(response.data.data)
+                 setIdRest(response.data.data.rest_id)
+
+             })
+             .catch(function (error) {
+                // handle error
+                alert(error.message);
+            })
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
+    }
+
+    const comments=()=>{
+        console.log(idRest)
+        navigation.navigate('Komentarze admin',{idRest})
+    }
+    const tables=()=>{
+        console.log(idRest)
+        navigation.navigate('Stoliki admin',{idRest})
+    }
 
     return (
         <View style={styles.container}>
@@ -22,30 +53,40 @@ export function InfoRestaurantAdmin({ navigation }) {
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
                 <View style={styles.item}>
+                <View style={styles.styleInItem}>
+                        <Text style={styles.text}>Imie i nazwisko</Text>
+                        <Text style={styles.text2}>{data.user_name}</Text>
+                    </View>
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Nazwa restauracji</Text>
-                        <Text style={styles.text2}>Dane</Text>
+                        <Text style={styles.text2}>{data.res_name}</Text>
                     </View>
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Typ restauracji</Text>
-                        <Text style={styles.text2}>Dane</Text>
+                        <Text style={styles.text2}>{data.category}</Text>
                     </View>
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Miasto</Text>
-                        <Text style={styles.text2}>Dane</Text>
+                        <Text style={styles.text2}>{data.city}</Text>
                     </View>
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Adres restauracji</Text>
-                        <Text style={styles.text2}>Dane</Text>
+                        <Text style={styles.text2}>{data.street}</Text>
                     </View>
                    
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Numer telefonu</Text>
-                        <Text style={styles.text2}>Dane</Text>
+                        <Text style={styles.text2}>{data.phone}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{ marginTop: 40, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={() => navigation.goBack()}>
                     <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Wróć</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginTop: 40, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={comments}>
+                    <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Komentarze</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginTop: 40, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={tables}>
+                    <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Stoliki</Text>
                 </TouchableOpacity>
             </View>
         </View>

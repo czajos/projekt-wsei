@@ -51,6 +51,12 @@ import { DrawerAdmin } from './src/componentsAdmin/DrawerAdmin'
 import { Users } from './src/componentsAdmin/Users'
 import { CompanyUsers } from './src/componentsAdmin/CompanyUsers'
 import { InfoRestaurantAdmin } from './src/componentsAdmin/InfoRestaurantAdmin'
+import TimeReserwationFirma from './src/componentsFirma/TimeReserwationFirma'
+import TodayReserwationFirma from './src/componentsFirma/TodayReserwationFirma'
+import OtherDayReserwationFirma from './src/componentsFirma/OtherDayReserwationFirma'
+import { CommentsAdmin } from './src/componentsAdmin/CommentsAdmin'
+import {TableAdmin}  from './src/componentsAdmin/TableAdmin'
+
 
 
 
@@ -188,6 +194,10 @@ export default function App() {
       <CompanyStack.Screen name="Edytuj godziny" component={OpeningHours} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Usuń komentarze" component={DeleteComments} options={{ headerShown: false }} />
       <RootStack.Screen name="Rezerwacje" component={Rezerwation} options={{ headerShown: false }} />
+      <Drawer.Screen name="Czas rezerwacji dla firm" component={TimeReserwationFirma} options={{ headerShown: false }} />
+      <Drawer.Screen name="Zarezerwuj na dziś" component={TodayReserwationFirma} options={{ headerShown: false }} />
+      <Drawer.Screen name="Zarezerwuj na inny dzień" component={OtherDayReserwationFirma} options={{ headerShown: false }} />
+
     </Drawer.Navigator>
   )
 
@@ -198,6 +208,8 @@ const AdminStackNavigation=()=>(
     <AdminStack.Screen name="Users" component={Users} options={{ headerShown: false }} />
     <AdminStack.Screen name="Company users" component={CompanyUsers} options={{ headerShown: false }} />
     <AdminStack.Screen name="Info rest" component={InfoRestaurantAdmin} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Komentarze admin" component={CommentsAdmin} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Stoliki admin" component={TableAdmin} options={{ headerShown: false }} />
 
   </Drawer.Navigator>
 )
