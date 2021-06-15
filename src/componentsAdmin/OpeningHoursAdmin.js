@@ -6,7 +6,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 
 
-export const OpeningHours = ({ navigation }) => {
+export const OpeningHoursAdmin = ({ route,navigation }) => {
   const [monOpen, setMonOpen] = useState()
   const [monClose, setMonClose] = useState()
 
@@ -27,8 +27,8 @@ export const OpeningHours = ({ navigation }) => {
 
   const [sunOpen, setSunOpen] = useState()
   const [sunClose, setSunClose] = useState()
-  const [id,setId]=useState(1)
   const[data,setData]=useState([])
+  const {idRest}=route.params
   const isFocused=useIsFocused()
 
   useEffect(()=>{
@@ -37,7 +37,7 @@ export const OpeningHours = ({ navigation }) => {
  
   const getData = () => {
     axios
-      .get(`http://192.168.1.143:5000/restaurant/openTime/get/${id}`, {
+      .get(`http://192.168.1.143:5000/restaurant/openTime/get/${1}`, {
         
       })
       .then(function (response) {
@@ -50,7 +50,7 @@ export const OpeningHours = ({ navigation }) => {
 
   const updata=()=>{
       axios 
-           .put(`http://192.168.1.143:5000/restaurant/openTime/update/${id}`,{
+           .put(`http://192.168.1.143:5000/restaurant/openTime/update/${idRest}`,{
             mon_open:data.mon_open ==null ? '00:00' : data.mon_open, 
             mon_close:data.mon_close ==null ? '00:00' : data.mon_close,
             tue_open:data.tue_open ==null ? '00:00' : data.tue_open,

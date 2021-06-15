@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: 'white',
         height: 'auto',
-        width: '100%',
+        width: '80%',
         padding: 10,
         // marginVertical: 8,
         marginHorizontal: 16,
@@ -160,12 +160,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 1,
         elevation: 5,
+        marginBottom:20
+
 
     },
     styleInItem: {
         flexDirection: 'row',
         padding: 5,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        width:'100%',
+        marginTop:10,
+        
     }
 
 })

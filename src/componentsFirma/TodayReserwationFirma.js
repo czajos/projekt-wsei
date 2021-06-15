@@ -33,7 +33,7 @@ export function TodayReserwationFirma({ route, navigation }) {
     //Pobranie danych o aktualnie dostępnych stolikach
     const getData = () => {
         axios
-            .post(`http://192.168.1.143:5000/table/getTableToday/${3}`)
+            .post(`http://192.168.1.143:5000/table/getTableToday/${6}`)
 
             .then(function (response) {
                 // handle success 
@@ -55,7 +55,7 @@ export function TodayReserwationFirma({ route, navigation }) {
     //Pobranie danych informacyjnych o restauracji
     const getData2 = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${3}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${6}`)
 
             .then(function (response) {
                 // handle success 

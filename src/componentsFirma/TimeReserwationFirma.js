@@ -31,7 +31,7 @@ export function TimeReserwationFirma({ route, navigation }) {
     //Pobranie danych o restauracji (zdjęcie i nazwa)
     const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${3}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${6}`)
 
             .then(function (response) {
                 // handle success 
@@ -55,7 +55,7 @@ export function TimeReserwationFirma({ route, navigation }) {
     //Wysłanie daty 
     const getTime = () => {
         axios
-            .post(`http://192.168.1.143:5000/table/getByDate/${3}`, {
+            .post(`http://192.168.1.143:5000/table/getByDate/${6}`, {
                 year: year,
                 month: month,
                 day: day

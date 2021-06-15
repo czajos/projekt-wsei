@@ -26,7 +26,7 @@ export const CreateOpeningHours = ({ navigation }) => {
 
   const [sunOpen, setSunOpen] = useState()
   const [sunClose, setSunClose] = useState()
-const [id,setId]=useState(3)
+  const [id,setId]=useState(6)
 
 
  

@@ -54,8 +54,11 @@ import { InfoRestaurantAdmin } from './src/componentsAdmin/InfoRestaurantAdmin'
 import TimeReserwationFirma from './src/componentsFirma/TimeReserwationFirma'
 import TodayReserwationFirma from './src/componentsFirma/TodayReserwationFirma'
 import OtherDayReserwationFirma from './src/componentsFirma/OtherDayReserwationFirma'
+import {OpenHour} from './src/components/OpenHour'
 import { CommentsAdmin } from './src/componentsAdmin/CommentsAdmin'
 import {TableAdmin}  from './src/componentsAdmin/TableAdmin'
+import {MenuRestAdmin}  from './src/componentsAdmin/MenuRestAdmin'
+import {OpeningHoursAdmin}  from './src/componentsAdmin/OpeningHoursAdmin'
 
 
 
@@ -138,8 +141,7 @@ export default function App() {
       <Drawer.Screen name="Add comments" component={AddComments} options={{ headerShown: false }} />
       <Drawer.Screen name="Info" component={InfoAboutRest} options={{ headerShown: false }} />
       <Drawer.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} />
-
-
+      <Drawer.Screen name="Open_Close" component={OpenHour} options={{ headerShown: false }} />
 
     </Drawer.Navigator>
   )
@@ -203,13 +205,15 @@ export default function App() {
 
 const AdminStackNavigation=()=>(
   <Drawer.Navigator drawerContent={props => <DrawerAdmin {...props} />} >
-    <AdminStack.Screen name="Login" component={LoginAdmin} options={{ headerShown: false }} />
+    {/* <AdminStack.Screen name="Login" component={LoginAdmin} options={{ headerShown: false }} /> */}
     <AdminStack.Screen name="Admin panel" component={AdminPanel} options={{ headerShown: false }} />
     <AdminStack.Screen name="Users" component={Users} options={{ headerShown: false }} />
     <AdminStack.Screen name="Company users" component={CompanyUsers} options={{ headerShown: false }} />
     <AdminStack.Screen name="Info rest" component={InfoRestaurantAdmin} options={{ headerShown: false }} />
     <AdminStack.Screen name="Komentarze admin" component={CommentsAdmin} options={{ headerShown: false }} />
     <AdminStack.Screen name="Stoliki admin" component={TableAdmin} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Menu admin" component={MenuRestAdmin} options={{ headerShown: false }} />
+    <AdminStack.Screen name="Godziny otwarcia admin" component={OpeningHoursAdmin} options={{ headerShown: false }} />
 
   </Drawer.Navigator>
 )

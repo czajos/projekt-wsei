@@ -39,7 +39,7 @@ export function OtherDayReserwationFirma({ route, navigation }) {
     
     const getData2 = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${3}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${6}`)
 
             .then(function (response) {
                 // handle success 

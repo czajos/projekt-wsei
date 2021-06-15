@@ -25,12 +25,11 @@ export function ListAddTable({ navigation }) {
     useEffect(() => {
         getData()
         // deleteItem()
-
     }, [isFocused])
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/table/getAll/93')
+            .get('http://192.168.1.143:5000/table/getAll/6')
 
             .then(function (response) {
                 // handle success

@@ -5,58 +5,67 @@ import { useIsFocused } from '@react-navigation/native';
 
 
 
-export function InfoRestaurantAdmin({ route,navigation }) {
+export function InfoRestaurantAdmin({ route, navigation }) {
 
     const [data, setData] = useState([])
     const [idRest, setIdRest] = useState([])
     const isFocused = useIsFocused()
-    const {item}=route.params
+    const { item } = route.params
 
     useEffect(() => {
         getData()
-    },[isFocused])
+    }, [isFocused])
 
-    const getData=()=>{
+    const getData = () => {
         axios
-             .get(`http://192.168.1.143:5000/admin/getRestaurant/${item}`)
-             .then(response =>{
-                 setData(response.data.data)
-                 setIdRest(response.data.data.rest_id)
+            .get(`http://192.168.1.143:5000/admin/getRestaurant/${item}`)
+            .then(response => {
+                setData(response.data.data)
+                setIdRest(response.data.data.rest_id)
 
-             })
-             .catch(function (error) {
+            })
+            .catch(function (error) {
                 // handle error
                 alert(error.message);
             })
-            // .finally(function () {
-            //     // always executed
-            //     alert('Finally called');
-            // });
+        // .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        // });
     }
 
-    const comments=()=>{
+    const comments = () => {
         console.log(idRest)
-        navigation.navigate('Komentarze admin',{idRest})
+        navigation.navigate('Komentarze admin', { idRest })
     }
-    const tables=()=>{
+    const tables = () => {
         console.log(idRest)
-        navigation.navigate('Stoliki admin',{idRest})
+        navigation.navigate('Stoliki admin', { idRest })
+    }
+
+    const menuRest = () => {
+        console.log(idRest)
+
+        navigation.navigate('Menu admin', { idRest })
+    }
+    const openingHours = () => {
+        navigation.navigate('Godziny otwarcia admin', { idRest })
     }
 
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: 'green', padding: 5 }}>
-                
+
                 <View style={{ alignItems: 'center', marginTop: -10, padding: 10 }}>
                     <Text style={{ fontSize: 35, color: 'white', alignItems: 'center', fontWeight: 'bold' }}>Inforamcje o restauracji</Text>
                 </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
                 <View style={styles.item}>
-                <View style={styles.styleInItem}>
+                    {/* <View style={styles.styleInItem}>
                         <Text style={styles.text}>Imie i nazwisko</Text>
                         <Text style={styles.text2}>{data.user_name}</Text>
-                    </View>
+                    </View> */}
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Nazwa restauracji</Text>
                         <Text style={styles.text2}>{data.res_name}</Text>
@@ -73,21 +82,33 @@ export function InfoRestaurantAdmin({ route,navigation }) {
                         <Text style={styles.text}>Adres restauracji</Text>
                         <Text style={styles.text2}>{data.street}</Text>
                     </View>
-                   
+
                     <View style={styles.styleInItem}>
                         <Text style={styles.text}>Numer telefonu</Text>
                         <Text style={styles.text2}>{data.phone}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={{ marginTop: 40, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={() => navigation.goBack()}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                    <TouchableOpacity style={styles.btnStyle} onPress={comments}>
+                        <Text style={styles.txtStyleBtn}>Komentarze</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnStyle} onPress={tables}>
+                        <Text style={styles.txtStyleBtn}>Stoliki</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.txtStyleBtn} onPress={menuRest}>Menu restauracji</Text>
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.navigate('Rezerwacje')}>
+                        <Text style={styles.txtStyleBtn}>Rezerwacje</Text>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.txtStyleBtn} onPress={openingHours}>Godziny otwarcia</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.btnBack} onPress={() => navigation.goBack()}>
                     <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Wróć</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ marginTop: 40, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={comments}>
-                    <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Komentarze</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ marginTop: 40, backgroundColor: 'red', width: 150, padding: 5, borderRadius: 50, alignItems: 'center' }} onPress={tables}>
-                    <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Stoliki</Text>
-                </TouchableOpacity>
+
             </View>
         </View>
     )
@@ -141,6 +162,11 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: 'green'
     },
+    txtStyleBtn: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
 
     boxInput: {
         flexDirection: 'row',
@@ -174,6 +200,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 5,
         justifyContent: 'space-between'
+    },
+    btnStyle: {
+        marginTop: 40,
+        backgroundColor: '#5B9CE6',
+        width: 150,
+        padding: 5,
+        borderRadius: 50,
+        alignItems: 'center',
+    },
+    btnBack: {
+        marginTop: 200,
+        backgroundColor: 'red',
+        width: 150,
+        padding: 5,
+        borderRadius: 50,
+        alignItems: 'center'
     }
 
 })

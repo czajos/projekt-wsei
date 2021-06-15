@@ -106,6 +106,10 @@ export function OtherDayChoiceTable({ route, navigation }) {
         navigation.navigate('Comments', { item })
     }
 
+    const openHour=()=>{
+        navigation.navigate('Open_Close',{item})
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: 'green', padding: 5 }}>
@@ -147,6 +151,9 @@ export function OtherDayChoiceTable({ route, navigation }) {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={() => info(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn} onPress={() => openHour(item.id)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>Open/Close</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={() => goToComment(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
@@ -316,13 +323,15 @@ const styles = StyleSheet.create({
     buttonArea: {
         justifyContent: 'space-around',
         flexDirection: 'row',
-        padding: 20
+        paddingTop: 20,
+        paddingBottom: 20
+
     },
 
     btn: {
         backgroundColor: '#3B9CE6',
         height: 40,
-        width: 100,
+        width: 90,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50

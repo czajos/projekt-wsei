@@ -27,6 +27,7 @@ export function LogFirma({ navigation }) {
   const [data, setData] = useState("");
   const [loaded, setLoaded] = useState(false)
   const [imie, setImie] = useState()
+  const [password,setPassword]=useState()
   const [tokenn, setToken] = useState()
 
   const hitsory=useHistory()
@@ -82,6 +83,9 @@ export function LogFirma({ navigation }) {
   
   const nextPage=()=>{
     navigation.navigate('User')
+    if(imie=='admin'){
+      navigation.navigate('Admin')
+    }
   }
 
   const isSignedIn = async () => {
@@ -212,7 +216,7 @@ export function LogFirma({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green' }}>
 
       <Text style={styles.txtStyle}>Sign in</Text>
-      {/* <TextInput
+      <TextInput
         placeholder="Adres e-mail"
         style={styles.txtInput}
         onChangeText={text => setImie(text)}
@@ -222,7 +226,9 @@ export function LogFirma({ navigation }) {
         placeholder="password"
         style={styles.txtInput}
         secureTextEntry={true}
-      /> */}
+        onChangeText={text => setPassword(text)}
+        value={password}
+      />
       
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
@@ -233,11 +239,11 @@ export function LogFirma({ navigation }) {
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test3}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>cipa</Text>
       </TouchableOpacity> */}
-      <TouchableOpacity onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity>
+      
 
      
 
-      {/* {!userInfo.idToken ?
+       {!userInfo.idToken ?
         <GoogleSigninButton
           style={{ width: 312, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
@@ -245,32 +251,26 @@ export function LogFirma({ navigation }) {
           onPress={signInGoogle}
           onSuccess={sendToken}
 
-        /> : */}
+        /> : 
 
-      {/* <>
-
-          <Text style={styles.txtStyle}>
-            Name: {userInfo.user.name}
-          </Text>
-          <Text style={styles.txtStyle}>
-            Email: {userInfo.user.email}
-          </Text>
-
+       <>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity>
+         
         </>
 
-      } */}
-      <GoogleSigninButton
+      } 
+      {/* <GoogleSigninButton
         style={{ width: 312, height: 48 }}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Light}
         onPress={signInGoogle}
         onSuccess={sendToken}
 
-      />
+      /> */}
       <TouchableOpacity style={styles.zalogujStyle} onPress={nextPage}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
-        <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Admin')}>Jesteś administratorem?</Text>
+        {/* <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Admin')}>Jesteś administratorem?</Text> */}
     </View>
   );
 }

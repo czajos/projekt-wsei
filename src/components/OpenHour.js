@@ -6,29 +6,10 @@ import { useIsFocused } from '@react-navigation/native';
 
 
 
-export const OpeningHours = ({ navigation }) => {
-  const [monOpen, setMonOpen] = useState()
-  const [monClose, setMonClose] = useState()
-
-  const [tueOpen, setTueOpen] = useState()
-  const [tueClose, setTueClose] = useState()
-
-  const [wedOpen, setWedOpen] = useState()
-  const [wedClose, setWedClose] = useState()
-
-  const [thuOpen, setThuOpen] = useState()
-  const [thuClose, setThuClose] = useState()
-
-  const [friOpen, setFriOpen] = useState()
-  const [friClose, setFriClose] = useState()
-
-  const [satOpen, setSatOpen] = useState()
-  const [satClose, setSatClose] = useState()
-
-  const [sunOpen, setSunOpen] = useState()
-  const [sunClose, setSunClose] = useState()
-  const [id,setId]=useState(1)
+export const OpenHour = ({ route,navigation }) => {
+  
   const[data,setData]=useState([])
+  const {item}=route.params
   const isFocused=useIsFocused()
 
   useEffect(()=>{
@@ -37,7 +18,7 @@ export const OpeningHours = ({ navigation }) => {
  
   const getData = () => {
     axios
-      .get(`http://192.168.1.143:5000/restaurant/openTime/get/${id}`, {
+      .get(`http://192.168.1.143:5000/restaurant/openTime/get/${1}`, {
         
       })
       .then(function (response) {
@@ -48,32 +29,7 @@ export const OpeningHours = ({ navigation }) => {
       });
   }
 
-  const updata=()=>{
-      axios 
-           .put(`http://192.168.1.143:5000/restaurant/openTime/update/${id}`,{
-            mon_open:data.mon_open ==null ? '00:00' : data.mon_open, 
-            mon_close:data.mon_close ==null ? '00:00' : data.mon_close,
-            tue_open:data.tue_open ==null ? '00:00' : data.tue_open,
-            tue_close:data.tue_close ==null ? '00:00' : data.tue_close,
-            wed_open:data.wed_open ==null ? '00:00' : data.wed_open,
-            wed_close:data.wed_close ==null ? '00:00' : data.wed_close,
-            thu_open:data.thu_open ==null ? '00:00' : data.thu_open,
-            thu_close:data.thu_close == null ? '00:00' : data.thu_close,
-            fri_open:data.fri_open ==null ? '00:00' : data.fri_open,
-            fri_close:data.fri_close ==null ? '00:00' : data.fri_close,
-            sat_open:data.sat_open ==null ? '00:00' : data.sat_open,
-            sat_close:data.sat_close ==null ? '00:00' : data.sat_close,
-            sun_open:data.sun_open ==null ? '00:00' : data.sun_open,
-            sun_close:data.sun_close ==null ? '00:00' : data.sun_close,
-           })
-           .then(function (response) {
-            alert(JSON.stringify(response.data));
-            
-          })
-          .catch(function (error) {
-            alert(error.message);
-          });
-  }
+ 
 
 
   return (
@@ -238,9 +194,6 @@ export const OpeningHours = ({ navigation }) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 10, }}>
         <TouchableOpacity style={styles.btnStyle} onPress={() => navigation.goBack()}>
           <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Wróć</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyle} onPress={updata}>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} >Zapisz</Text>
         </TouchableOpacity>
       </View>
     </View>

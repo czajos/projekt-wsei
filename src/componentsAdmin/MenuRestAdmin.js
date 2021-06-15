@@ -8,10 +8,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 // import FormData from 'form-data'
 import { useIsFocused } from '@react-navigation/native';
 
-export const AddMenu = ({ navigation }) => {
+export const MenuRestAdmin = ({ route,navigation }) => {
   const [image, setImage] = useState(null)
   const [data, setData] = useState([])
   const isFocused = useIsFocused();
+  const {idRest}=route.params
 
 
 
@@ -19,12 +20,11 @@ export const AddMenu = ({ navigation }) => {
   useEffect(() => {
     getData()
     deleteItem()
-    
   }, [isFocused])
 
   const getData = () => {
     axios
-      .get('http://192.168.1.143:5000/restaurant/menu/get/6')
+      .get(`http://192.168.1.143:5000/restaurant/menu/get/${idRest}`)
 
       .then(function (response) {
         // handle success
@@ -37,10 +37,10 @@ export const AddMenu = ({ navigation }) => {
         // handle error
         alert(error.message);
       })
-      .finally(function () {
-        // always executed
-        alert('Finally called');
-      });
+      // .finally(function () {
+      //   // always executed
+      //   alert('Finally called');
+      // });
   };
 
   //Delete image
@@ -98,19 +98,13 @@ export const AddMenu = ({ navigation }) => {
                   <TouchableOpacity style={styles.deleteBottom} onPress={() => deleteItem(item.id)}>
                     <Text style={styles.txtDeleteBottom}>Usuń</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.deleteBottom} onPress={() => editItem(item.id)}>
-                    <Text style={styles.txtDeleteBottom}>Edytuj</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           )
         }}
       />
-      <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', padding: 10, opacity: 1, backgroundColor: 'white' }}>
-        <TouchableOpacity style={styles.btnFooterStyle} onPress={goToAdd}>
-          <Text style={styles.txtStyleBottomSheet}>Dodaj obraz</Text>
-        </TouchableOpacity>
+      <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', padding: 10, opacity: 1, backgroundColor: 'white' }}>
         <TouchableOpacity style={styles.btnFooterStyle} onPress={() => navigation.goBack()}>
           <Text style={styles.txtStyleBottomSheet}>Wyjdź</Text>
         </TouchableOpacity>
@@ -118,7 +112,7 @@ export const AddMenu = ({ navigation }) => {
     </View>
   )
 }
-AddMenu.navigationOptions = {
+MenuRestAdmin.navigationOptions = {
   headerShown: false,
 };
 
@@ -162,10 +156,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   btnFooterStyle: {
-    backgroundColor: '#1B92C4',
-    width: '49%',
-    height: 50,
-    borderRadius: 50,
+    backgroundColor: '#5B9CE6',
+        padding: 20,
+        height: 30,
+        width: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50
+
   },
   item: {
     backgroundColor: 'white',
