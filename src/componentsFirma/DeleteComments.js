@@ -27,7 +27,7 @@ export function DeleteComments({ route, navigation }) {
 
     const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/comment/getAll/${3}`)
+            .get(`http://192.168.1.143:5000/comment/getAll`)
             .then(function (response) {
                 // alert(JSON.stringify(response.data));
                 setData(response.data.data.comment)

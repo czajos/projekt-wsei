@@ -24,14 +24,13 @@ export function TimeReserwationFirma({ route, navigation }) {
     const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
     useEffect(() => {
         getData()
-
         // getTime()
     }, [isFocused])
 
     //Pobranie danych o restauracji (zdjęcie i nazwa)
     const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${6}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo`)
 
             .then(function (response) {
                 // handle success 

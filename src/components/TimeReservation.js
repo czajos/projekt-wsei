@@ -34,7 +34,6 @@ export function TimeReservation({ route, navigation }) {
 
             .then(function (response) {
                 // handle success 
-
                 console.log(response.data.data)
                 setData(response.data.data)
             })

@@ -1,8 +1,23 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { AddTable } from './AddTable'
+import axios from 'axios'
+import { useIsFocused } from '@react-navigation/native';
+
+
 
 export function MenuPanel({ navigation }) {
+const isFocused=useIsFocused()
+useEffect(()=>{
+   send()
+},[isFocused])
+
+  const send=()=>{
+    axios.
+          get('http://192.168.1.143:5000/google/me')
+  }
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

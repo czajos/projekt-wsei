@@ -24,7 +24,7 @@ export const AddMenu = ({ navigation }) => {
 
   const getData = () => {
     axios
-      .get('http://192.168.1.143:5000/restaurant/menu/get/6')
+      .get('http://192.168.1.143:5000/restaurant/menu/get')
 
       .then(function (response) {
         // handle success

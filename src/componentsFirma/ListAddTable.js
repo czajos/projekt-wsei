@@ -29,7 +29,7 @@ export function ListAddTable({ navigation }) {
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/table/getAll/6')
+            .get('http://192.168.1.143:5000/table/getAll')
 
             .then(function (response) {
                 // handle success

@@ -28,7 +28,7 @@ export function ProfilFirma({ navigation }) {
 
     const getData = () => {
         axios
-            .get('http://192.168.1.143:5000/restaurant/get/1')
+            .get('http://192.168.1.143:5000/restaurant/get')
 
             .then(function (response) {
                 // handle success
@@ -49,7 +49,7 @@ export function ProfilFirma({ navigation }) {
 
     const pullData = () => {
         axios
-            .put('http://192.168.1.143:5000/restaurant/update/3', {
+            .put('http://192.168.1.143:5000/restaurant/update', {
                 name: data.name,
                 category: data.category,
                 city: data.city,
@@ -60,8 +60,8 @@ export function ProfilFirma({ navigation }) {
             })
             .then(function (response) {
                 // setTypRestauracji({ category: response.data.data })
-                console.log(data.category)
-                alert(JSON.stringify(response.data));
+                // console.log(data.category)
+                // alert(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 alert(error.message);
