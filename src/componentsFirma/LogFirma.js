@@ -29,6 +29,7 @@ export function LogFirma({ navigation }) {
   const [imie, setImie] = useState()
   const [password,setPassword]=useState()
   const [tokenn, setToken] = useState()
+  const[admin,setAdmin]=useState([])
 
   const hitsory=useHistory()
 
@@ -83,7 +84,7 @@ export function LogFirma({ navigation }) {
   const nextPage=()=>{
     // sendToken()
     navigation.navigate('User')
-    if(imie=='admin'){
+    if(admin=='admin'){
       navigation.navigate('Admin')
     }
   }
@@ -139,6 +140,7 @@ export function LogFirma({ navigation }) {
       })
       .then(function (response) {
         console.log(response.data)
+        setAdmin(response.data.data.role)
         nextPage()
       })
       .catch(function (error) {

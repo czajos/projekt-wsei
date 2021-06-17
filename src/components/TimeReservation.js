@@ -34,7 +34,7 @@ export function TimeReservation({ route, navigation }) {
 
             .then(function (response) {
                 // handle success 
-                console.log(response.data.data)
+                // console.log(response.data.data)
                 setData(response.data.data)
             })
             .catch(function (error) {
@@ -63,8 +63,8 @@ export function TimeReservation({ route, navigation }) {
             .then(function (response) {
                 // handle success 
                 setRespo(response.data.data.tables)
-                console.log("kupa", response.data.data.tables)
-                console.log('data', response.data.date_booking)
+                // console.log("kupa", response.data.data.tables)
+                // console.log('data', response.data.date_booking)
                 setResponseTime(response.data.date_booking)
 
                 // setData(response.data.data)

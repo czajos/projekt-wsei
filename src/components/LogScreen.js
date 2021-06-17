@@ -32,8 +32,7 @@ export function LogScreen({ navigation }) {
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
-      // hostedDomain:'http://192.168.43.185:5000/google/login',
-      webClientId: '937323497149-fqllg32e0gpnv8m4ovr824mc6vm3a0ji.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      webClientId: '457132402685-k5n65bg1n6rrnjedid6p3op9474q7gnc.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
@@ -42,12 +41,9 @@ export function LogScreen({ navigation }) {
       // googleServicePlistPath: '', // [iOS] optional, if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
     });
     isSignedIn();
-    sendToken()
+    // sendToken()
     
   }, [])
-
-
-
 
   const signInGoogle = async () => {
 
@@ -57,7 +53,7 @@ export function LogScreen({ navigation }) {
       // console.log(userInfo)
       setUserInfo(userInfo)
       setLoaded(true)
-      sendToken()
+      // sendToken()
       // send()
     } catch (error) {
       console.log('Message', error.message);
@@ -82,14 +78,16 @@ export function LogScreen({ navigation }) {
   // }
   
   const nextPage=()=>{
-    navigation.navigate("Profil użytkownika")
+    // sendToken()
+    navigation.navigate('Profil użytkownika')
+   
   }
 
   const isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
       getCurrentUserInfo()
-      sendToken()
+      // sendToken()
       
     } else {
       console.log('Please Login')
@@ -115,35 +113,28 @@ export function LogScreen({ navigation }) {
   };
 
    const signOut = async () => {
-
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       setUserInfo({});
-      test2() // Remember to remove the user from your app's state as well
+      // test2() // Remember to remove the user from your app's state as well
     } catch (error) {
       console.error(error);
     }
-
   };
 
   const sendToken = async () => {
     const token = userInfo.idToken
-    const role='company'
+    const role='customer'
     //  console.log(token)
     axios
       .post("http://192.168.1.143:5000/google/api/v1/auth/google", {
         idToken: token,
         role:role
-        // headers: {
-        //   'Authorization': `Bearer ${token}` ,
-        // }
-       
       })
       .then(function (response) {
         console.log(response.data)
         nextPage()
-        // alert(JSON.stringify());
       })
       .catch(function (error) {
         alert(error.message);
@@ -183,9 +174,10 @@ export function LogScreen({ navigation }) {
       })
       .finally(function () {
         // always executed
-        alert('Finally called');
+        // alert('Finally called');
       });
   }
+
 
 
   // const sendToken =async () => {
@@ -268,7 +260,7 @@ export function LogScreen({ navigation }) {
         onSuccess={sendToken}
 
       />
-      <TouchableOpacity style={styles.zalogujStyle} onPress={nextPage}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
        {/* <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text> */}

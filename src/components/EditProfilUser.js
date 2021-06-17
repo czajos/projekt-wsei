@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
+import { useIsFocused } from '@react-navigation/native';
 
 
 
@@ -17,14 +18,14 @@ export function EditProfilUser({ navigation }) {
     const [numertel, setNumerTel] = useState()
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
-
     const [loading, setLoading] = useState(true)
+    const isFocused = useIsFocused(); //odświeża stan ekranu po jego wyrenderowaniu
 
 
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [isFocused])
 
 
     const getData = () => {
@@ -35,7 +36,6 @@ export function EditProfilUser({ navigation }) {
                 // handle success
                 // const data = response.data.data.restaurant
                 console.log(response.data)
-
                 setData2(response.data)
 
             })
@@ -43,10 +43,10 @@ export function EditProfilUser({ navigation }) {
                 // handle error
                 alert(error.message);
             })
-            .finally(function () {
-                // always executed
-                alert('Finally called');
-            });
+            // .finally(function () {
+            //     // always executed
+            //     alert('Finally called');
+            // });
     };
 
     // const pullData = () => {

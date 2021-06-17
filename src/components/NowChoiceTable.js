@@ -77,7 +77,7 @@ export function NowChoiceTable({ route, navigation }) {
     //Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
-            .post(`http://192.168.1.143:5000/reserwation/create/${1}`, {
+            .post(`http://192.168.1.143:5000/reserwation/create/${item}`, {
                 id_restaurant: item,
                 id_table: idTable,
                 hour: hour,
@@ -92,6 +92,8 @@ export function NowChoiceTable({ route, navigation }) {
                 alert(error.message);
             });
         load()
+        setHour(null)
+        setMinute(null)
     }
 
     //Wybór stolika
@@ -118,6 +120,10 @@ export function NowChoiceTable({ route, navigation }) {
 
     const goToComment = () => {
         navigation.navigate('Comments', { item })
+    }
+
+    const openHour=()=>{
+        navigation.navigate('Open_Close',{item})
     }
 
     return (
@@ -161,6 +167,9 @@ export function NowChoiceTable({ route, navigation }) {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={() => info(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Info</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn} onPress={() => openHour(item.id)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>Open/Close</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={() => goToComment(item.id)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Opinie</Text>
@@ -327,13 +336,14 @@ const styles = StyleSheet.create({
     buttonArea: {
         justifyContent: 'space-around',
         flexDirection: 'row',
-        padding: 20
+        paddingTop: 20,
+        paddingBottom: 20
     },
 
     btn: {
         backgroundColor: '#3B9CE6',
         height: 40,
-        width: 100,
+        width: 90,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50

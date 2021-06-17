@@ -207,7 +207,6 @@ export default function App() {
       <CompanyStack.Screen name="Dodaj godziny" component={CreateOpeningHours} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj stolik" component={ListAddTable} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Menu panel" component={MenuPanel} options={{ headerShown: false }} />
-
       <CompanyStack.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Strona Menu" component={AddPageMenu} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Edit Menu" component={EditMenu} options={{ headerShown: false }} />

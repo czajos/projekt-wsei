@@ -21,11 +21,11 @@ export function HomeFirma({ navigation }) {
             style={{ color: '#5B9CE6', fontSize: 20, fontWeight: 'bold' }}
           >Zaloguj się</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.zarejestrujStyle} onPress={() => navigation.navigate('Załóż konto')}>
+        {/* <TouchableOpacity style={styles.zarejestrujStyle} onPress={() => navigation.navigate('Załóż konto')}>
           <Text
             style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}
           >Załóż konto</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </ImageBackground>
 

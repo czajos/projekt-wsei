@@ -7,13 +7,14 @@ import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
+import { SwipeListView } from 'react-native-swipe-list-view'
 
 
 
 
 
 export function MyReservation({ navigation }) {
-    
+
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const isFocused = useIsFocused()
@@ -24,22 +25,22 @@ export function MyReservation({ navigation }) {
 
     const getData = () => {
         axios
-            .get(`http://192.168.1.143:5000/reserwation/get/${1}`)
+            .get(`http://192.168.1.143:5000/reserwation/get`)
             .then(function (response) {
                 // alert(JSON.stringify(response.data));
                 setData(response.data)
-                console.log(response.data)
+                // console.log("rezerwacja", response.data)
             })
             .catch(function (error) {
                 alert(error.message);
             });
     }
-  
+
     const deleteRezerwation = (item) => {
-        
+
         axios
             .delete(`http://192.168.1.143:5000/reserwation/delete/${item}`)
-            getData()
+        getData()
     }
 
 
@@ -56,27 +57,43 @@ export function MyReservation({ navigation }) {
                 </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <View style={styles.item}>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Restauracja:</Text>
-                        <Text style={styles.text2}>{data.name}</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Numer stolika:</Text>
-                        <Text style={styles.text2}>{data.number_table}</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Data:</Text>
-                        <Text style={styles.text2}>{data.date_booking}</Text>
-                    </View>
-                    <View style={styles.styleInItem}>
-                        <Text style={styles.text}>Godzina:</Text>
-                        <Text style={styles.text2}>{data.time_booking}</Text>
-                    </View>
-                    <TouchableOpacity style={styles.btnDelete} onPress={() => deleteRezerwation(item.id)}>
-                        <Text style={{color:'white',fontSize:12,fontWeight:'bold'}}>Anuluj rezerwacje</Text>
-                    </TouchableOpacity>
-                </View>
+            <SwipeListView
+                style={{ marginBottom: 80,width:'90%' }}
+                data={data}
+                keyExtractor={(item, index) => {
+                    return index.toString();
+                }}
+                renderItem={({ item }) => {
+                    console.log('rezerwacje', item)
+
+                    return (
+                        <>
+                            <View style={styles.item}>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>Restauracja:</Text>
+                                    <Text style={styles.text2}>{item.restaurant_name}</Text>
+                                </View>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>Numer stolika:</Text>
+                                    <Text style={styles.text2}>{item.number_table}</Text>
+                                </View>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>Data:</Text>
+                                    <Text style={styles.text2}>{item.date_booking}</Text>
+                                </View>
+                                <View style={styles.styleInItem}>
+                                    <Text style={styles.text}>Godzina:</Text>
+                                    <Text style={styles.text2}>{item.time_booking}</Text>
+                                </View>
+                                <TouchableOpacity style={styles.btnDelete} onPress={() => deleteRezerwation(item.id)}>
+                                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Anuluj rezerwacje</Text>
+                                </TouchableOpacity>
+                            </View>
+                            
+               </>
+                            )
+                }}
+            />
             </View>
         </View>
     )
@@ -152,7 +169,7 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: 'white',
         height: 'auto',
-        width: '80%',
+        width: '90%',
         padding: 10,
         // marginVertical: 8,
         marginHorizontal: 16,
@@ -166,20 +183,21 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
 
         elevation: 5,
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop:20
     },
-    styleInItem:{
-        flexDirection:'row',
-        padding:5,
-        justifyContent:'space-between'
+    styleInItem: {
+        flexDirection: 'row',
+        padding: 5,
+        justifyContent: 'space-between'
     },
-    btnDelete:{
-        marginTop:20,
-        backgroundColor:'red',
-        width:150,
-        padding:5,
-        borderRadius:50,
-        alignItems:'center'
+    btnDelete: {
+        marginTop: 20,
+        backgroundColor: 'red',
+        width: 150,
+        padding: 5,
+        borderRadius: 50,
+        alignItems: 'center'
     }
 
 })

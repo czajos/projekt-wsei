@@ -19,7 +19,6 @@ export function AddComments({ route, navigation }) {
     const ratingCompleted = (rating) => {
         // console.log("Rating is: " + rating)
         setRatingValue(rating)
-
     }
     
     const check = () => {

@@ -62,7 +62,7 @@ export function OtherDayChoiceTable({ route, navigation }) {
     //Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
-            .post(`http://192.168.1.143:5000/reserwation/create/${iduser}`, {
+            .post(`http://192.168.1.143:5000/reserwation/create/${item}`, {
                    
                 id_restaurant: item,
                 id_table: idTable,
@@ -78,6 +78,8 @@ export function OtherDayChoiceTable({ route, navigation }) {
                 alert(error.message);
             });
         load()
+        setHour(null)
+        setMinute(null)
     }
 
     //Wybór stolika

@@ -24,7 +24,7 @@ export function RestaurantList({ navigation }) {
             .then(function (response) {
                 // handle success
                 const data = response.data.data.tables
-                // console.log(data)
+                console.log(response.data.data.restaurant)
                 setData(response.data.data.restaurant)
                 // console.log('dane o restauracjach ',response.data.data.restaurant)
                 setLoading(false)
@@ -41,7 +41,7 @@ export function RestaurantList({ navigation }) {
     };
 const choiceRest=(item)=>{
      setIdRest(item)
-     console.log(item)
+     console.log("item",item)
 
      navigation.navigate('Czas rezerwacji',{item}) //Przekazanie parametru id restauracji do następnego komponentu 
 }

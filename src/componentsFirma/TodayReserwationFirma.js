@@ -33,7 +33,7 @@ export function TodayReserwationFirma({ route, navigation }) {
     //Pobranie danych o aktualnie dostępnych stolikach
     const getData = () => {
         axios
-            .post(`http://192.168.1.143:5000/table/getTableToday/${6}`)
+            .post(`http://192.168.1.143:5000/table/getTableToday`)
 
             .then(function (response) {
                 // handle success 
@@ -55,7 +55,7 @@ export function TodayReserwationFirma({ route, navigation }) {
     //Pobranie danych informacyjnych o restauracji
     const getData2 = () => {
         axios
-            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo/${6}`)
+            .get(`http://192.168.1.143:5000/restaurant/getBasicInfo`)
 
             .then(function (response) {
                 // handle success 
@@ -77,7 +77,7 @@ export function TodayReserwationFirma({ route, navigation }) {
     //Wysłanie rezerwacji z formularza
     const submitPost = () => {
         axios
-            .post(`http://192.168.1.143:5000/reserwation/create/${1}`, {
+            .post(`http://192.168.1.143:5000/reserwation/create`, {
                 id_restaurant: item,
                 id_table: idTable,
                 hour: hour,
