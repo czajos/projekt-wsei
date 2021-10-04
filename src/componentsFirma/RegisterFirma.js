@@ -91,7 +91,7 @@ export function RegisterFirma({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.txtStyle}>Sign up</Text>
+      <Text style={styles.txtStyle}>Zarejestruj się</Text>
 
       <TextInput
 

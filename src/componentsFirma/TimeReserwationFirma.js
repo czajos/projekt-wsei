@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 100,
         shadowOffset: {
-            width: 0,
+            // width: 0,
             height: 0.5,
         },
         shadowOpacity: 0.2,

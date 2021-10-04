@@ -19,6 +19,7 @@ export function DrawerAdmin(props) {
     // const  signOut  = React.useContext(AuthContext)
 
     const signOut = async () => {
+        console.log('wylogowany')
 
         try {
           await GoogleSignin.revokeAccess();
@@ -36,6 +37,7 @@ export function DrawerAdmin(props) {
           .then(function (response) {
             // handle success
             console.log(response.data)
+            signOut()
     
           })
           .catch(function (error) {

@@ -19,7 +19,7 @@ export function DrawerFirma(props) {
     // const  signOut  = React.useContext(AuthContext)
 
     const signOut = async () => {
-
+         console.log('wylogowany')
         try {
           await GoogleSignin.revokeAccess();
           await GoogleSignin.signOut();
@@ -31,7 +31,8 @@ export function DrawerFirma(props) {
       };
 
     const logout = async () => {
-        axios
+        try{
+        await axios
           .delete("http://192.168.1.143:5000/google/api/v1/auth/logout")
           .then(function (response) {
             // handle success
@@ -46,11 +47,18 @@ export function DrawerFirma(props) {
             // always executed
             // alert('Finally called');
           });
-          signOut()
+        
+          signOut()  
+          logoutUser()
+        }
+        catch(error){
+          console.error(error);
+
+        }
       }
 
     const logoutUser=()=>{
-        logout()
+        // logout()
         props.navigation.navigate('Home_')
         
     }
@@ -111,7 +119,7 @@ export function DrawerFirma(props) {
                             color={color}
                             size={size}></Icon>)}
                     label="Wyloguj się"
-                    onPress={logoutUser}
+                    onPress={logout}
                 ></DrawerItem>
             </Drawer.Section>
         </View>

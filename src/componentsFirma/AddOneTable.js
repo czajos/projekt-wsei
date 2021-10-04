@@ -27,36 +27,31 @@ export function AddOneTable({ navigation }) {
     }
     const fall = new Animated.Value(1)
 
-    const takePhotoFromCamera = useCallback(() => {
+    const imageFromCamera = useCallback(() => {
         ImagePicker.openCamera({
             width: 300,
             height: 400,
         }).then(image => {
-            // selectImage(image);
             setImage(image.path)
-            console.log(image);
         });
     });
 
-    const choosePhotoFromLibrary = useCallback(() => {
+    const imageFromLibrary = useCallback(() => {
         ImagePicker.openPicker({
             width: 300,
             height: 400,
         }).then(image => {
-            // selectImage(image);
             setImage(image.path)
-            console.log(image);
-
         });
     });
 
 
     renderSheet = () => (
         <View style={{ backgroundColor: 'white' }}>
-            <TouchableOpacity style={styles.btnAddPhoto} onPress={() => choosePhotoFromLibrary()}>
+            <TouchableOpacity style={styles.btnAddPhoto} onPress={() => imageFromLibrary()}>
                 <Text style={styles.txtStyleBottomSheet} >Dodaj zdjęcie z galeri</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnAddPhoto} onPress={() => takePhotoFromCamera()}>
+            <TouchableOpacity style={styles.btnAddPhoto} onPress={() => imageFromCamera()}>
                 <Text style={styles.txtStyleBottomSheet} >Zrób zdjęcie</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnAddPhotoBack}>
@@ -77,7 +72,6 @@ export function AddOneTable({ navigation }) {
 
     // WYSYŁKA DO BACKEND
     const datas = new FormData();
-
     datas.append('image', {
         uri: image,
         type: 'image/jpeg',
@@ -85,18 +79,13 @@ export function AddOneTable({ navigation }) {
     });
     datas.append('numb_seats', places)
     datas.append('number_table', numberTable)
-    // datas.append('id_rest', 6)
-
 
     const sendTable = () => {
         axios
             .post("http://192.168.1.143:5000/table/create", datas, {
-              
             })
             .then(function (response) {
-                
                 deleteData()
-                // alert(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 alert(error.message);

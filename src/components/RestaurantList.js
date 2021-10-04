@@ -5,14 +5,16 @@ import ComponentRest from './ComponentRest'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import axios from 'axios'
+import { Rating, AirbnbRating } from 'react-native-ratings';
+
 
 
 export function RestaurantList({ navigation }) {
     const [city, setCity] = useState()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState()
-    const [idRest,setIdRest]=useState()
-
+    const [idRest, setIdRest] = useState()
+    // const [rating, setRating] = useState()
     // const dupa =()=>{
     //     setLoading(false)
     // }
@@ -26,6 +28,7 @@ export function RestaurantList({ navigation }) {
                 const data = response.data.data.tables
                 console.log(response.data.data.restaurant)
                 setData(response.data.data.restaurant)
+                // setRating(response.data.data.avg)
                 // console.log('dane o restauracjach ',response.data.data.restaurant)
                 setLoading(false)
 
@@ -34,18 +37,18 @@ export function RestaurantList({ navigation }) {
                 // handle error
                 alert(error.message);
             })
-            // .finally(function () {
-            //     // always executed
-            //     alert('Finally called');
-            // });
+        // .finally(function () {
+        //     // always executed
+        //     alert('Finally called');
+        // });
     };
-const choiceRest=(item)=>{
-     setIdRest(item)
-     console.log("item",item)
+    const choiceRest = (item) => {
+        setIdRest(item)
+        console.log("item", item)
 
-     navigation.navigate('Czas rezerwacji',{item}) //Przekazanie parametru id restauracji do następnego komponentu 
-}
-    
+        navigation.navigate('Czas rezerwacji', { item }) //Przekazanie parametru id restauracji do następnego komponentu 
+    }
+
 
     return (
         <View style={styles.container}>
@@ -75,31 +78,36 @@ const choiceRest=(item)=>{
             {loading ?
                 <View></View>
                 : (<SwipeListView
-                    style={{ padding:10 }}
+                    style={{ padding: 10 }}
                     data={data}
                     keyExtractor={(item, index) => {
                         return index.toString();
                     }}
                     renderItem={({ item }) => {
                         console.log("item", item)
-
                         return (
-
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap',marginTop:20,marginBottom:20 }}>
-                                <TouchableOpacity onPress={()=>choiceRest(item.id)}>
+                            <View style={styles.itemViewAll}>
+                                <TouchableOpacity onPress={() => choiceRest(item.id)}>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <View style={styles.itemView}>
                                             <TouchableOpacity style={styles.logoRestStyles}>
                                                 <Image style={{ width: 150, height: 150 }} source={{ uri: item.image_url }}></Image>
                                             </TouchableOpacity>
+                                            <View style={styles.nameRestStyles}>
                                             <Text
-                                                style={styles.nameRestStyles}>{item.name}</Text>
-
+                                               style={styles.txtName} >{item.name}</Text>
+                                            <Rating
+                                                imageSize={18}
+                                                startingValue={item.avg}
+                                                style={{ marginTop: 0 }}
+                                                ratingCount={5}
+                                            />
+                                            </View>
                                         </View>
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            
+
 
                         )
                     }}
@@ -168,7 +176,7 @@ const styles = StyleSheet.create({
     txtInput: {
         borderWidth: 1,
         width: 250,
-        height: 50,
+        height: 40,
         textAlign: 'center',
         backgroundColor: 'white',
         borderRadius: 50,
@@ -186,7 +194,7 @@ const styles = StyleSheet.create({
     },
     search: {
         width: '30%',
-        height: 50,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#5B9CE6',
@@ -219,7 +227,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         color: 'black',
         textAlign: 'center',
-        height: 70,
+        height: 90,
         width: 190,
         marginTop: 10,
         justifyContent: 'center',
@@ -234,14 +242,32 @@ const styles = StyleSheet.create({
 
         elevation: 5,
         borderRadius: 10,
-        fontSize:20,
-        
+        fontSize: 20,
+        justifyContent:'space-around',
+        flexDirection:'column'
     },
     txtSearch: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 16
     },
+    txtName: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    itemViewAll:{
+        flexDirection: 'row',
+         justifyContent: 'space-around',
+          flexWrap: 'wrap', 
+          marginTop: 20, 
+          marginBottom: 20
+    },
+    itemView:{
+        flexDirection: 'column',
+         alignItems: 'center', 
+         justifyContent: 'space-between'
+    }
 })
 
 // <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>

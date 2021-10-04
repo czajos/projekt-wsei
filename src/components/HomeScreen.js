@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   search: {
     width: '40%',
-    height: 60,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#5B9CE6',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   txtSearch: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 16
   },
   box1: {
     marginTop: 50

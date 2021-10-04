@@ -176,16 +176,12 @@ export function NowChoiceTable({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
                     <SwipeListView
-                        // style={{ marginTop: 60 }}
                         data={data}
-                        // renderHiddenItem={renderHiddenItem}
-                        // rightOpenValue={-145}
                         keyExtractor={(item, index) => {
                             return index.toString();
                         }}
                         renderItem={({ item }) => {
                             console.log("item", item)
-
                             return (
                                 <>
                                     <View style={styles.item}>
@@ -199,10 +195,7 @@ export function NowChoiceTable({ route, navigation }) {
                                                     value={item.number_table.toString()}
                                                 ></TextInput>
                                             </View>
-
                                         </View>
-
-
                                         <TouchableOpacity style={{ width: '100%' }} onPress={() => choiceRest(item.id)}>
                                             <Image style={{ width: '100%', height: 300, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }} source={{ uri: item.image_url }}></Image>
                                         </TouchableOpacity>
@@ -242,7 +235,7 @@ export function NowChoiceTable({ route, navigation }) {
                                         <Text
                                             style={styles.txt}
                                         // value={idTable}
-                                        >{idTable}</Text>
+                                        >1</Text>
                                     </View>
                                 </View>
                                 <View style={{ alignItems: 'center' }}>

@@ -46,7 +46,7 @@ import { OpeningHours } from './src/componentsFirma/OpeningHours';
 import { DeleteComments } from './src/componentsFirma/DeleteComments';
 import Rezerwation from './src/componentsFirma/Rezerwation'
 import { AdminPanel } from './src/componentsAdmin/AdminPanel'
-import { LoginAdmin } from './src/componentsAdmin/LoginAdmin';
+// import { LoginAdmin } from './src/componentsAdmin/LoginAdmin';
 import { DrawerAdmin } from './src/componentsAdmin/DrawerAdmin'
 import { Users } from './src/componentsAdmin/Users'
 import { CompanyUsers } from './src/componentsAdmin/CompanyUsers'
@@ -62,11 +62,6 @@ import { OpeningHoursAdmin } from './src/componentsAdmin/OpeningHoursAdmin'
 
 // import axios from 'axios'
 // import { useIsFocused } from '@react-navigation/native';
-
-
-
-
-
 
 const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
@@ -138,7 +133,8 @@ export default function App() {
       <Drawer.Screen name="Home" component={HomeScreen} options={{
         headerStyle: {
           backgroundColor: 'green'
-        }, headerTitle: null
+        }, headerTitle: null,
+        headerTintColor: '#fff' // kolor burgera
       }} />
       <Drawer.Screen name="Zarejestruj się" component={RegisterScreen} options={{ headerShown: false }} />
       <Drawer.Screen name="Zaloguj się" component={LogScreen} options={{ headerShown: false }} />
@@ -151,7 +147,6 @@ export default function App() {
       <Drawer.Screen name="Wyszukaj restauracje" component={SearchOneRest} options={{ headerShown: false }} />
       <Drawer.Screen name="Wybierz stolik" component={NowChoiceTable} options={{ headerShown: false }} />
       <Drawer.Screen name="Wybierz stolik w inny dzień" component={OtherDayChoiceTable} options={{ headerShown: false }} />
-
       <Drawer.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} />
       <Drawer.Screen name="Formularz rejestracyjny" component={RegisterFormUser} options={{ headerShown: false }} />
       <Drawer.Screen name="Edycja profilu użytkownika" component={EditProfilUser} options={{ headerShown: false }} />
@@ -190,6 +185,7 @@ export default function App() {
       {/* <RootStack.Screen name="Godziny otwarcia" component={CreateOpeningHours} options={{ headerShown: false }} /> */}
       {/* <RootStack.Screen name="Godziny otwarcia" component={OpeningHours} options={{ headerShown: false }} /> */}
       {/* <RootStack.Screen name="Info rest" component={InfoRestaurantAdmin} options={{ headerShown: false }} /> */}
+      {/* <RootStack.Screen name="Dodaj" component={AddOneTable} options={{ headerShown: false }} /> */}
 
       <RootStack.Screen name="Home_" component={DrawerNavigation} />
       <RootStack.Screen name="Dla firm" component={HomeFirmaNavigation} />
@@ -200,9 +196,7 @@ export default function App() {
   )
 
   const CompanyStackNavigation = ({ navigation }) => (
-    <Drawer.Navigator name="Kutasowo" drawerContent={props => <DrawerFirma {...props} />} options={{ headerShown: false }} >
-      {/* <Drawer.Navigator  options={{ headerShown: false }} > */}
-    
+    <Drawer.Navigator name="Comapany" drawerContent={props => <DrawerFirma {...props} />} options={{ headerShown: false }} >
       <CompanyStack.Screen name="Idź dalej" component={formFirma} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj godziny" component={CreateOpeningHours} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Dodaj stolik" component={ListAddTable} options={{ headerShown: false }} />
@@ -215,17 +209,15 @@ export default function App() {
       <CompanyStack.Screen name="Edit table" component={EditTable} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Edytuj godziny" component={OpeningHours} options={{ headerShown: false }} />
       <CompanyStack.Screen name="Usuń komentarze" component={DeleteComments} options={{ headerShown: false }} />
-      <RootStack.Screen name="Rezerwacje" component={Rezerwation} options={{ headerShown: false }} />
-      <Drawer.Screen name="Czas rezerwacji dla firm" component={TimeReserwationFirma} options={{ headerShown: false }} />
-      <Drawer.Screen name="Zarezerwuj na dziś" component={TodayReserwationFirma} options={{ headerShown: false }} />
-      <Drawer.Screen name="Zarezerwuj na inny dzień" component={OtherDayReserwationFirma} options={{ headerShown: false }} />
-
+      <CompanyStack.Screen name="Rezerwacje" component={Rezerwation} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Czas rezerwacji dla firm" component={TimeReserwationFirma} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Zarezerwuj na dziś" component={TodayReserwationFirma} options={{ headerShown: false }} />
+      <CompanyStack.Screen name="Zarezerwuj na inny dzień" component={OtherDayReserwationFirma} options={{ headerShown: false }} />
     </Drawer.Navigator>
   )
 
   const AdminStackNavigation = () => (
     <Drawer.Navigator drawerContent={props => <DrawerAdmin {...props} />} >
-      {/* <AdminStack.Screen name="Login" component={LoginAdmin} options={{ headerShown: false }} /> */}
       <AdminStack.Screen name="Admin panel" component={AdminPanel} options={{ headerShown: false }} />
       <AdminStack.Screen name="Users" component={Users} options={{ headerShown: false }} />
       <AdminStack.Screen name="Company users" component={CompanyUsers} options={{ headerShown: false }} />
@@ -234,16 +226,26 @@ export default function App() {
       <AdminStack.Screen name="Stoliki admin" component={TableAdmin} options={{ headerShown: false }} />
       <AdminStack.Screen name="Menu admin" component={MenuRestAdmin} options={{ headerShown: false }} />
       <AdminStack.Screen name="Godziny otwarcia admin" component={OpeningHoursAdmin} options={{ headerShown: false }} />
-
     </Drawer.Navigator>
   )
 
   const UserStackNavigation = ({ navigation }) => (
-    <UserStack.Navigator>
-
+    <Drawer.Navigator>
       <UserStack.Screen name="Lista restauracji" component={RestaurantList} options={{ headerShown: false }} />
+      <UserStack.Screen name="Wyszukaj restauracje" component={SearchOneRest} options={{ headerShown: false }} />
+      <UserStack.Screen name="Wybierz stolik" component={NowChoiceTable} options={{ headerShown: false }} />
+      <UserStack.Screen name="Wybierz stolik w inny dzień" component={OtherDayChoiceTable} options={{ headerShown: false }} />
       <UserStack.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} />
-    </UserStack.Navigator>
+      <UserStack.Screen name="Formularz rejestracyjny" component={RegisterFormUser} options={{ headerShown: false }} />
+      <UserStack.Screen name="Edycja profilu użytkownika" component={EditProfilUser} options={{ headerShown: false }} />
+      <UserStack.Screen name="Czas rezerwacji" component={TimeReservation} options={{ headerShown: false }} />
+      <UserStack.Screen name="Moje rezerwacje" component={MyReservation} options={{ headerShown: false }} />
+      <UserStack.Screen name="Comments" component={Comments} options={{ headerShown: false }} />
+      <UserStack.Screen name="Add comments" component={AddComments} options={{ headerShown: false }} />
+      <UserStack.Screen name="Info" component={InfoAboutRest} options={{ headerShown: false }} />
+      <UserStack.Screen name="Menu rest" component={MenuRest} options={{ headerShown: false }} />
+      <UserStack.Screen name="Open_Close" component={OpenHour} options={{ headerShown: false }} />
+    </Drawer.Navigator>
   )
 
 
@@ -253,39 +255,7 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
 
-        {/* <DrawerNavigation></DrawerNavigation> */}
         <RootStackScreen userToken={userToken} />
-
-
-        {/* <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-          <Drawer.Screen name="Home" component={HomeScreen} options={{
-            headerStyle: {
-              backgroundColor: 'green'
-            }, headerTitle: null
-          }}/>
-          <Drawer.Screen name="Zarejestruj się" component={RegisterScreen} options={{ headerShown: false }} />
-          <Drawer.Screen name="Zaloguj się" component={LogScreen} options={{ headerShown: false }} />
-          <Drawer.Screen name="Dla firm" component={HomeFirma} options={{
-            headerStyle: {
-              backgroundColor: 'green', elevation: 0,
-            }, headerShown: false
-          }} /> */}
-        {/* <Drawer.Screen name="Profil firmy" component={ProfilFirma} options={{ headerShown: false }} />
-          <Drawer.Screen name="Wybierz stolik" component={ChoiceTable} options={{ headerShown: false }} />
-          <Drawer.Screen name="Lista restauracji" component={RestaurantList} options={{ headerShown: false }} />
-         
-          <Drawer.Screen name="Załóż konto" component={RegisterFirma} options={{ headerShown: false }} />
-          <Drawer.Screen name="Zaloguj się jako firma" component={LogFirma} options={{ headerShown: false }} />
-          <Drawer.Screen name="Idź dalej" component={formFirma} options={{ headerShown: false }} />
-          <Drawer.Screen name="Dodaj stolik" component={AddTable} options={{ headerShown: false }} />
-
-
-          <Drawer.Screen name="Menu panel" component={MenuPanel} options={{ headerShown: false }} />
-          <Drawer.Screen name="Dodaj menu" component={AddMenu} options={{ headerShown: false }} />
-          <Drawer.Screen name="Profil użytkownika" component={UserProfil} options={{ headerShown: false }} /> */}
-
-        {/* </Drawer.Navigator> */}
-
 
       </NavigationContainer>
 

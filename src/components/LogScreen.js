@@ -32,7 +32,7 @@ export function LogScreen({ navigation }) {
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: '457132402685-k5n65bg1n6rrnjedid6p3op9474q7gnc.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      webClientId: '', // client ID of type WEB for your server (needed to verify user ID and offline access)
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
@@ -126,7 +126,7 @@ export function LogScreen({ navigation }) {
   const sendToken = async () => {
     const token = userInfo.idToken
     const role='customer'
-    //  console.log(token)
+     console.log(token)
     axios
       .post("http://192.168.1.143:5000/google/api/v1/auth/google", {
         idToken: token,

@@ -5,6 +5,8 @@ import ComponentRest from './ComponentRest'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import axios from 'axios'
+import { Rating, AirbnbRating } from 'react-native-ratings';
+
 
 
 export function SearchOneRest({ navigation }) {
@@ -96,8 +98,19 @@ export function SearchOneRest({ navigation }) {
                                             <TouchableOpacity style={styles.logoRestStyles}>
                                                 <Image style={{ width: 150, height: 150 }} source={{ uri: item.image_url }}></Image>
                                             </TouchableOpacity>
+                                            <View style={styles.nameRestStyles}>
                                             <Text
-                                                style={styles.nameRestStyles}>{item.name}</Text>
+                                               style={styles.txtName} >{item.name}</Text>
+                                            <Rating
+                                                imageSize={18}
+                                                startingValue={item.avg}
+                                                style={{ marginTop: 0 }}
+                                                ratingCount={5}
+                                                // showRating
+
+                                            // onFinishRating={ratingCompleted}
+                                            />
+                                            </View>
 
                                         </View>
                                     </View>
@@ -171,7 +184,7 @@ const styles = StyleSheet.create({
     txtInput: {
         borderWidth: 1,
         width: 250,
-        height: 50,
+        height: 40,
         textAlign: 'center',
         backgroundColor: 'white',
         borderRadius: 50,
@@ -189,7 +202,7 @@ const styles = StyleSheet.create({
     },
     search: {
         width: '30%',
-        height: 50,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#5B9CE6',
@@ -237,10 +250,17 @@ const styles = StyleSheet.create({
         elevation: 5,
         borderRadius: 10,
         fontSize: 20,
-
+        justifyContent:'space-around',
+        flexDirection:'column',
+        marginBottom:10
     },
     txtSearch: {
         color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    txtName: {
+        color: 'black',
         fontWeight: 'bold',
         fontSize: 16
     },

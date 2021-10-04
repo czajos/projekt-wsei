@@ -16,23 +16,20 @@ export function DrawerContent(props) {
     // const { signOut } = React.useContext(AuthContext)
 
     const signOut = async () => {
-
         try {
           await GoogleSignin.revokeAccess();
           await GoogleSignin.signOut();
-        
-          // test2() // Remember to remove the user from your app's state as well
         } catch (error) {
           console.error(error);
         }
       };
 
-    const logout = async () => {
+    const cookiesDelete = async () => {
         axios
           .delete("http://192.168.1.143:5000/google/api/v1/auth/logout")
           .then(function (response) {
             // handle success
-            console.log(response.data)
+            console.log('logout',response.data)
     
           })
           .catch(function (error) {
@@ -40,14 +37,13 @@ export function DrawerContent(props) {
             alert(error.message);
           })
           .finally(function () {
-            // always executed
-            // alert('Finally called');
+            alert('Finally called');
           });
           signOut()
       }
 
     const logoutUser=()=>{
-        logout()
+        cookiesDelete()
         props.navigation.navigate('Home')
         
     }

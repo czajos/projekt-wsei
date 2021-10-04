@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   btnStyles: {
     backgroundColor: '#5B9CE6',
     color: 'white',
-    height: 60,
+    height: 50,
     width: '90%',
     marginTop: 40,
     justifyContent: 'center',

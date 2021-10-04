@@ -78,9 +78,7 @@ export const OpeningHoursAdmin = ({ route,navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Image style={styles.image} source={require('../../logodlafirm.png')}></Image>
-      </View>
+     
       <View style={styles.title}>
         <Text style={styles.txtStyle1}>Edytuj godziny otwarcia restauracji</Text>
       </View>

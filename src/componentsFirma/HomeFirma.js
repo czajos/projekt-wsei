@@ -21,11 +21,11 @@ export function HomeFirma({ navigation }) {
             style={{ color: '#5B9CE6', fontSize: 20, fontWeight: 'bold' }}
           >Zaloguj się</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.zarejestrujStyle} onPress={() => navigation.navigate('Załóż konto')}>
+        <TouchableOpacity style={styles.zarejestrujStyle} onPress={() => navigation.navigate('Załóż konto')}>
           <Text
             style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}
           >Załóż konto</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     </ImageBackground>
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     color: '#5B9CE6',
     fontSize: 12,
-    height: 60,
+    height: 50,
     width: '40%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#5B9CE6',
     color: 'white',
     fontSize: 12,
-    height: 60,
+    height: 50,
     width: '40%',
     justifyContent: 'center',
     alignItems: 'center',

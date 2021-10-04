@@ -36,39 +36,29 @@ export function LogFirma({ navigation }) {
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: '457132402685-k5n65bg1n6rrnjedid6p3op9474q7gnc.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-      // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
+      webClientId: '', // client ID of type WEB for your server (needed to verify user ID and offline access)
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
       accountName: '', // [Android] specifies an account name on the device that should be used
-      // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-      // googleServicePlistPath: '', // [iOS] optional, if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
     });
-    isSignedIn();
-    // sendToken()
-    
+    isSigned();
   }, [])
 
   const signInGoogle = async () => {
-
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn()
-      // console.log(userInfo)
       setUserInfo(userInfo)
       setLoaded(true)
-      // sendToken()
-      // send()
     } catch (error) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('User Cancelled the Login Flow', error);
+        console.log('Canceling login', error);
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Signing In', error);
+        console.log('Sign', error);
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play Services Not Available or Outdated');
+        console.log('No access to play services');
       } else {
-        console.log('Some Other Error Happened', error);
+        console.log('Error', error);
       }
     }
     
@@ -83,20 +73,24 @@ export function LogFirma({ navigation }) {
   
   const nextPage=()=>{
     // sendToken()
-    navigation.navigate('User')
-    if(admin=='admin'){
-      navigation.navigate('Admin')
-    }
+    
+      navigation.navigate('User')
+  
+    // if(admin=='admin'){
+    //   navigation.navigate('Admin')
+    // }
+    // if(imie=='admin'){
+    //   navigation.navigate('Admin')
+
+    // }
   }
 
-  const isSignedIn = async () => {
+  const isSigned = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
       getCurrentUserInfo()
-      // sendToken()
-      
     } else {
-      console.log('Please Login')
+      console.log('You must log in')
     }
   };
 
@@ -132,7 +126,7 @@ export function LogFirma({ navigation }) {
   const sendToken = async () => {
     const token = userInfo.idToken
     const role='company'
-    //  console.log(token)
+    console.log(token)
     axios
       .post("http://192.168.1.143:5000/google/api/v1/auth/google", {
         idToken: token,
@@ -141,7 +135,7 @@ export function LogFirma({ navigation }) {
       .then(function (response) {
         console.log(response.data)
         setAdmin(response.data.data.role)
-        nextPage()
+        // nextPage()
       })
       .catch(function (error) {
         alert(error.message);
@@ -186,6 +180,9 @@ export function LogFirma({ navigation }) {
   }
 
 
+
+  
+
   // const sendToken =async () => {
   //   const token = userInfo.idToken
   //   const waittoken =await GoogleSignin.signInSilently();
@@ -210,7 +207,7 @@ export function LogFirma({ navigation }) {
 
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green' }}>
 
-      <Text style={styles.txtStyle}>Sign in</Text>
+      <Text style={styles.txtStyle}>Zaloguj się</Text>
       <TextInput
         placeholder="Adres e-mail"
         style={styles.txtInput}
@@ -225,18 +222,7 @@ export function LogFirma({ navigation }) {
         value={password}
       />
       
-      {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test}>
-        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>dupa</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test2}>
-        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>kutas</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.zalogujStyle} onPress={test3}>
-        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>cipa</Text>
-      </TouchableOpacity> */}
       
-
-     
 
        {/* {!userInfo.idToken ?
         <GoogleSigninButton
@@ -254,18 +240,20 @@ export function LogFirma({ navigation }) {
         </>
 
       }  */}
-      <TouchableOpacity style={styles.zalogujStyle} onPress={sendToken}>
+      <TouchableOpacity style={styles.zalogujStyle} onPress={nextPage}>
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
 
       <GoogleSigninButton
-        style={{ width: 312, height: 48 }}
+        style={{ width: 312, height: 48,marginTop:5 }}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Light}
         onPress={signInGoogle}
         onSuccess={sendToken}
 
       />
+      <Text style={styles.txtStyle2}>Nie masz konta? <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Załóż konto')}>Zarejestruj się</Text></Text>
+
       {/* <TouchableOpacity style={styles.zalogujStyle} onPress={signOut}><Text>Wyloguj się </Text></TouchableOpacity> */}
         {/* <Text style={{ fontSize: 17, color: 'blue', textDecorationLine: 'underline' }} onPress={() => navigation.navigate('Admin')}>Jesteś administratorem?</Text> */}
     </View>
@@ -337,7 +325,6 @@ const styles = StyleSheet.create({
   zalogujStyle: {
     backgroundColor: '#3B9CE6',
     color: 'white',
-
     height: 40,
     width: 100,
     justifyContent: 'center',

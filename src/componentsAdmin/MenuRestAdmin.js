@@ -69,9 +69,6 @@ export const MenuRestAdmin = ({ route,navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Image style={styles.imageStyleLogo} source={require('../../logodlafirm.png')}></Image>
-      </View>
       <Text style={styles.txtStyle}>Dodaj lub edytuj Menu </Text>
       <SwipeListView
         style={{ marginBottom: 50 }}
